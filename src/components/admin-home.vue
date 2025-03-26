@@ -1,0 +1,544 @@
+<template>
+
+  <!-- Added Navigation Bar -->
+  <nav>
+    <ul class="sidebar" ref="sidebar">
+      <li @click="hideSidebar">
+        <a href="#"
+          ><svg
+            xmlns="http://www.w3.org/2000/svg"
+            height="26"
+            viewBox="0 -960 960 960"
+            width="26"
+            fill="#e3e3e3"
+          >
+            <path
+              d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z"
+            /></svg>
+        ></a>
+      </li>
+      <li><a href="#" @click.prevent="$router.push('/adminHome')">Home</a></li>
+      <li><a href="#" @click.prevent="$router.push('/adminPrice')">Price</a></li>
+      <li><a href="#" @click.prevent="$router.push('/adminUser')">Users</a></li>
+      <li><a href="#" @click.prevent="logout">Log Out</a></li>
+    </ul>
+    <ul>
+      <li>
+        <a href="#" @click.prevent="$router.push('/adminHome')">Market Price Tracker-Admin</a>
+      </li>
+      <li class="hideMobile">
+        <a href="#" @click.prevent="$router.push('/adminHome')">Home</a>
+      </li>
+      <li class="hideMobile">
+        <a href="#" @click.prevent="$router.push('/adminPrice')">Price</a>
+      </li>
+      <li class="hideMobile">
+        <a href="#" @click.prevent="$router.push('/adminUser')">Users</a>
+      </li>
+      <li class="hideMobile">
+        <a href="#" @click.prevent="logout">Log Out</a>
+      </li>
+      <li class="menu-btn" @click="showSidebar">
+        <a href="#"
+          ><svg
+            xmlns="http://www.w3.org/2000/svg"
+            height="26"
+            viewBox="0 -960 960 960"
+            width="26"
+            fill="#e3e3e3"
+          >
+            <path
+              d="M120-240v-80h720v80H120Zm0-200v-80h720v80H120Zm0-200v-80h720v80H120Z"
+            /></svg>
+        ></a>
+      </li>
+    </ul>
+  </nav>
+
+  <div class="rating-reviews" id="reviews">
+    <h1 style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif">
+      Ratings & Reviews
+    </h1>
+    <div class="ratings-reviews-container">
+      <!-- Overall Rating (Left Side) -->
+      <div class="overall-rating">
+        <h3>Overall Rating</h3>
+        <div class="stars">
+          <span
+            v-for="star in 5"
+            :key="star"
+            :class="{ filled: star <= roundedRating }"
+            >★</span
+          >
+        </div>
+        <p>{{ averageRating }}/5</p>
+      </div>
+
+      <!-- Feedback Container (Right Side) -->
+      <div class="feedback-container">
+        <h2 class="section-title">Ratings & Reviews</h2>
+        <div class="feedback-list">
+          <div
+            v-for="(feedback, index) in feedbackList"
+            :key="index"
+            class="feedback-item"
+          >
+            <!-- User Info and Rating -->
+            <div class="user-info">
+              <div class="stars user-stars">
+                <span
+                  v-for="star in 5"
+                  :key="star"
+                  :class="{ filled: star <= feedback.rating }"
+                  >★</span
+                >
+              </div>
+            </div>
+            <!-- User Feedback -->
+            <strong class="username">Anonymous User</strong>
+            <p class="comment">{{ feedback.comment }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+export default {
+  name: "adminDashboard",
+  data() {
+    return {
+      urlappphp: process.env.VUE_APP_URLAPPPHP,
+      feedbackList: [], // Will hold the list of feedback items
+      feedbackRatings: [], // Will hold ratings extracted from feedbackList
+      averageRating: 0,
+      roundedRating: 0, // Rounded value of the average rating
+      localUserData: {},
+    };
+  },
+
+  methods: {
+    async fetchFeedbacks() {
+      try {
+        console.log("Fetching feedbacks from:", this.urlappphp);
+        const response = await fetch(this.urlappphp, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ action: "getFeedbacks" }),
+        });
+
+        const result = await response.json();
+        console.log("Feedback response:", result);
+
+        if (result.success) {
+          this.feedbackList = result.feedbacks;
+          this.populateFeedbackRatings();
+          this.calculateAverageRating();
+        } else {
+          console.error("Failed to fetch feedbacks:", result.error);
+        }
+      } catch (error) {
+        console.error("Error fetching feedbacks:", error);
+      }
+    },
+
+    populateFeedbackRatings() {
+      this.feedbackRatings = this.feedbackList.map(
+        (feedback) => feedback.rating
+      );
+    },
+
+    calculateAverageRating() {
+      const totalRatings = this.feedbackRatings.length;
+      if (totalRatings === 0) {
+        this.averageRating = 0;
+        this.roundedRating = 0;
+        return;
+      }
+      const sum = this.feedbackRatings.reduce((acc, rating) => acc + rating, 0);
+      this.averageRating = (sum / totalRatings).toFixed(1);
+      this.roundedRating = Math.floor(this.averageRating);
+    },
+
+    async logout(){
+            try {
+                localStorage.removeItem('token');
+                this.localUserData = {};
+                this.$router.replace('/')
+            }catch(error) {
+                console.error("Logout error:", error);
+            }
+        },
+
+    showSidebar() {
+      this.$refs.sidebar.style.display = "flex";
+    },
+
+    hideSidebar() {
+      this.$refs.sidebar.style.display = "none";
+    },
+  },
+
+  mounted() {
+    this.fetchFeedbacks();
+  },
+};
+</script>
+
+<style scoped>
+.ratings-reviews,
+.overall-rating,
+.feedback-container,
+.feedback-item,
+.feedback-container h2,
+.overall-rating h3,
+.overall-rating p {
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Added navbar styles */
+* {
+  margin: 0;
+  padding: 0;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+nav {
+  background-color: white;
+  box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.1);
+  position: fixed;
+  top: 0;
+  z-index: 100;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+nav ul {
+  width: 100%;
+  list-style: none;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  margin: 0;
+  padding: 0;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+nav li {
+  height: 50px;
+  margin: 0;
+  padding: 0;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+nav a {
+  height: 100%;
+  padding: 0 30px;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  color: black;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  font-weight: 500;
+  font-size: 15px;
+  letter-spacing: 0.5px;
+}
+
+nav li:first-child a {
+  font-size: 18px;
+  font-weight: 600;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+nav a:hover {
+  background-color: #f0f0f0;
+}
+
+nav li:first-child {
+  margin-right: auto;
+}
+
+.sidebar {
+  position: fixed;
+  top: 0;
+  right: 0;
+  height: 100vh;
+  width: 250px;
+  z-index: 999;
+  background-color: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(10px);
+  box-shadow: -10px 0 10px rgba(0, 0, 0, 0.1);
+  display: none;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  margin: 0;
+  padding: 0;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.sidebar li {
+  width: 100%;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.sidebar a {
+  width: 100%;
+  font-size: 16px;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.menu-btn {
+  display: none;
+}
+
+@media (max-width: 800px) {
+  .hideMobile {
+    display: none;
+  }
+  .menu-btn {
+    display: block;
+  }
+}
+
+@media (max-width: 400px) {
+  .sidebar {
+    width: 100%;
+  }
+}
+
+/* FEEDBACK */
+.ratings-reviews {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(135deg, #2c2c2c, #333333);
+  color: white;
+  padding: 40px;
+  padding-top: 80px;
+  border-radius: 12px;
+  max-width: 100%;
+  min-height: 100vh; /* Full viewport height to center the content vertically */
+  margin: 0 auto;
+  margin-top: 80px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5); /* Subtle shadow around the container */
+}
+
+/* Overall Rating and Feedback Containers */
+.ratings-reviews-container {
+  display: flex;
+  justify-content: space-between; /* This will push items to the sides */
+  align-items: flex-start; /* Align items to the top */
+  width: 90%; /* Use most of the container width */
+  max-width: 1200px; /* Increase max width for a side-by-side layout */
+  margin: 20px auto; /* Center the container and add margin */
+  gap: 40px; /* Space between the elements */
+}
+
+/* Overall Rating and Feedback Styling */
+.overall-rating,
+.feedback-container {
+  background-color: #1e1e1e;
+  color: white;
+  padding: 25px;
+  border-radius: 15px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Overall Rating (Left Side) */
+.overall-rating {
+  width: 30%; /* Smaller width for the rating section */
+  height: auto;
+  position: sticky; /* Keep it visible as user scrolls */
+  top: 100px; /* Distance from the top when sticky */
+}
+
+/* Overall Rating value style */
+.overall-rating p {
+  font-size: 2.5rem;
+  font-weight: bold;
+  margin-top: 20px;
+  text-align: center; /* Center the text */
+  color: white; /* Ensure good contrast */
+}
+
+/* Feedback Container (Right Side) */
+.feedback-container {
+  width: 65%; /* Larger width for the feedback section */
+  background-color: #fff;
+  color: #333;
+  max-height: 70vh; /* Limit height but allow scrolling */
+  overflow-y: auto;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  margin-top: 45px;
+}
+
+/* Hover effect for both containers */
+.overall-rating:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4); /* Enhanced shadow on hover */
+}
+
+.feedback-list {
+  max-height: 80%;
+  overflow-y: auto;
+  margin-top: 20px;
+}
+
+/* Individual Feedback Item */
+.feedback-item {
+  border-top: 2px solid #ddd;
+  padding: 15px;
+  transition: background-color 0.3s ease;
+}
+
+.feedback-item:hover {
+  background-color: #f7f7f7; /* Subtle highlight on hover */
+}
+
+.feedback-container h2 {
+  margin-bottom: 20px;
+  font-size: 1.4rem;
+  font-weight: bold;
+  color: #333;
+  text-align: center;
+}
+
+/* Stars */
+.stars {
+  font-size: 3rem; /* Larger stars for emphasis */
+  text-align: center;
+  transition: transform 0.3s ease;
+}
+
+.stars span {
+  cursor: pointer;
+  color: #666;
+  transition: color 0.3s ease, transform 0.3s ease;
+}
+
+.stars span.filled {
+  color: #ffd700;
+  filter: drop-shadow(0 0 15px rgba(255, 223, 0, 0.8)); /* Glow effect */
+}
+
+/* Hover effect on stars */
+.stars span:hover {
+  color: #ffcc00;
+  transform: scale(1.2); /* Slight zoom effect on hover */
+}
+
+/* User stars (smaller) */
+.user-stars {
+  font-size: 1.5rem; /* Smaller stars for user ratings */
+  margin-bottom: 5px;
+}
+
+/* Scrollbar customization for feedback container */
+.feedback-container::-webkit-scrollbar {
+  width: 8px;
+}
+
+.feedback-container::-webkit-scrollbar-thumb {
+  background-color: #444;
+  border-radius: 4px;
+}
+
+.feedback-container::-webkit-scrollbar-track {
+  background-color: #2c2c2c;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 1024px) {
+  .ratings-reviews-container {
+    flex-direction: column; /* Stack vertically on smaller screens */
+    align-items: center;
+    gap: 20px;
+  }
+
+  .overall-rating,
+  .feedback-container {
+    width: 90%; /* Almost full width on smaller screens */
+    max-width: 600px;
+  }
+
+  .overall-rating {
+    position: relative; /* Remove sticky positioning on smaller screens */
+    top: 0;
+  }
+}
+
+@media (max-width: 768px) {
+  .ratings-reviews-container {
+    gap: 15px;
+  }
+
+  .overall-rating,
+  .feedback-container {
+    width: 100%; /* Full width on smaller devices */
+  }
+
+  .overall-rating h3 {
+    font-size: 18px;
+  }
+
+  .feedback-container {
+    max-height: 350px; /* Further reduce max-height for mobile */
+  }
+
+  .feedback-item .user-info {
+    font-size: 14px;
+  }
+
+  .feedback-item .comment {
+    font-size: 14px;
+  }
+
+  .stars {
+    font-size: 2rem; /* Adjust star size for smaller screens */
+  }
+
+  .user-stars {
+    font-size: 1.2rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .overall-rating h3 {
+    font-size: 16px;
+  }
+
+  .feedback-item .user-info {
+    font-size: 12px;
+  }
+
+  .feedback-item .comment {
+    font-size: 12px;
+  }
+
+  .stars {
+    font-size: 1.8rem;
+  }
+
+  .user-stars {
+    font-size: 1rem;
+  }
+}
+</style>
