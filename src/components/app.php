@@ -33,7 +33,7 @@ $action = isset($data['action']) ? $data['action'] : '';
 
 $host ="sql.freedb.tech";
 $user ="freedb_Rusiann";
-$password="wsy!AydTTA6ctfV";
+$password="";
 $dbname="freedb_Market";
 
 $conn = new mysqli($host, $user, $password, $dbname);
