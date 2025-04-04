@@ -75,8 +75,19 @@
       <div class="list-price-container">
         <h2 class="section-title">Market Prices</h2>
         <div class="price-list">
-          <!-- Content for your price list will go here -->
-          <p>Detailed pricing information will appear here</p>
+          <table>
+            <tr>
+              <th>Rice Type</th>
+              <th>Price</th>
+              <th>Source</th>
+            </tr>
+  
+            <tr v-for="price in prices" :key="price.RiceType + price.Source">
+              <td>{{ price.RiceType }}</td>
+              <td>{{ price.Price }}</td>
+              <td>{{ price.Source }}</td>
+            </tr>
+          </table>
         </div>
       </div>
     </div>
@@ -111,6 +122,8 @@ export default {
   },
   data() {
     return {
+      urlappphp: process.env.VUE_APP_URLAPPPHP,
+      prices: [],
       chartData: {
         labels: ["1", "2", "3", "4", "5"],
         datasets: [
@@ -139,7 +152,34 @@ export default {
     hideSidebar() {
       this.$refs.sidebar.style.display = "none";
     },
+
+    async getPrices(){
+      try {
+        
+        const response = await fetch(this.urlappphp, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ action: "getPrices" }),
+        });
+
+        const result = await response.json();
+        console.log("Price response:", result);
+
+        if (result.success) {
+          this.prices = result.prices;
+        } else {
+          console.error("Failed to fetch Prices:", result.error);
+        }
+      } catch (error) {
+        console.error("Error fetching Prices:", error);
+      }
+    },
   },
+  mounted(){
+    this.getPrices();
+  }
 };
 </script>
 

@@ -1,5 +1,4 @@
 <template>
-
   <!-- Added Navigation Bar -->
   <nav>
     <ul class="sidebar" ref="sidebar">
@@ -14,17 +13,23 @@
           >
             <path
               d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z"
-            /></svg>
-        ></a>
+            />
+          </svg>
+          ></a
+        >
       </li>
       <li><a href="#" @click.prevent="$router.push('/adminHome')">Home</a></li>
-      <li><a href="#" @click.prevent="$router.push('/adminPrice')">Price</a></li>
+      <li>
+        <a href="#" @click.prevent="$router.push('/adminPrice')">Price</a>
+      </li>
       <li><a href="#" @click.prevent="$router.push('/adminUser')">Users</a></li>
       <li><a href="#" @click.prevent="logout">Log Out</a></li>
     </ul>
     <ul>
       <li>
-        <a href="#" @click.prevent="$router.push('/adminHome')">Market Price Tracker-Admin</a>
+        <a href="#" @click.prevent="$router.push('/adminHome')"
+          >Market Price Tracker-Admin</a
+        >
       </li>
       <li class="hideMobile">
         <a href="#" @click.prevent="$router.push('/adminHome')">Home</a>
@@ -49,8 +54,10 @@
           >
             <path
               d="M120-240v-80h720v80H120Zm0-200v-80h720v80H120Zm0-200v-80h720v80H120Z"
-            /></svg>
-        ></a>
+            />
+          </svg>
+          ></a
+        >
       </li>
     </ul>
   </nav>
@@ -82,7 +89,7 @@
             v-for="(feedback, index) in feedbackList"
             :key="index"
             class="feedback-item"
-          >
+            >
             <!-- User Info and Rating -->
             <div class="user-info">
               <div class="stars user-stars">
@@ -105,6 +112,8 @@
 </template>
 
 <script>
+import { getToken, removeToken } from "@/utils/auth";
+
 export default {
   name: "adminDashboard",
   data() {
@@ -121,11 +130,18 @@ export default {
   methods: {
     async fetchFeedbacks() {
       try {
-        console.log("Fetching feedbacks from:", this.urlappphp);
+        const token = getToken();
+
+        if (!token) {
+          console.error("No token found, redirecting to login.");
+          this.$router.replace("/login");
+          return;
+        }
         const response = await fetch(this.urlappphp, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
           },
           body: JSON.stringify({ action: "getFeedbacks" }),
         });
@@ -163,15 +179,15 @@ export default {
       this.roundedRating = Math.floor(this.averageRating);
     },
 
-    async logout(){
-            try {
-                localStorage.removeItem('token');
-                this.localUserData = {};
-                this.$router.replace('/')
-            }catch(error) {
-                console.error("Logout error:", error);
-            }
-        },
+    async logout() {
+      try {
+        removeToken();
+        this.localUserData = {};
+        this.$router.replace("/");
+      } catch (error) {
+        console.error("Logout error:", error);
+      }
+    },
 
     showSidebar() {
       this.$refs.sidebar.style.display = "flex";

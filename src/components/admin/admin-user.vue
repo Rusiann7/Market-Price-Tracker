@@ -397,5 +397,6 @@ nav li:first-child {
   text-align: center;
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   padding-top: 50px;
+  margin: 15px;
 }
 </style>

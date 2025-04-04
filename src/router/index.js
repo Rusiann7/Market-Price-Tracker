@@ -2,12 +2,13 @@ import { createRouter, createWebHistory } from "vue-router";
 import Landing from "@/Landing-Page.vue";
 import Prices from "@/components/prices.vue";
 import Feedback from "@/components/Feedback.vue";
-import AdminHome from "@/components/admin-home.vue";
+import AdminHome from "@/components/admin/admin-home.vue";
 import Compare from "@/components/compare.vue";
 import Login from "@/components/login.vue";
-import adminPrice from "@/components/admin-price.vue";
-import adminUser from "@/components/admin-user.vue";
-import adminReset from "@/components/admin-reset.vue";
+import adminPrice from "@/components/admin/admin-price.vue";
+import adminUser from "@/components/admin/admin-user.vue";
+import adminReset from "@/components/admin/admin-reset.vue";
+import App from "@/App.vue";
 
 
 const routes = [
@@ -87,6 +88,12 @@ const routes = [
     component: Login,
     meta: {title: "Login"}
   },
+
+  {
+    path: "/app",
+    name: "App",
+    component: App,
+  }
   
 ];
 

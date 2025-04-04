@@ -71,8 +71,6 @@ export default {
   methods: {
     async loginusr() {
       try {
-        console.log("Login attempt with:", this.FormDatal);
-        console.log("API endpoint:", this.urlappphp);
         const response = await fetch(this.urlappphp, {
           method: "POST",
           headers: {
