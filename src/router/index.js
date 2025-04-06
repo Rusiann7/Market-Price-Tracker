@@ -9,6 +9,7 @@ import Login from "@/components/user/login.vue";
 import adminPrice from "@/components/admin/admin-price.vue";
 import adminUser from "@/components/admin/admin-user.vue";
 import adminReset from "@/components/admin/admin-reset.vue";
+import adminCtrl from '@/components/admin/admin-ctrl.vue';
 import App from "@/App.vue";
 
 
@@ -52,6 +53,13 @@ const routes = [
     path: "/adminUser",
     name: "adminUser",
     component: adminUser,
+    meta: { requiresAuth: true }
+  },
+
+  {
+    path: "/adminControl",
+    name: "adminControl",
+    component: adminCtrl,
     meta: { requiresAuth: true }
   },
 

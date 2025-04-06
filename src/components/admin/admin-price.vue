@@ -1,7 +1,7 @@
 <template>
 
     <!-- Added Navigation Bar -->
-  <nav>
+    <nav>
     <ul class="sidebar" ref="sidebar">
       <li @click="hideSidebar">
         <a href="#"
@@ -14,17 +14,22 @@
           >
             <path
               d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z"
-            /></svg>
-        ></a>
+            />
+          </svg>
+          ></a
+        >
       </li>
       <li><a href="#" @click.prevent="$router.push('/adminHome')">Home</a></li>
       <li><a href="#" @click.prevent="$router.push('/adminPrice')">Price</a></li>
       <li><a href="#" @click.prevent="$router.push('/adminUser')">Users</a></li>
-      <li><a href="#" @click.prevent="$router.push('/adminUser')">Log Out</a></li>
+      <li><a href="#" @click.prevent="$router.push('/adminControl')">Control Panel</a></li>
+      <li><a href="#" @click.prevent="logout">Log Out</a></li>
     </ul>
     <ul>
       <li>
-        <a href="#" @click.prevent="$router.push('/adminHome')">Market Price Tracker-Admin</a>
+        <a href="#" @click.prevent="$router.push('/adminHome')"
+          >Market Price Tracker-Admin</a
+        >
       </li>
       <li class="hideMobile">
         <a href="#" @click.prevent="$router.push('/adminHome')">Home</a>
@@ -36,7 +41,10 @@
         <a href="#" @click.prevent="$router.push('/adminUser')">Users</a>
       </li>
       <li class="hideMobile">
-        <a href="#" @click.prevent="$router.push('/adminUser')">Log Out</a>
+        <a href="#" @click.prevent="$router.push('/adminControl')">Control Panel</a>
+      </li>
+      <li class="hideMobile">
+        <a href="#" @click.prevent="logout">Log Out</a>
       </li>
       <li class="menu-btn" @click="showSidebar">
         <a href="#"
@@ -49,8 +57,10 @@
           >
             <path
               d="M120-240v-80h720v80H120Zm0-200v-80h720v80H120Zm0-200v-80h720v80H120Z"
-            /></svg>
-        ></a>
+            />
+          </svg>
+          ></a
+        >
       </li>
     </ul>
   </nav>

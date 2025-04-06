@@ -19,13 +19,10 @@
         >
       </li>
       <li><a href="#" @click.prevent="$router.push('/adminHome')">Home</a></li>
-      <li>
-        <a href="#" @click.prevent="$router.push('/adminPrice')">Price</a>
-      </li>
+      <li><a href="#" @click.prevent="$router.push('/adminPrice')">Price</a></li>
       <li><a href="#" @click.prevent="$router.push('/adminUser')">Users</a></li>
-      <li>
-        <a href="#" @click.prevent="$router.push('/adminUser')">Log Out</a>
-      </li>
+      <li><a href="#" @click.prevent="$router.push('/adminControl')">Control Panel</a></li>
+      <li><a href="#" @click.prevent="logout">Log Out</a></li>
     </ul>
     <ul>
       <li>
@@ -41,6 +38,9 @@
       </li>
       <li class="hideMobile">
         <a href="#" @click.prevent="$router.push('/adminUser')">Users</a>
+      </li>
+      <li class="hideMobile">
+        <a href="#" @click.prevent="$router.push('/adminControl')">Control Panel</a>
       </li>
       <li class="hideMobile">
         <a href="#" @click.prevent="logout">Log Out</a>
