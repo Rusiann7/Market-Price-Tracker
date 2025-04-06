@@ -25,6 +25,7 @@ else
     echo "Aborted"
 fi
 
+echo ""
 echo "Start Vue"
 read -r -p "Enter 1 to start: " choice
 echo ""
@@ -43,6 +44,7 @@ else
     echo "Aborted"
 fi
 
+echo ""
 echo "Start Ngrok"
 read -r -p "Enter 1 to select: " choice
 echo ""
@@ -88,7 +90,7 @@ fi
 start5(){
         echo "--------------------------------------------"
         echo "Ngrok is tunneling on port: $portvue"
-        echo "Ngrok is running on the domain: $ngrokdomain"
+        echo "Ngrok is running on the domain: https://$ngrokdomain"
         echo "VueJS is running on port: $portvue"
         echo "--------------------------------------------"
     }
