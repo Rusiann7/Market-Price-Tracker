@@ -131,10 +131,13 @@
 </template>
 
 <script>
+import { removeToken, getToken} from '@/utils/auth';
+
 export default {
   name: "adminUser",
   data() {
     return {
+      localUserData: {},
       FormData: JSON.parse(localStorage.getItem("userData")) || {
         email: "",
         initpassword: "",
@@ -148,10 +151,20 @@ export default {
   methods: {
     async submitForm() {
       try {
+
+        const token = getToken();
+
+        if (!token) {
+          console.error("No token found, redirecting to login.");
+          this.$router.replace("/login");
+          return;
+        }
+
         const response = await fetch(this.urlappphp, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
           },
           body: JSON.stringify({ ...this.FormData, action: "signup" }),
         });
@@ -172,7 +185,7 @@ export default {
 
     async logout() {
       try {
-        localStorage.removeItem("token");
+        removeToken();
         this.localUserData = {};
         this.$router.replace("/");
       } catch (error) {

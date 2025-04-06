@@ -1,4 +1,5 @@
-import { createRouter, createWebHistory } from "vue-router";
+import { createRouter, createWebHistory } from 'vue-router'
+import { isAuthenticated } from '@/utils/auth'
 import Landing from "@/Landing-Page.vue";
 import Prices from "@/components/prices.vue";
 import Feedback from "@/components/Feedback.vue";
@@ -37,21 +38,21 @@ const routes = [
     path: "/adminHome",
     name: "adminDashboard",
     component: AdminHome,
-    meta: { title: "Admin" },
+    meta: { requiresAuth: true },
   },
 
   {
     path: "/adminPrice",
     name: "adminPrice",
     component: adminPrice,
-    meta: {title: "AdminPrice"}
+    meta: { requiresAuth: true }
   },
 
   {
     path: "/adminUser",
     name: "adminUser",
     component: adminUser,
-    meta: {title: "AdminUser"}
+    meta: { requiresAuth: true }
   },
 
   {
@@ -73,6 +74,7 @@ const routes = [
     name: "Password",
     component: adminReset,
     meta: { title: "Password" },
+    props: true
   },
 
   {
@@ -101,5 +103,22 @@ const router = createRouter({
   history: createWebHistory(),
   routes,
 });
+
+
+router.beforeEach((to, from, next) => {
+  if (to.matched.some(record => record.meta.requiresAuth)) {
+    if (!isAuthenticated()) {
+      // Redirect to login page if not authenticated
+      next({
+        path: '/',
+        query: { redirect: to.fullPath }
+      })
+    } else {
+      next()
+    }
+  } else {
+    next()
+  }
+})
 
 export default router;

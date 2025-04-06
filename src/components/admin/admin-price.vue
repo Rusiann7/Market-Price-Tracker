@@ -65,23 +65,52 @@
 </template>
 
 <script>
+import { getToken, removeToken } from "@/utils/auth";
 
 export default {
-    name: "adminPrice",
-    data(){
-      return{
+  name: "adminPrice",
+  data(){
+    return{
         
+    }
+  },
+
+  methods: {
+
+    async priceGetter(){
+      try{
+
+        const token = getToken();
+
+        if (!token) {
+          console.error("No token found, redirecting to login.");
+          this.$router.replace("/login");
+          return;
+        }
+
+      }catch (error){
+        console.error("Error fetching prices:", error);
       }
     },
-    methods: {
-      showSidebar() {
+
+    async logout() {
+      try {
+        removeToken();
+        this.localUserData = {};
+        this.$router.replace("/");
+      } catch (error) {
+        console.error("Logout error:", error);
+      }
+    },
+
+    showSidebar() {
       this.$refs.sidebar.style.display = "flex";
     },
 
     hideSidebar() {
       this.$refs.sidebar.style.display = "none";
     },
-    }
+  }
 }
 
 </script>
