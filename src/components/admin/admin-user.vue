@@ -120,7 +120,7 @@
         <br />
 
         <input type="checkbox" class="check-box" />
-        <span> I agree to the terms & conditions </span>
+        <span> I agree to the <a :href="$router.resolve('/termsandcondition').href" target="_blank" rel="noopener noreferrer" style="color: white">Terms and Conditions</a> </span>
 
         <br />
 

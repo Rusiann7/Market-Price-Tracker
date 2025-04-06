@@ -10,8 +10,8 @@ import adminPrice from "@/components/admin/admin-price.vue";
 import adminUser from "@/components/admin/admin-user.vue";
 import adminReset from "@/components/admin/admin-reset.vue";
 import adminCtrl from '@/components/admin/admin-ctrl.vue';
+import termsAndConditions from '@/components/terms-and-conditions.vue';
 import App from "@/App.vue";
-
 
 const routes = [
   {
@@ -97,6 +97,13 @@ const routes = [
     name: "logIn",
     component: Login,
     meta: {title: "Login"}
+  },
+
+  {
+    path: "/termsandcondition",
+    name: "endUser",
+    component: termsAndConditions,
+    meta: {title: "Terms and Condition"}
   },
 
   {

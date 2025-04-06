@@ -1,7 +1,9 @@
 <template>
 
-  <div>
-    <h1>Terms & Conditions</h1>
+<div class="main-content">
+  <div class="terms">
+    <center><h1>Terms & Conditions</h1></center>
+    <br>
 
     <p>
         Welcome to <strong>Market Price Tracker</strong>, a price tracking service designed to help users monitor and 
@@ -11,7 +13,6 @@
 
     <br>
     <strong><h2>1. Acceptance of Terms</h2></strong>
-    <br>
     <p>
         By accessing or using the App, you acknowledge that you have read, understood, and agreed to these Terms and 
         Conditions, along with our Privacy Policy. If you do not agree, you must discontinue use of the App immediately.
@@ -19,7 +20,6 @@
     
     <br>
     <strong><h2>2. Service Description</h2></strong>
-    <br>
 
     <p>
         The App provides users with price tracking services for various market goods, 
@@ -29,7 +29,6 @@
 
     <br>
     <strong><h2>3. Disclaimer of Accuracy</h2></strong>
-    <br>
 
     <p>
         While we strive to provide accurate and up-to-date pricing information, we do not guarantee the completeness, 
@@ -50,7 +49,6 @@
     
     <br>
     <strong><h2>4. Admin Responsibilities & Misuse Policy</h2></strong>
-    <br>
 
     <p>
         Administrators with access to price modification features must adhere to the following:
@@ -74,7 +72,6 @@
 
     <br>
     <strong><h2>5. User Responsibilities</h2></strong>
-    <br>
 
     <p>
         You agree to:
@@ -89,7 +86,6 @@
  
     <br>
     <strong><h2>6. Limitation of Liability</h2></strong>
-    <br>
 
     <p>
         To the fullest extent permitted by law we shall not be liable for any:
@@ -106,7 +102,6 @@
 
     <br>
     <strong><h2>7. Changes to Terms & Service</h2></strong>
-    <br>
 
     <p>
         We reserve the right to modify these Terms at any time. 
@@ -115,7 +110,6 @@
 
     <br>
     <strong><h2>8. Termination</h2></strong>
-    <br>
 
     <p>
         We may suspend or terminate your access to the App at any time for violations of these Terms or for any other 
@@ -124,7 +118,6 @@
 
     <br>
     <strong><h2>9. Governing Law</h2></strong>
-    <br>
 
     <p>
         These Terms shall be governed by and construed in accordance with the laws of Olongapo City.
@@ -132,7 +125,6 @@
 
     <br>
     <strong><h2>10. Contact Information</h2></strong>
-    <br>
 
     <p>
         For questions or concerns regarding these Terms, please contact us at:
@@ -140,26 +132,47 @@
         By using Market Price Tracker, you agree to these Terms and Conditions. Thank you for using our service!
     </p>
   </div>
-
+</div>
 </template>
 <script>
 
 export default {
-    name: 'eula',
+    name: 'endUser',
 }
 
 </script>
 
 <style>
 .h1,div,p,ul,li,h2{
- max-width: 500px;
+ font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.terms{
+ max-width: 1100px;
+ padding-top: 50px;
   margin: auto;
-  color: #ffffff;
+  color: #000000;
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   padding: 30px;
-  text-align: center;
-  background: linear-gradient(135deg, #2c2c2c, #333333);
-  border-radius: 15px;  /* This creates the rounded corners */
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+  text-align: left;
+  font-size: 1rem;
+}
+
+.main-content {
+  padding-top: 0;
+  margin-top: 100px;
+  align-items: left;
+  justify-content: left;
+  display: flex;
+  min-height: calc(100vh - 50px);
+}
+
+.h1 {
+    text-align: center;
+}
+
+.p {
+  font-size: 2rem;
+
 }
 </style>

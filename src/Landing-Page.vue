@@ -71,6 +71,7 @@
         To Admin
       </button>
     </div>
+    <p style="font-size: smaller; padding-top: 50px;">By continuing you are agreeing to the <a :href="$router.resolve('/termsandcondition').href" target="_blank" rel="noopener noreferrer" style="color: white;">Terms and Conditions</a></p>
   </div>
 </template>
 
