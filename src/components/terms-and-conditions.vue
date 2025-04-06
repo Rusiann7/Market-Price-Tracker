@@ -5,6 +5,8 @@
     <center><h1>Terms & Conditions</h1></center>
     <br>
 
+    <p>March 30, 2025</p>
+
     <p>
         Welcome to <strong>Market Price Tracker</strong>, a price tracking service designed to help users monitor and 
         compare the prices of market goods. By using the App, you agree to comply with and be bound by the following 
