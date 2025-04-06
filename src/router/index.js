@@ -1,11 +1,11 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import { isAuthenticated } from '@/utils/auth'
 import Landing from "@/Landing-Page.vue";
-import Prices from "@/components/prices.vue";
-import Feedback from "@/components/Feedback.vue";
+import Prices from "@/components/user/prices.vue";
+import Feedback from "@/components/user/Feedback.vue";
 import AdminHome from "@/components/admin/admin-home.vue";
-import Compare from "@/components/compare.vue";
-import Login from "@/components/login.vue";
+import Compare from "@/components/user/compare.vue";
+import Login from "@/components/user/login.vue";
 import adminPrice from "@/components/admin/admin-price.vue";
 import adminUser from "@/components/admin/admin-user.vue";
 import adminReset from "@/components/admin/admin-reset.vue";
