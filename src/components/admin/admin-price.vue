@@ -77,7 +77,7 @@
     <div class="list-price-container">
       <div class="header-section">
         <h2 class="section-title">Market Prices</h2>
-        <button class="btn" @click="handleAddPrice">
+        <button class="btn" @click.prevent="$router.push('/addItem')">
           <svg 
             width="16" 
             height="16" 
@@ -121,7 +121,32 @@
   </div>
 
   <div v-if="$route.path === '/addItem'">
+    <div class="addItem">
+      <div class="form-box">
+      <form
+        id="newPrice"
+        class="input-group"
+        method="get"
+        @submit.prevent="addItem"
+      >
+      <br>
+        <p>Enter new item:</p>
+        <br>
+        <input
+          type="text"
+          class="input-field"
+          placeholder="Item"
+          v-model="FormDataP.newPrice"
+          required
+        />
 
+        <br>
+
+        <button type="submit" class="btn" value="GET">Add</button>
+      </form>
+    </div>
+  </div>
+    
   </div>
 </div>
 
@@ -136,6 +161,9 @@ export default {
     return{
       urlappphp: process.env.VUE_APP_URLAPPPHP,
       prices: [],
+      FormDataP: {
+        newPrice: "",
+      },
     }
   },
 
@@ -145,7 +173,6 @@ export default {
       try {
 
         const token = getToken();
-
         if (!token) {
           console.error("No token found, redirecting to login.");
           this.$router.replace("/login");
@@ -161,10 +188,13 @@ export default {
         });
 
         const result = await response.json();
-        console.log("Price response:", result);
 
         if (result.success) {
-          this.prices = result.prices;
+          this.prices = result.data.map(item => ({
+          ...item,
+          Price: typeof item.Price === 'number' ? item.Price.toFixed(2) : item.Price
+          }));
+
         } else {
           console.error("Failed to fetch Prices:", result.error);
         }
@@ -180,6 +210,43 @@ export default {
         this.$router.replace("/");
       } catch (error) {
         console.error("Logout error:", error);
+      }
+    },
+
+    async addItem(){
+      try {
+        const newItemName = this.FormDataP.newPrice.trim();
+        if (!newItemName) {
+          console.error("Item name cannot be empty.");
+          alert("Please enter an item name."); // Simple feedback
+          return;
+        }
+
+        const token = getToken();
+        if (!token) {
+          console.error("No token found, redirecting to login.");
+          this.$router.replace("/login");
+          return;
+        }
+
+        const response = await fetch(this.urlappphp, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ action: "addItems", itemName: newItemName }),
+        });
+
+        const result = await response.json();
+
+        if (result.success) {
+          this.FormDataP.newPrice = ''; // Clear the form
+          this.$router.push('/adminPrice'); // Navigate back to the price list
+        } else {
+          console.error("Failed to add item:", result.error);
+        }
+      } catch (error) {
+        console.error("Error adding items:", error);
       }
     },
 
@@ -349,7 +416,6 @@ nav li:first-child {
   display: flex;
   align-items: center;
   gap: 8px;
-  color: white;
   border: none;
   padding: 8px 16px;
   border-radius: 4px;
@@ -378,7 +444,7 @@ nav li:first-child {
   margin: 25px 0;
   font-size: 0.9rem;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  min-width: 1200px;
+  min-width: 750px;
   width: 100%;
   box-shadow: 0 2px 4px rgba(0,0,0,0.1);
   overflow: hidden;
@@ -409,5 +475,40 @@ nav li:first-child {
 
 .table-content tbody tr:last-of-type {
   border-bottom: #1e1e1e;
+}
+
+.addItem {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 20px;
+  margin: 0 auto;
+  max-width: 400px;
+  width: 90%;
+  color: white;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(135deg, #2c2c2c, #333333);
+  border-radius: 15px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+  box-sizing: border-box;
+  min-height: auto;
+  max-height: 475px;
+  align-self: center;
+  margin-top: 125px;
+  margin-bottom: 0;
+  font-size: 17px;
+}
+
+.input-field {
+  margin-bottom: 15px; /* Add space below each input field */
+  margin-top: 15px;
+  padding: 12px 15px;
+  width: 100%;
+  font-size: 16px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
 }
 </style>

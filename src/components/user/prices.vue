@@ -165,7 +165,7 @@ export default {
 
     async getPrices(){
       try {
-        
+
         const response = await fetch(this.urlappphp, {
           method: "POST",
           headers: {
@@ -175,10 +175,13 @@ export default {
         });
 
         const result = await response.json();
-        console.log("Price response:", result);
 
         if (result.success) {
-          this.prices = result.prices;
+          this.prices = result.data.map(item => ({
+          ...item,
+          Price: typeof item.Price === 'number' ? item.Price.toFixed(2) : item.Price
+          }));
+
         } else {
           console.error("Failed to fetch Prices:", result.error);
         }

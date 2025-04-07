@@ -1,6 +1,5 @@
 <template>
-
-<nav>
+  <nav>
     <ul class="sidebar" ref="sidebar">
       <li @click="hideSidebar">
         <a href="#"
@@ -13,8 +12,10 @@
           >
             <path
               d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z"
-            /></svg>
-        ></a>
+            />
+          </svg>
+          ></a
+        >
       </li>
       <li><a href="#" @click.prevent="$router.push('/')">Home</a></li>
       <li><a href="#" @click.prevent="$router.push('/price')">Price</a></li>
@@ -50,18 +51,19 @@
           >
             <path
               d="M120-240v-80h720v80H120Zm0-200v-80h720v80H120Zm0-200v-80h720v80H120Z"
-            /></svg>
-        ></a>
+            />
+          </svg>
+          ></a
+        >
       </li>
     </ul>
   </nav>
-<br>
-<br>
-<br>
-<br>
-<br>
-<h1 style="color: black;">Compare</h1>
-
+  <br />
+  <br />
+  <br />
+  <br />
+  <br />
+  <h1 style="color: black">Compare</h1>
 </template>
 
 <script>
@@ -76,15 +78,33 @@ export default{
     },
     methods: {
       showSidebar() {
-      this.$refs.sidebar.style.display = "flex";
+        this.$refs.sidebar.style.display = "flex";
+      },
+
+      hideSidebar() {
+        this.$refs.sidebar.style.display = "none";
+      },
+
+      handleClickOutside(event) {
+        if (this.$refs.sidebar &&this.$refs.sidebar.style.display === "flex") {
+          const isClickInsideSidebar = this.$refs.sidebar.contains(event.target);
+          const isClickOnMenuButton = event.target.closest(".menu-btn"); 
+
+          if (!isClickInsideSidebar && !isClickOnMenuButton) {
+            this.hideSidebar(); 
+          }
+        }
+      },
     },
 
-    hideSidebar() {
-      this.$refs.sidebar.style.display = "none";
+    mounted() {
+      document.addEventListener("click", this.handleClickOutside);
     },
-    }
-}
 
+    beforeUnmount() {
+      document.removeEventListener("click", this.handleClickOutside);
+    },
+  }
 </script>
 
 <style scoped>
@@ -207,5 +227,4 @@ nav li:first-child {
     width: 100%;
   }
 }
-
 </style>
