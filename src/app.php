@@ -337,44 +337,51 @@ if ($action === "feedback"){
     $result = $conn->query($sql);
     
     if ($result && $result->num_rows > 0) {
-        $prices = []; // Fixed variable name (lowercase 'p')
         $row = $result->fetch_assoc();
         $allColumns = array_keys($row);
 
-        $pricesByIndex = [];
-        $sourcesByIndex = [];
+        $items = [];
+        $sources = [];
+        $prices = [];
 
         foreach ($allColumns as $colName) {
 
-            if (preg_match('/^(.*)-Rice-(\d+)$/', $colName, $priceMatches)) {
-                $baseName = $priceMatches[1]; // e.g., "Well-Milled"
-                $index = (int)$priceMatches[2]; // e.g., 1
-
+            if (
+                preg_match('/^([a-zA-Z-]+)-(\d+|[a-zA-Z0-9]+)$/', $colName, $matches) &&
+                strpos($colName, 'Source-') !== 0
+            ) {
+            
+                $baseName = $matches[1];
+                $suffix = $matches[2];
+                
                 if (isset($row[$colName]) && $row[$colName] !== null && $row[$colName] !== '') {
-                    $pricesByIndex[$index] = [
-                       'baseName' => $baseName,
-                       'value' => (float)$row[$colName]
+                    $items[] = [
+                        'baseName' => $baseName,
+                        'suffix' => $suffix,
+                        'value' => is_numeric($row[$colName]) ? (float)$row[$colName] : $row[$colName]
                     ];
                 }
-            }elseif (preg_match('/^Source-(\d+)$/', $colName, $sourceMatches)) {
-                $index = (int)$sourceMatches[1]; // e.g., 1
-                 if (isset($row[$colName])) {
-                    $sourcesByIndex[$index] = $row[$colName]; // Store source value, keyed by index
-                 }
+            }
+
+            if (preg_match('/^Source-(\d+|[a-zA-Z0-9]+)$/', $colName, $matches)) {
+                $sources[$matches[1]] = $row[$colName] ?? '';
             }
         }
 
-        foreach ($pricesByIndex as $index => $priceData) {
-            if (isset($sourcesByIndex[$index])) {
+        foreach ($items as $item) {
+            $suffix = $item['suffix'];
+            $riceType = str_replace('-', ' ', $item['baseName']);
+            
+            if (isset($sources[$suffix])) {
                 $prices[] = [
-                    'RiceType' => str_replace('-', ' ', $priceData['baseName']) . ' Rice',
-                    'Price'    => $priceData['value'],
-                    'Source'   => $sourcesByIndex[$index]
+                    'RiceType' => $riceType,
+                    'Price' => $item['value'],
+                    'Source' => $sources[$suffix],
                 ];
             }
         }
         if (!empty($prices)) {
-            echo json_encode(["success" => true, "prices" => $prices]);
+            echo json_encode(["success" => true, "data" => $prices]);
         } else {
             echo json_encode(["success" => false, "error" => "No valid price data found"]);
         }
@@ -458,42 +465,40 @@ if ($action === "feedback"){
     }
 }elseif ($action === 'addItems') {
 
-    $addItem = $conn->real_escape_string($data['newItem']);
-    $toTable = $conn->real_escape_string($data['table']);
+    $addItem = $conn->real_escape_string($data['itemName']);
+    $toTable = 'Price-GOV';
 
     $sql = "SHOW COLUMNS FROM `Price-GOV` LIKE '$addItem'";
     $result = $conn->query($sql);
 
     
     if ($result && $result->num_rows > 0) {
-        //meron nang email na gamit
         echo json_encode(["success"=> false,"error" => "Item already existed"]);
         exit;
     } else {
 
         $randomString = getRandomString(3);
         $item = $addItem . "-" . $randomString;
-        $source = "Source" . "-". $randomString;
+        $source = "Source-" . $randomString;
 
         try{
 
-            $sql1 = "ALTER TABLE `$toTable` ADD COLUMN `$item` INT(3) NOT NULL BEFORE `Added-at`";
-
-            $sql2 = "ALTER TABLE `$toTable` ADD COLUMN `$source` VARCHAR(65535) NOT NULL BEFORE `Added-at`";
-
+            $sql1 = "ALTER TABLE `Price-GOV` ADD COLUMN `$item` INT(3) NOT NULL";
             if (!$conn->query($sql1)) {
                 throw new Exception("First ALTER failed: " . $conn->error);
             }
 
+            $sql2 = "ALTER TABLE `Price-GOV` ADD COLUMN `$source` VARCHAR(65535) NOT NULL";
             if (!$conn->query($sql2)) {
-                throw new Exception("Second ALTER failed: " . $conn->error);
+                $conn->query("ALTER TABLE `Price-GOV` DROP COLUMN `$item`");
+                throw new Exception("Failed to add source column: " . $conn->error);
             }
+
+            echo json_encode(["success"=> true, "message" => "Item added successfully"]);
 
         }catch (Exception $e) {
             return false;
         }
-
-        
     }
 }elseif ($action === 'changePrice') {
     if (!verifyToken()) {
