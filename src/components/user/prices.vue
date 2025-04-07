@@ -61,6 +61,7 @@
 
   <div class="price-container">
     <h1 style="color: black">Prices & Analytics</h1>
+    <br>
 
     <div class="prices-container">
       <!-- Chart Container (Left Side) -->
@@ -73,20 +74,29 @@
 
       <!-- Price List Container (Right Side) -->
       <div class="list-price-container">
+        <br>
         <h2 class="section-title">Market Prices</h2>
         <div class="price-list">
-          <table>
-            <tr>
-              <th>Rice Type</th>
-              <th>Price</th>
-              <th>Source</th>
-            </tr>
-  
-            <tr v-for="price in prices" :key="price.RiceType + price.Source" class="clickable-row" @click="handleRowClick(price)">
-              <td>{{ price.RiceType }}</td>
-              <td>{{ price.Price }}</td>
-              <td>{{ price.Source }}</td>
-            </tr>
+          <table class="table-content">
+            <thead>
+              <tr>
+                <th>Products</th>
+                <th>Price</th>
+                <th>Source</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              <tr 
+                v-for="price in prices" 
+                :key="price.RiceType + price.Source" 
+                @click="handleRowClick(price)"
+              >
+                <td>{{ price.RiceType }}</td>
+                <td>₱{{ price.Price }}</td>
+                <td><a :href="price.Source" target="_blank" rel="noopener noreferrer" @click.stop style="color: black;">Source</a></td>
+              </tr>
+            </tbody>
           </table>
         </div>
       </div>
@@ -184,6 +194,117 @@ export default {
 </script>
 
 <style scoped>
+
+
+* {
+  margin: 0;
+  padding: 0;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+  margin: 0;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+nav {
+  background-color: white;
+  box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.1);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  margin: 0;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+nav ul {
+  width: 100%;
+  list-style: none;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  margin: 0;
+  padding: 0;
+}
+
+nav li {
+  height: 50px;
+  margin: 0;
+  padding: 0;
+}
+
+nav a {
+  height: 100%;
+  padding: 0 30px;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  color: black;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  font-weight: 500;
+  font-size: 15px;
+  letter-spacing: 0.5px;
+}
+
+nav li:first-child a {
+  font-size: 18px;
+  font-weight: 600;
+}
+
+nav a:hover {
+  background-color: #f0f0f0;
+}
+
+nav li:first-child {
+  margin-right: auto;
+}
+
+.sidebar {
+  position: fixed;
+  top: 0;
+  right: 0;
+  height: 100vh;
+  width: 250px;
+  z-index: 999;
+  background-color: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(10px);
+  box-shadow: -10px 0 10px rgba(0, 0, 0, 0.1);
+  display: none;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  margin: 0;
+  padding: 0;
+}
+
+.sidebar li {
+  width: 100%;
+}
+
+.sidebar a {
+  width: 100%;
+  font-size: 16px;
+}
+
+.menu-btn {
+  display: none;
+}
+
+@media (max-width: 800px) {
+  .hideMobile {
+    display: none;
+  }
+  .menu-btn {
+    display: block;
+  }
+}
+
+@media (max-width: 400px) {
+  .sidebar {
+    width: 100%;
+  }
+}
+
 .price-container {
   display: flex;
   flex-direction: column;
@@ -341,112 +462,48 @@ export default {
   background-color: #d0e7ff; /* Slightly darker blue */
 }
 
-* {
-  margin: 0;
-  padding: 0;
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-}
 
-body {
-  margin: 0;
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-}
-
-nav {
-  background-color: white;
-  box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.1);
-  position: sticky;
-  top: 0;
-  z-index: 100;
-  margin: 0;
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-}
-
-nav ul {
+.table-content {
+  border-collapse: collapse;
+  margin: 25px 0;
+  font-size: 0.9rem;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  min-width: 400px;
   width: 100%;
-  list-style: none;
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
-  margin: 0;
-  padding: 0;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  overflow: hidden;
+  border-radius: 15px;
 }
 
-nav li {
-  height: 50px;
-  margin: 0;
-  padding: 0;
+.table-content thead tr {
+  background-color: #1e1e1e;
+  color: #ffffff;
+  text-align: left;
+  font-weight: bold;
 }
 
-nav a {
-  height: 100%;
-  padding: 0 30px;
-  text-decoration: none;
-  display: flex;
-  align-items: center;
-  color: black;
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-  font-weight: 500;
-  font-size: 15px;
-  letter-spacing: 0.5px;
+.table-content tbody tr {
+  background-color: #f9f9f9;
+  color: #333;
+  border-bottom: 1px solid #dddddd;
 }
 
-nav li:first-child a {
-  font-size: 18px;
-  font-weight: 600;
+.table-content tbody tr:nth-of-type(even) {
+  background-color: #f3f3f3; /* Changed to be different from odd rows */
 }
 
-nav a:hover {
-  background-color: #f0f0f0;
+.table-content tbody tr:hover {
+  background-color: #e9e9e9; /* Hover effect */
+  cursor: pointer; /* Only if rows are clickable */
 }
 
-nav li:first-child {
-  margin-right: auto;
+.table-content th,
+.table-content td {
+  padding: 12px 15px;
 }
 
-.sidebar {
-  position: fixed;
-  top: 0;
-  right: 0;
-  height: 100vh;
-  width: 250px;
-  z-index: 999;
-  background-color: rgba(255, 255, 255, 0.2);
-  backdrop-filter: blur(10px);
-  box-shadow: -10px 0 10px rgba(0, 0, 0, 0.1);
-  display: none;
-  flex-direction: column;
-  align-items: flex-start;
-  justify-content: flex-start;
-  margin: 0;
-  padding: 0;
+.table-content tbody tr:last-of-type {
+  border-bottom: #1e1e1e;
 }
 
-.sidebar li {
-  width: 100%;
-}
-
-.sidebar a {
-  width: 100%;
-  font-size: 16px;
-}
-
-.menu-btn {
-  display: none;
-}
-
-@media (max-width: 800px) {
-  .hideMobile {
-    display: none;
-  }
-  .menu-btn {
-    display: block;
-  }
-}
-
-@media (max-width: 400px) {
-  .sidebar {
-    width: 100%;
-  }
-}
 </style>

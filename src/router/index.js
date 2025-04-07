@@ -50,6 +50,20 @@ const routes = [
   },
 
   {
+    path: "/addItem",
+    name: "addItem",
+    component: adminPrice,
+    meta: { requiresAuth: true }
+  },
+
+  {
+    path: "/editItem",
+    name: "editItem",
+    component: adminPrice,
+    meta: { requiresAuth: true }
+  },
+
+  {
     path: "/adminUser",
     name: "adminUser",
     component: adminUser,
@@ -61,13 +75,6 @@ const routes = [
     name: "adminControl",
     component: adminCtrl,
     meta: { requiresAuth: true }
-  },
-
-  {
-    path: "/compare",
-    name: "comPare",
-    component: Compare,
-    meta: { title: "Compare" },
   },
 
   {
@@ -90,6 +97,13 @@ const routes = [
     name: "Code",
     component: adminReset,
     meta: { title: "Code" },
+  },
+
+  {
+    path: "/compare",
+    name: "comPare",
+    component: Compare,
+    meta: { title: "Compare" },
   },
 
   {
