@@ -82,7 +82,7 @@
               <th>Source</th>
             </tr>
   
-            <tr v-for="price in prices" :key="price.RiceType + price.Source">
+            <tr v-for="price in prices" :key="price.RiceType + price.Source" class="clickable-row" @click="handleRowClick(price)">
               <td>{{ price.RiceType }}</td>
               <td>{{ price.Price }}</td>
               <td>{{ price.Source }}</td>
@@ -255,11 +255,6 @@ export default {
 }
 
 /* Hover effect for both containers */
-.chart-section:hover,
-.list-price-container:hover {
-  transform: translateY(-10px);
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
-}
 
 .price-list {
   padding: 10px;
@@ -328,6 +323,22 @@ export default {
     width: 200px;
     height: 120px;
   }
+}
+
+.clickable-row {
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+        
+.clickable-row:hover {
+  background-color: #e9f5ff; /* Light blue */
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1); /* Subtle shadow */
+  transform: translateY(-1px); /* Slight lift effect */
+}
+        
+.clickable-row:active {
+  transform: translateY(0); /* Push down effect when clicked */
+  background-color: #d0e7ff; /* Slightly darker blue */
 }
 
 * {
