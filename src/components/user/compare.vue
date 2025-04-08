@@ -58,12 +58,89 @@
       </li>
     </ul>
   </nav>
-  <br />
-  <br />
-  <br />
-  <br />
-  <br />
-  <h1 style="color: black">Compare</h1>
+
+  <div class="main-content"> 
+    <div class="prices-container">
+      <div class="latest-container"><!--Latest Content-->
+        
+        <div class="price-list">
+          <table class="table-content">
+            <thead>
+              <tr>
+                <th>Products</th>
+                <th>Price</th>
+                <th>Source</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              <tr 
+                v-for="price in prices" 
+                :key="price.RiceType + price.Source" 
+                @click="handleRowClick(price)"
+              >
+                <td>{{ price.RiceType }}</td>
+                <td>₱{{ price.Price }}</td>
+                <td><a :href="price.Source" target="_blank" rel="noopener noreferrer" @click.stop style="color: black;">Source</a></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="compare-content"> 
+
+          <button @click="increaseCounter">
+            <svg xmlns="http://www.w3.org/2000/svg" 
+              height="24px" viewBox="0 -960 960 960" 
+              width="24px" 
+              fill="#e3e3e3">
+              <path d="m313-440 224 224-57 56-320-320 320-320 57 56-224 224h487v80H313Z"/>
+            </svg>
+          </button>
+
+          <div class="counter" >
+            {{counter}}
+          </div>
+
+          <button @click="decreaseCounter">
+            <svg xmlns="http://www.w3.org/2000/svg" 
+              height="24px" viewBox="0 -960 960 960" 
+              width="24px" fill="#e3e3e3">
+              <path d="M647-440H160v-80h487L423-744l57-56 320 320-320 320-57-56 224-224Z"/>
+            </svg>
+          </button>
+
+        <div class="price-list">
+          <table class="table-content">
+            <thead>
+              <tr>
+                <th>Products</th>
+                <th>Price</th>
+                <th>Source</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              <tr 
+                v-for="price in comparePrices" :key="'compare-'+price.RiceType">
+                <td>{{ price.RiceType }}</td>
+                <td>₱{{ price.Price }}</td>
+                <td><a :href="price.Source" target="_blank" rel="noopener noreferrer" @click.stop style="color: black;">Source</a></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        </div>
+
+    </div>
+
+
+    </div>
+    
+    
+
+  </div>
 </template>
 
 <script>
@@ -73,7 +150,10 @@ export default{
     name: 'comPare',
     data(){
       return {
-
+      urlappphp: process.env.VUE_APP_URLAPPPHP,
+      prices: [],
+      comparePrices: [],
+        counter: 1,
       }
     },
     methods: {
@@ -95,11 +175,79 @@ export default{
           }
         }
       },
+
+      async getPrices(){
+      try {
+
+        const response = await fetch(this.urlappphp, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ action: "getPrices" }),
+        });
+
+        const result = await response.json();
+
+        if (result.success) {
+          this.prices = result.data.map(item => ({
+          ...item,
+          Price: typeof item.Price === 'number' ? item.Price.toFixed(2) : item.Price
+          }));
+
+        } else {
+          console.error("Failed to fetch Prices:", result.error);
+        }
+      } catch (error) {
+        console.error("Error fetching Prices:", error);
+      }
+    },
+    
+    async getCompare(){
+      try {
+
+        const response = await fetch(this.urlappphp, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ action: "getCompare", counter: this.counter }),
+        });
+
+        const result = await response.json();
+
+        if (result.success) {
+          this.comparePrices = result.data.map(item => ({
+          ...item,
+          Price: typeof item.Price === 'number' ? item.Price.toFixed(2) : item.Price
+          }));
+
+        } else {
+          console.error("Failed to fetch Prices:", result.error);
+        }
+      } catch (error) {
+        console.error("Error fetching Prices:", error);
+      }
     },
 
-    mounted() {
-      document.addEventListener("click", this.handleClickOutside);
+    increaseCounter(){
+      this.counter++;
+      this.getCompare();
     },
+
+    decreaseCounter(){
+      if (this.counter > 1) {
+                this.counter--;
+                this.getCompare(); // Fetch data when counter changes
+            }
+    },
+    },
+
+    mounted(){
+    this.getPrices();
+    this.getCompare();
+    document.addEventListener("click", this.handleClickOutside);
+  },
 
     beforeUnmount() {
       document.removeEventListener("click", this.handleClickOutside);
@@ -226,5 +374,83 @@ nav li:first-child {
   .sidebar {
     width: 100%;
   }
+}
+
+.latest-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  width: 90%;
+  max-width: 1200px;
+  margin: 20px auto;
+  gap: 40px;
+}
+
+.price-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  padding: 40px;
+  border-radius: 12px;
+  max-width: 100%;
+  min-height: 45vh;
+  margin: 0 auto;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+}
+
+/* Main container for the two columns */
+.prices-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  width: 90%;
+  max-width: 1200px;
+  margin: 20px auto;
+  gap: 40px;
+}
+
+.table-content {
+  border-collapse: collapse;
+  margin: 25px 0;
+  font-size: 0.9rem;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  min-width: 400px;
+  width: 100%;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  overflow: hidden;
+  border-radius: 15px;
+}
+
+.table-content thead tr {
+  background-color: #1e1e1e;
+  color: #ffffff;
+  text-align: left;
+  font-weight: bold;
+}
+
+.table-content tbody tr {
+  background-color: #f9f9f9;
+  color: #333;
+  border-bottom: 1px solid #dddddd;
+}
+
+.table-content tbody tr:nth-of-type(even) {
+  background-color: #f3f3f3; /* Changed to be different from odd rows */
+}
+
+.table-content tbody tr:hover {
+  background-color: #e9e9e9; /* Hover effect */
+  cursor: pointer; /* Only if rows are clickable */
+}
+
+.table-content th,
+.table-content td {
+  padding: 12px 15px;
+}
+
+.table-content tbody tr:last-of-type {
+  border-bottom: #1e1e1e;
 }
 </style>

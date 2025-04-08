@@ -205,8 +205,6 @@ export default {
 
   mounted(){
     this.getPrices();
-  },
-  mounted() {
     document.addEventListener("click", this.handleClickOutside);
   },
 

@@ -141,7 +141,6 @@ export default {
 
     async submitFeedback() {
       try {
-        console.log("Attempting to submit to:", this.urlappphp);
 
         if (this.rating < 1) {
           alert("Please select at least 1 star");
@@ -153,8 +152,6 @@ export default {
           feedback: this.feedback,
           rating: this.rating,
         };
-
-        console.log("Sending data:", feedbackData);
 
         const response = await fetch(this.urlappphp, {
           method: "POST",
