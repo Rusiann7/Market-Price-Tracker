@@ -193,6 +193,17 @@ export default {
       }
     },
 
+    handleClickOutside(event) {
+        if (this.$refs.sidebar &&this.$refs.sidebar.style.display === "flex") {
+          const isClickInsideSidebar = this.$refs.sidebar.contains(event.target);
+          const isClickOnMenuButton = event.target.closest(".menu-btn"); 
+
+          if (!isClickInsideSidebar && !isClickOnMenuButton) {
+            this.hideSidebar(); 
+          }
+        }
+      },
+
     showSidebar() {
       this.$refs.sidebar.style.display = "flex";
     },
@@ -209,7 +220,12 @@ export default {
       initpassword: "",
       conpassword: "",
     };
+    document.addEventListener("click", this.handleClickOutside);
   },
+
+    beforeUnmount() {
+      document.removeEventListener("click", this.handleClickOutside);
+    },
 };
 </script>
 
