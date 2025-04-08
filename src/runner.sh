@@ -16,8 +16,6 @@ if [ "$choice" -eq "$start" ]; then
         cd /opt/lampp || exit
         sudo xhost +
         sudo ./xampp start
-        sudo ./manager-linux-x64.run & 
-        sleep 2
     }
     start1
 
