@@ -87,6 +87,16 @@
             <path d="M12 4V20M4 12H20" stroke="white" stroke-width="2" stroke-linecap="round"/>
           </svg>
         </button>
+        <button class="btn" @click.prevent="$router.push('/addItem')">
+          <svg 
+            xmlns="http://www.w3.org/2000/svg" 
+            height="24px" viewBox="0 -960 960 960" 
+            width="24px" 
+            fill="#000000" 
+            >
+            <path d="M200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h357l-80 80H200v560h560v-278l80-80v358q0 33-23.5 56.5T760-120H200Zm280-360ZM360-360v-170l367-367q12-12 27-18t30-6q16 0 30.5 6t26.5 18l56 57q11 12 17 26.5t6 29.5q0 15-5.5 29.5T897-728L530-360H360Zm481-424-56-56 56 56ZM440-440h56l232-232-28-28-29-28-231 231v57Zm260-260-29-28 29 28 28 28-28-28Z"/>
+          </svg>
+        </button>
       </div>
         <div class="price-list">
           <table class="table-content">
@@ -95,7 +105,6 @@
                 <th>Products</th>
                 <th>Price</th>
                 <th>Source</th>
-                <th></th>
             </tr>
             </thead>
   
@@ -104,15 +113,6 @@
                 <td>{{ price.RiceType }}</td>
                 <td>₱{{ price.Price }}</td>
                 <td><a :href="price.Source" target="_blank" rel="noopener noreferrer" @click.stop style="color: black;">Source</a></td>
-                <td @click.stop="handleEditClick(price)" class="clickable-cell">
-                  <svg xmlns="http://www.w3.org/2000/svg" 
-                    height="24px" viewBox="0 -960 960 960" 
-                    width="24px" 
-                    fill="#000000" 
-                    >
-                    <path d="M200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h357l-80 80H200v560h560v-278l80-80v358q0 33-23.5 56.5T760-120H200Zm280-360ZM360-360v-170l367-367q12-12 27-18t30-6q16 0 30.5 6t26.5 18l56 57q11 12 17 26.5t6 29.5q0 15-5.5 29.5T897-728L530-360H360Zm481-424-56-56 56 56ZM440-440h56l232-232-28-28-29-28-231 231v57Zm260-260-29-28 29 28 28 28-28-28Z"/>
-                  </svg>
-                </td>
               </tr>
             </tbody>
           </table>
@@ -146,7 +146,39 @@
       </form>
     </div>
   </div>
-    
+  </div>
+
+  <div v-if="$route.path === '/editItem'">
+    <div class="addItem">
+
+      <option value="">-- Select an option --</option>
+      <option value="{{ price.RiceType }}">{{ price.RiceType }}</option>
+
+      
+      <div class="form-box">
+      <form
+        id="newPrice"
+        class="input-group"
+        method="get"
+        @submit.prevent="addItem"
+      >
+      <br>
+        <p>Enter new item:</p>
+        <br>
+        <input
+          type="text"
+          class="input-field"
+          placeholder="Item"
+          v-model="FormDataP.newPrice"
+          required
+        />
+
+        <br>
+
+        <button type="submit" class="btn" value="GET">Add</button>
+      </form>
+    </div>
+  </div>
   </div>
 </div>
 
