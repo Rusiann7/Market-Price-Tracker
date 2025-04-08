@@ -87,7 +87,7 @@
             <path d="M12 4V20M4 12H20" stroke="white" stroke-width="2" stroke-linecap="round"/>
           </svg>
         </button>
-        <button class="btn" @click.prevent="$router.push('/addItem')">
+        <button class="btn" @click.prevent="$router.push('/editItem')">
           <svg 
             xmlns="http://www.w3.org/2000/svg" 
             height="24px" viewBox="0 -960 960 960" 
@@ -124,7 +124,7 @@
     <div class="addItem">
       <div class="form-box">
       <form
-        id="newPrice"
+        id="newItem"
         class="input-group"
         method="get"
         @submit.prevent="addItem"
@@ -136,7 +136,7 @@
           type="text"
           class="input-field"
           placeholder="Item"
-          v-model="FormDataP.newPrice"
+          v-model="FormDataP.newItem"
           required
         />
 
@@ -150,36 +150,32 @@
 
   <div v-if="$route.path === '/editItem'">
     <div class="addItem">
-
-      <option value="">-- Select an option --</option>
-      <option value="{{ price.RiceType }}">{{ price.RiceType }}</option>
-
-      
       <div class="form-box">
-      <form
-        id="newPrice"
-        class="input-group"
-        method="get"
-        @submit.prevent="addItem"
-      >
+      <form @submit.prevent="editItem">
       <br>
-        <p>Enter new item:</p>
+        <p>Enter new price:</p>
+        <br>
+        <select v-model="selectedItem" class="btn" required>
+          <option value="">-- Select an item --</option>
+          <option v-for="price in prices" :key="price.RiceType" :value="price.RiceType">
+            {{ price.RiceType }}
+          </option>
+        </select>
         <br>
         <input
-          type="text"
+          type="number"
+          step="0.01"
           class="input-field"
-          placeholder="Item"
-          v-model="FormDataP.newPrice"
+          placeholder="Price"
+          v-model.number="FormDataP.newPrice"
           required
         />
-
         <br>
-
-        <button type="submit" class="btn" value="GET">Add</button>
+        <button type="submit" class="btn">Change</button>
       </form>
     </div>
   </div>
-  </div>
+</div>
 </div>
 
 </template>
@@ -193,6 +189,8 @@ export default {
     return{
       urlappphp: process.env.VUE_APP_URLAPPPHP,
       prices: [],
+      priceColumns: [],
+      selectedItem: null,
       FormDataP: {
         newPrice: "",
       },
@@ -247,7 +245,7 @@ export default {
 
     async addItem(){
       try {
-        const newItemName = this.FormDataP.newPrice.trim();
+        const newItemName = this.FormDataP.newItem.trim();
         if (!newItemName) {
           console.error("Item name cannot be empty.");
           alert("Please enter an item name."); // Simple feedback
@@ -281,6 +279,49 @@ export default {
         console.error("Error adding items:", error);
       }
     },
+
+    async editItem(){
+      try {
+
+        if (!this.selectedItem || !this.FormDataP.newPrice) {
+            alert("Please select an item and enter a price.");
+            return;
+        }
+
+        const token = getToken();
+        if (!token) {
+          console.error("No token found, redirecting to login.");
+          this.$router.replace("/login");
+          return;
+        }
+
+        const response = await fetch(this.urlappphp, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ action: "changePrice", 
+                itemName: this.selectedItem, 
+                newPrice: this.FormDataP.newPrice,
+                sourceUrl: "Edited by Admin" }),
+                
+        });
+
+        const result = await response.json();
+
+        if (result.success) {
+          this.FormDataP.newPrice = ''; // Clear the form
+          this.selectedItem = null;
+          this.$router.push('/adminPrice'); // Navigate back to the price list
+        } else {
+          console.error("Failed to add item:", result.error);
+        }
+      } catch (error) {
+        console.error("Error adding items:", error);
+      }
+    },
+
+    
 
     showSidebar() {
       this.$refs.sidebar.style.display = "flex";
