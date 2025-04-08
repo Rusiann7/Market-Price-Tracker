@@ -508,6 +508,71 @@ if ($action === "feedback"){
     }
 
 
+}elseif ($action === 'getCompare'){
+
+    if (!isset($data['counter']) || !is_numeric($data['counter'])) {
+        echo json_encode(["success" => false, "error" => "Invalid counter value"]);
+        exit;
+    }
+
+    $id = (int)$data['counter'];
+
+    $sql = "SELECT * FROM `Price-GOV` WHERE id='$id'";
+    $result = $conn->query($sql);
+    
+    if ($result && $result->num_rows > 0) {
+        $row = $result->fetch_assoc();
+        $allColumns = array_keys($row);
+
+        $items = [];
+        $sources = [];
+        $compare = [];
+
+        foreach ($allColumns as $colName) {
+
+            if (
+                preg_match('/^([a-zA-Z-]+)-(\d+|[a-zA-Z0-9]+)$/', $colName, $matches) &&
+                strpos($colName, 'Source-') !== 0
+            ) {
+            
+                $baseName = $matches[1];
+                $suffix = $matches[2];
+                
+                if (isset($row[$colName]) && $row[$colName] !== null && $row[$colName] !== '') {
+                    $items[] = [
+                        'baseName' => $baseName,
+                        'suffix' => $suffix,
+                        'value' => is_numeric($row[$colName]) ? (float)$row[$colName] : $row[$colName]
+                    ];
+                }
+            }
+
+            if (preg_match('/^Source-(\d+|[a-zA-Z0-9]+)$/', $colName, $matches)) {
+                $sources[$matches[1]] = $row[$colName] ?? '';
+            }
+        }
+
+        foreach ($items as $item) {
+            $suffix = $item['suffix'];
+            $riceType = str_replace('-', ' ', $item['baseName']);
+            
+            if (isset($sources[$suffix])) {
+                $compare[] = [
+                    'RiceType' => $riceType,
+                    'Price' => $item['value'],
+                    'Source' => $sources[$suffix],
+                ];
+            }
+        }
+        if (!empty($compare)) {
+            echo json_encode(["success" => true, "data" => $compare, "counter" => $id   ]); // Return counter for verification
+        } else {
+            echo json_encode(["success" => false, "error" => "No valid price data found", "counter" => $id]);
+        }
+    } else {
+        echo json_encode(["success" => false, "error" => "No record found for ID: " . $id, "counter" => $id]);
+    }
+
 }
 
 
