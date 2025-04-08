@@ -303,7 +303,7 @@ export default {
           body: JSON.stringify({ action: "changePrice", 
                 itemName: this.selectedItem, 
                 newPrice: this.FormDataP.newPrice,
-                sourceUrl: "Edited by Admin" }),
+                sourceUrl: "/addedadmin" }),
                 
         });
 
