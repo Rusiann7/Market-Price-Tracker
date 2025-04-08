@@ -483,7 +483,7 @@ if ($action === "feedback"){
 
         try{
 
-            $sql1 = "ALTER TABLE `Price-GOV` ADD COLUMN `$item` INT(3) NOT NULL";
+            $sql1 = "ALTER TABLE `Price-GOV` ADD COLUMN `$item` FLOAT NOT NULL";
             if (!$conn->query($sql1)) {
                 throw new Exception("First ALTER failed: " . $conn->error);
             }
@@ -501,13 +501,51 @@ if ($action === "feedback"){
         }
     }
 }elseif ($action === 'changePrice') {
-    if (!verifyToken()) {
-        http_response_code(401); // Unauthorized
-        echo json_encode(["success" => false, "message" => "Unauthorized"]);
+    $postData = json_decode(file_get_contents('php://input'), true);
+    
+    // Validate and sanitize inputs
+    if (empty($postData['itemName']) || !isset($postData['newPrice'])) {
+        echo json_encode(["success" => false, "error" => "Missing required fields"]);
         exit;
     }
 
+    $itemName = $conn->real_escape_string($postData['itemName']);
+    $newPrice = floatval($postData['newPrice']);
+    $sourceUrl = isset($postData['sourceUrl']) ? $conn->real_escape_string($postData['sourceUrl']) : '/addedadmin';
 
+    // Find the source column
+    $parts = explode("-", $dynamicColumnName);
+$dynamicSuffix = end($parts); // Now we're passing a variable to 'end()'
+
+$sourceColumn = "Source-" . $dynamicSuffix;
+
+    
+
+    $checkSql = "SHOW COLUMNS FROM `Price-GOV` LIKE '$itemName%'";
+    $result = $conn->query($checkSql);
+
+    if ($result && $result->num_rows > 0) {
+        // Get the first column name that starts with the base name
+        $row = $result->fetch_assoc();
+        $dynamicColumnName = $row['Field']; // This should be something like 'Potatoes-JQY'
+
+        // The source column will be derived from the dynamic column
+        $sourceColumn = "Source-" . end(explode("-", $dynamicColumnName));
+
+        // Now proceed with the update
+        $updateSql = "UPDATE `Price-GOV` 
+                     SET `$dynamicColumnName` = $newPrice, 
+                         `$sourceColumn` = '$sourceUrl'
+                     WHERE `Added-at` = (SELECT MAX(`Added-at`) FROM (SELECT * FROM `Price-GOV`) AS temp)";
+
+        if ($conn->query($updateSql)) {
+            echo json_encode(["success" => true, "message" => "Price updated successfully"]);
+        } else {
+            throw new Exception("Update failed: " . $conn->error);
+        }
+    } else {
+        echo json_encode(["success" => false, "error" => "Item column does not exist"]);
+    }
 }elseif ($action === 'getCompare'){
 
     if (!isset($data['counter']) || !is_numeric($data['counter'])) {
@@ -574,6 +612,7 @@ if ($action === "feedback"){
     }
 
 }
+
 
 
 else {
