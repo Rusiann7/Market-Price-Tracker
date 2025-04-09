@@ -390,58 +390,51 @@ if ($action === "feedback"){
     }
 
 }elseif ($action === 'fetchPrices'){
+
     $serp_api_key = '';
-    $cache_time = 3600; // 1 hour cache
 
-    $riceTypes = [
-        'regular_milled' => 'Regular Milled Rice',
-        'well_milled' => 'Well Milled Rice',
-        'premium' => 'Premium Rice'
-    ];
+    $columnsMap = [];
+    $productList = [];
 
-    // Initialize price storage with source tracking
-    $srpPrices = [
-        'regular_milled' => ['government' => null, 'news' => null],
-        'well_milled' => ['government' => null, 'news' => null],
-        'premium' => ['government' => null, 'news' => null]
-    ];
-
-
-
-
-
-    function searchAPI($riceType, $siteQuery) {
+    // Helper functions
+    function searchAPI($productType, $siteQuery) {
         global $serp_api_key;
-        
-        $query = [
-            "q" => "SRP of $riceType rice in the Philippines 2025 $siteQuery",
-            "hl" => "en",
-            "gl" => "ph",
-            "google_domain" => "google.com",
-            "num" => 3,
-            "api_key" => $serp_api_key
-        ];
-        
+    
+        $searchTerm = strpos(strtolower($productType), 'rice') !== false 
+        ? "SRP of $productType in the Philippines 2025"
+        : "Current price of $productType in the Philippines 2025";
+    
+    $query = [
+        "q" => "$searchTerm $siteQuery",
+        "hl" => "en",
+        "gl" => "ph",
+        "google_domain" => "google.com",
+        "num" => 3,
+        "api_key" => $serp_api_key
+    ];
+    
         $url = "https://serpapi.com/search.json?" . http_build_query($query);
         $response = file_get_contents($url);
         return json_decode($response, true);
     }
 
-    function extractLatestPrice($results) {
+    function extractLatestPrice($results) {   
         if (!isset($results['organic_results'])) return null;
-        
+    
         $latest = null;
+
         foreach ($results['organic_results'] as $result) {
             if (preg_match('/(?:PHP|₱|P)\s*([\d,]+\.?\d*)/i', $result['snippet'] ?? '', $match)) {
+                    
                 $price = [
                     'amount' => (float) str_replace(',', '', $match[1]),
                     'currency' => '₱',
                     'formatted' => '₱' . $match[1],
                     'date' => extractDate($result['snippet'] ?? ''),
-                    'title' => $result['title'] ?? 'Unknown',
+                    'title' => $result['title'] ?? 'Source',
                     'link' => $result['link'] ?? '#'
                 ];
-                
+            
                 if (!$latest || ($price['date'] !== 'N/A' && strtotime($price['date']) > strtotime($latest['date']))) {
                     $latest = $price;
                 }
@@ -449,6 +442,7 @@ if ($action === "feedback"){
         }
         return $latest;
     }
+
     function extractDate($text) {
         $patterns = [
             '/(\d{1,2}\s+\w+\s+\d{4})/i',
@@ -462,6 +456,129 @@ if ($action === "feedback"){
             }
         }
         return 'N/A';
+    }
+
+    $checkSql = "SHOW COLUMNS FROM `Price-GOV`";
+    $result = $conn->query($checkSql);
+
+    if (!$result || $result->num_rows === 0) {
+        echo json_encode(["success" => false, "error" => "Failed to get table columns"]);
+        exit;
+    }
+
+    // Build columns map and product list
+    while ($row = $result->fetch_assoc()) {
+        $field = $row['Field'];
+
+        if ($field === 'id' || $field === 'Added-at') {
+            continue;
+        }
+
+        if (preg_match('/^(.*)-([A-Za-z0-9]+)$/', $field, $matches) && stripos($field, 'Source-') === false) {
+            $baseName = $matches[1]; 
+            $suffix = $matches[2];
+
+            $sourceColumn = "Source-$suffix";
+
+            $sourceCheck = $conn->query("SHOW COLUMNS FROM `Price-GOV` LIKE '$sourceColumn'");
+            if ($sourceCheck->num_rows === 0) {
+                continue; // Skip if no matching source column
+            }
+
+            $normalizedKey = strtolower(str_replace(['-', '_', ' '], '', $baseName));
+            
+            $columnsMap[$normalizedKey] = [
+                'price' => $field,
+                'source' => $sourceColumn,
+                'originalName' => $baseName
+            ];
+            $productList[$baseName] = $baseName;
+        }
+    }
+
+    $result->free();
+
+    if (empty($productList)) {
+        echo json_encode(["success" => false, "error" => "Product list is empty."]);
+        return; // Stop further execution
+    }
+
+    try {
+        $columns = ['`Added-at`'];
+        $values = ['NOW()'];
+        $updateCount = 0;
+        foreach ($productList as $typeKey => $typeName) {
+
+            $normalizedKey = strtolower(str_replace(['-', '_', ' '], '', $typeKey));
+
+            if (!isset($columnsMap[$normalizedKey])) {
+                continue;
+            }
+
+            $govPrice = null;
+            $newsPrice = null;
+    
+            // Search government sites (PSA and others)
+            $govPrice = searchAPI($typeKey, 'site:.gov.ph OR site:psa.gov.ph');
+    $govPrice = $govPrice ? extractLatestPrice($govPrice) : null;
+            
+    $newsQuery = strpos(strtolower($typeKey), 'rice') !== false
+    ? 'site:inquirer.net OR site:gmanetwork.com/news'
+    : 'site:inquirer.net OR site:manilatimes.net';
+
+$newsPrice = searchAPI($typeKey, $newsQuery);
+$newsPrice = $newsPrice ? extractLatestPrice($newsPrice) : null;
+
+            $latestPrice = null;
+            if ($govPrice && $newsPrice) {
+                $govDate = $govPrice['date'] !== 'N/A' ? strtotime($govPrice['date']) : 0;
+                $newsDate = $newsPrice['date'] !== 'N/A' ? strtotime($newsPrice['date']) : 0;
+                
+                $latestPrice = ($govDate > $newsDate) ? $govPrice : $newsPrice;
+            } else {
+                $latestPrice = $govPrice ?: $newsPrice;
+            }
+
+            if ($latestPrice) {
+                $priceColumn = $columnsMap[$normalizedKey]['price'];
+            $sourceColumn = $columnsMap[$normalizedKey]['source'];
+                
+            $columns[] = "`$priceColumn`";
+            $values[] = $latestPrice['amount'];
+            
+            $columns[] = "`$sourceColumn`";
+            // Only store URL in source column
+            $values[] = "'" . addslashes($latestPrice['link']) . "'";
+            
+            $updateCount++;
+            } else {
+                // Include NULL values for products without updates
+            $columns[] = "`{$columnsMap[$normalizedKey]['price']}`";
+            $values[] = 'NULL';
+            $columns[] = "`{$columnsMap[$normalizedKey]['source']}`";
+            $values[] = 'NULL';
+            }
+        } 
+        if ($updateCount > 0) {
+            $updateSql = "INSERT INTO `Price-GOV` (" . implode(', ', $columns) . ") 
+                         VALUES (" . implode(', ', $values) . ")";
+            
+            if ($conn->query($updateSql)) {
+                echo json_encode([
+                    "success" => true,
+                    "message" => "All prices updated in single row",
+                    "updated" => $updateCount
+                ]);
+            } else {
+                throw new Exception("Database error: " . $conn->error);
+            }
+        } else {
+            echo json_encode(["success" => false, "message" => "No new prices found"]);
+        }
+
+
+    }catch (Exception $e) {
+        echo json_encode(["success" => false, "message" => "Error updating prices: " . $e->getMessage()]);
     }
 }elseif ($action === 'addItems') {
 

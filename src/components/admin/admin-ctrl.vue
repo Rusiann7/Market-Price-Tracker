@@ -69,7 +69,7 @@
     <h1>Control panel</h1>
 
     <h3>Update Prices</h3>
-    <button type="submit" class="btn" @click.prevent="fetchPices">Update</button>
+    <button type="submit" class="btn" @click.prevent="fetchPrices">Update</button>
   </div>
 </div>
   
@@ -90,7 +90,7 @@ export default {
 
     methods: {
 
-        async fetchPices(){
+        async fetchPrices(){
             try {
                 const token = getToken();
 
@@ -110,17 +110,14 @@ export default {
                 });
 
                 const result = await response.json();
-                console.log("Feedback response:", result);
 
                 if (result.success) {
-                    this.feedbackList = result.feedbacks;
-                    this.populateFeedbackRatings();
-                    this.calculateAverageRating();
+                    alert("Prices updated successfully!");
                 } else {
-                    console.error("Failed to fetch feedbacks:", result.error);
+                    console.error("Failed to fetch new prices:", result.error);
                 }
             } catch (error) {
-                console.error("Error fetching feedbacks:", error);
+                console.error("Error fetching new prices:", error);
             }
         },
 
