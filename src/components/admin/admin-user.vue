@@ -63,6 +63,11 @@
       </li>
     </ul>
   </nav>
+  
+  <div class="image-container">
+    <img src="@/assets/main.jpeg" class="main-image" alt="Blurred Background">
+    <div class="img-overlay"></div>
+  </div>
 
   <div class="top-text">
     <h1>Sign Up</h1>
@@ -246,7 +251,7 @@ body {
 }
 
 nav {
-  background-color: white;
+  background-color: #2d333f;
   box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.1);
   position: fixed;
   top: 0;
@@ -281,7 +286,7 @@ nav a {
   text-decoration: none;
   display: flex;
   align-items: center;
-  color: black;
+  color: #e3e3e3;
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   font-weight: 500;
   font-size: 15px;
@@ -295,7 +300,12 @@ nav li:first-child a {
 }
 
 nav a:hover {
-  background-color: #f0f0f0;
+  background-color: #3a4252;
+  color: white;
+}
+
+nav a:active {
+    background-color: #4a5568;  /* Even lighter for pressed state */
 }
 
 nav li:first-child {
@@ -332,8 +342,16 @@ nav li:first-child {
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
 
+.sidebar a:hover {
+    background-color: #3a4252;
+}
+
 .menu-btn {
   display: none;
+}
+
+.menu-btn:hover {
+  background-color: #3a4252;
 }
 
 @media (max-width: 800px) {
@@ -352,6 +370,8 @@ nav li:first-child {
 }
 
 .signup {
+  position: relative; /* Make sure content appears above overlay */
+  z-index: 2;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -387,20 +407,21 @@ nav li:first-child {
 }
 
 .btn {
-  margin-top: 20px;
+  margin-top: 10px;
   padding: 10px 20px;
-  background: #ffd700;
-  color: #000;
+  background: #ffe082;
+  color: #001821;
   border: none;
   border-radius: 5px;
   font-size: 1rem;
   cursor: pointer;
-  transition: background 0.3s ease, transform 0.2s ease;
+  transition: all 0.3s ease;
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
 
 .btn:hover {
-  background: #ffc107;
+  background: #ffd448; /* Lighter yellow (#ffc107 → #ffe082) */
+  color: #001821; /* Dark text on hover for contrast */
   transform: translateY(-2px);
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
@@ -412,6 +433,9 @@ nav li:first-child {
 }
 
 .top-text {
+  position: relative; /* Make sure content appears above overlay */
+  z-index: 2;
+  color: #ffffff;
   text-align: center;
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   padding-top: 100px;
@@ -423,9 +447,40 @@ nav li:first-child {
 }
 
 .note {
+  position: relative; /* Make sure content appears above overlay */
+  z-index: 2;
+  color: #ffffff;
   text-align: center;
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   padding-top: 50px;
   margin: 15px;
+}
+
+.image-container {
+  position: fixed; /* Changed from relative to fixed */
+  width: 100%;
+  height: 100vh;
+  top: 0;
+  left: 0;
+  z-index: 1;
+}
+
+.main-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: blur(5px);
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.img-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(45, 51, 63, 0.452);
 }
 </style>
