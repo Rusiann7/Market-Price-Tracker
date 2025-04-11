@@ -65,11 +65,12 @@
     </ul>
   </nav>
 
-  <br>
-  <br>
-  <br>
-  <br>
-  <center><h1>Admin Price</h1></center>
+ <h1 class="top-text">Admin Price</h1>
+
+  <div class="image-container">
+    <img src="@/assets/main.jpeg" class="main-image" alt="Blurred Background">
+    <div class="img-overlay"></div>
+  </div>
   
 
 <div class="main-content">
@@ -77,7 +78,7 @@
     <div class="list-price-container">
       <div class="header-section">
         <h2 class="section-title">Market Prices</h2>
-        <button class="btn" @click.prevent="$router.push('/addItem')">
+        <button class="btn btn-icon" @click.prevent="$router.push('/addItem')">
           <svg 
             width="16" 
             height="16" 
@@ -87,7 +88,7 @@
             <path d="M12 4V20M4 12H20" stroke="white" stroke-width="2" stroke-linecap="round"/>
           </svg>
         </button>
-        <button class="btn" @click.prevent="$router.push('/editItem')">
+        <button class="btn btn-icon" @click.prevent="$router.push('/editItem')">
           <svg 
             xmlns="http://www.w3.org/2000/svg" 
             height="24px" viewBox="0 -960 960 960" 
@@ -379,7 +380,7 @@ body {
 }
 
 nav {
-  background-color: white;
+  background-color: #2d333f;
   box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.1);
   position: fixed;
   top: 0;
@@ -414,7 +415,7 @@ nav a {
   text-decoration: none;
   display: flex;
   align-items: center;
-  color: black;
+  color: #e3e3e3;
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   font-weight: 500;
   font-size: 15px;
@@ -428,7 +429,12 @@ nav li:first-child a {
 }
 
 nav a:hover {
-  background-color: #f0f0f0;
+  background-color: #3a4252;
+  color: white;
+}
+
+nav a:active {
+    background-color: #4a5568;  /* Even lighter for pressed state */
 }
 
 nav li:first-child {
@@ -465,8 +471,16 @@ nav li:first-child {
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
 
+.sidebar a:hover {
+    background-color: #3a4252;
+}
+
 .menu-btn {
   display: none;
+}
+
+.menu-btn:hover {
+  background-color: #3a4252;
 }
 
 @media (max-width: 800px) {
@@ -493,33 +507,44 @@ nav li:first-child {
   display: flex;
   align-items: center;      /* Vertical alignment */
   justify-content: space-between; /* Pushes title left, button right */
-  margin-bottom: 20px;     /* Spacing below header */
+  margin-bottom: 24px;     /* Spacing below header */
+  gap: 16px; /* Ensures consistent spacing */
+  padding: 8px 0;
+  color: #ffffff;
 }
+
+.section-title {
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--text-primary); /* Use CSS variable for theming */
+}
+
 
 .btn {
   margin-top: 10px;
   padding: 10px 20px;
-  background: #ffd700;
-  color: #000;
-  float: right;
-  display: flex;
-  align-items: center;
-  gap: 8px;
+  background: #ffe082;
+  color: #001821;
   border: none;
-  padding: 8px 16px;
-  border-radius: 4px;
+  border-radius: 5px;
+  font-size: 1rem;
   cursor: pointer;
-  font-size: 0.9rem;
-  transition: background-color 0.2s;
+  transition: all 0.3s ease;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
 
 .btn:hover {
-  background: #ffc107;
+  background: #ffd448; /* Lighter yellow (#ffc107 → #ffe082) */
+  color: #001821; /* Dark text on hover for contrast */
   transform: translateY(-2px);
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
+
 .main-content {
+  position: relative; /* Make sure content appears above overlay */
+  z-index: 2;
   padding-top: 0;
   margin-top: -180px;
   align-items: center;
@@ -599,5 +624,42 @@ nav li:first-child {
   border-radius: 6px;
   border: 1px solid #ccc;
   box-sizing: border-box;
+}
+
+.top-text {
+  position: relative; /* Make sure content appears above overlay */
+  z-index: 2;
+  color: #ffffff;
+  text-align: center;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  padding-top: 100px;
+}
+
+.image-container {
+  position: fixed; /* Changed from relative to fixed */
+  width: 100%;
+  height: 100vh;
+  top: 0;
+  left: 0;
+  z-index: 1;
+}
+
+.main-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: blur(5px);
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.img-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(45, 51, 63, 0.452);
 }
 </style>

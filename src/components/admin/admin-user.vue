@@ -383,7 +383,8 @@ nav li:first-child {
   width: 90%;
   color: white;
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-  background: linear-gradient(135deg, #2c2c2c, #333333);
+  /* background: linear-gradient(135deg, #2c2c2c, #333333); */
+  background-color: #232831;
   border-radius: 15px;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
   box-sizing: border-box;

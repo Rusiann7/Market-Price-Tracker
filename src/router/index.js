@@ -156,6 +156,10 @@ router.beforeEach((to, from, next) => {
   } else {
     next()
   }
+
+  if (to.meta?.title) {
+    document.title = to.meta.title
+  }
 })
 
 export default router;
