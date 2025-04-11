@@ -64,6 +64,11 @@
     </ul>
   </nav>
 
+  <div class="image-container">
+    <img src="@/assets/main.jpeg" class="main-image" alt="Blurred Background">
+    <div class="img-overlay"></div>
+  </div>
+
   <div class="rating-reviews" id="reviews">
     <h1 style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif">
       Ratings & Reviews
@@ -249,7 +254,7 @@ body {
 }
 
 nav {
-  background-color: white;
+  background-color: #2d333f;
   box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.1);
   position: fixed;
   top: 0;
@@ -284,7 +289,7 @@ nav a {
   text-decoration: none;
   display: flex;
   align-items: center;
-  color: black;
+  color: #e3e3e3;
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   font-weight: 500;
   font-size: 15px;
@@ -298,7 +303,12 @@ nav li:first-child a {
 }
 
 nav a:hover {
-  background-color: #f0f0f0;
+  background-color: #3a4252;
+  color: white;
+}
+
+nav a:active {
+    background-color: #4a5568;  /* Even lighter for pressed state */
 }
 
 nav li:first-child {
@@ -335,8 +345,16 @@ nav li:first-child {
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
 
+.sidebar a:hover {
+    background-color: #3a4252;
+}
+
 .menu-btn {
   display: none;
+}
+
+.menu-btn:hover {
+  background-color: #3a4252;
 }
 
 @media (max-width: 800px) {
@@ -366,27 +384,29 @@ nav li:first-child {
   padding-top: 80px;
   border-radius: 12px;
   max-width: 100%;
-  min-height: 100vh; /* Full viewport height to center the content vertically */
+  min-height: 100vh;
   margin: 0 auto;
-  margin-top: 80px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5); /* Subtle shadow around the container */
+  margin-top: 120px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5); 
 }
 
 /* Overall Rating and Feedback Containers */
 .ratings-reviews-container {
+  position: relative; 
+  z-index: 2;
   display: flex;
-  justify-content: space-between; /* This will push items to the sides */
-  align-items: flex-start; /* Align items to the top */
-  width: 90%; /* Use most of the container width */
-  max-width: 1200px; /* Increase max width for a side-by-side layout */
-  margin: 20px auto; /* Center the container and add margin */
-  gap: 40px; /* Space between the elements */
+  justify-content: space-between; 
+  align-items: flex-start; 
+  width: 90%; 
+  max-width: 1200px; 
+  margin: 20px auto; 
+  gap: 40px;
 }
 
 /* Overall Rating and Feedback Styling */
 .overall-rating,
 .feedback-container {
-  background-color: #1e1e1e;
+  background-color: #232831;
   color: white;
   padding: 25px;
   border-radius: 15px;
@@ -396,10 +416,10 @@ nav li:first-child {
 
 /* Overall Rating (Left Side) */
 .overall-rating {
-  width: 30%; /* Smaller width for the rating section */
+  width: 30%; 
   height: auto;
-  position: sticky; /* Keep it visible as user scrolls */
-  top: 100px; /* Distance from the top when sticky */
+  position: sticky; 
+  top: 100px;
 }
 
 /* Overall Rating value style */
@@ -407,27 +427,29 @@ nav li:first-child {
   font-size: 2.5rem;
   font-weight: bold;
   margin-top: 20px;
-  text-align: center; /* Center the text */
-  color: white; /* Ensure good contrast */
+  text-align: center; 
+  color: white; 
 }
 
 /* Feedback Container (Right Side) */
 .feedback-container {
-  width: 65%; /* Larger width for the feedback section */
-  background-color: #fff;
-  color: #333;
-  max-height: 70vh; /* Limit height but allow scrolling */
+  width: 65%; 
+  background-color: #232831;
+  color: #ffffff;
+  max-height: 70vh; 
   overflow-y: auto;
   padding: 20px;
   border-radius: 12px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
   margin-top: 45px;
+  scrollbar-width: thin;
+  scrollbar-color: #4a5568 #2d3748;
 }
 
 /* Hover effect for both containers */
 .overall-rating:hover {
   transform: translateY(-10px);
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4); /* Enhanced shadow on hover */
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4); 
 }
 
 .feedback-list {
@@ -444,15 +466,18 @@ nav li:first-child {
 }
 
 .feedback-item:hover {
-  background-color: #f7f7f7; /* Subtle highlight on hover */
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+  background-color: #4a5568;
 }
 
 .feedback-container h2 {
-  margin-bottom: 20px;
-  font-size: 1.4rem;
-  font-weight: bold;
-  color: #333;
+  margin-bottom: 25px;
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #ffffff;
   text-align: center;
+  position: relative;
+  padding-bottom: 10px;
 }
 
 /* Stars */
@@ -574,5 +599,33 @@ nav li:first-child {
   .user-stars {
     font-size: 1rem;
   }
+}
+
+.image-container {
+  position: fixed; /* Changed from relative to fixed */
+  width: 100%;
+  height: 100vh;
+  top: 0;
+  left: 0;
+  z-index: 1;
+}
+
+.main-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: blur(5px);
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.img-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(45, 51, 63, 0.452);
 }
 </style>
