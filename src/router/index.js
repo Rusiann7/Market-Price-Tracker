@@ -5,7 +5,7 @@ import Prices from "@/components/user/prices.vue";
 import Feedback from "@/components/user/Feedback.vue";
 import AdminHome from "@/components/admin/admin-home.vue";
 import Compare from "@/components/user/compare.vue";
-import Login from "@/login.vue";
+import Login from "@/components/login.vue";
 import adminPrice from "@/components/admin/admin-price.vue";
 import adminUser from "@/components/admin/admin-user.vue";
 import adminReset from "@/components/admin/admin-reset.vue";
