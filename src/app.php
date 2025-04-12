@@ -100,6 +100,67 @@ function verifyToken() {
     }
 }
 
+function searchAPI($productType, $siteQuery) {
+    global $serp_api_key;
+
+    $searchTerm = strpos(strtolower($productType), 'rice') !== false 
+    ? "SRP of $productType in the Philippines 2025"
+    : "Current price of $productType in the Philippines 2025";
+
+    $query = [
+        "q" => "$searchTerm $siteQuery",
+        "hl" => "en",
+        "gl" => "ph",
+        "google_domain" => "google.com",
+        "num" => 3,
+        "api_key" => $serp_api_key
+    ];
+
+    $url = "https://serpapi.com/search.json?" . http_build_query($query);
+    $response = file_get_contents($url);
+    return json_decode($response, true);
+}
+
+function extractLatestPrice($results) {   
+    if (!isset($results['organic_results'])) return null;
+
+    $latest = null;
+
+    foreach ($results['organic_results'] as $result) {
+        if (preg_match('/(?:PHP|₱|P)\s*([\d,]+\.?\d*)/i', $result['snippet'] ?? '', $match)) {
+                
+            $price = [
+                'amount' => (float) str_replace(',', '', $match[1]),
+                'currency' => '₱',
+                'formatted' => '₱' . $match[1],
+                'date' => extractDate($result['snippet'] ?? ''),
+                'title' => $result['title'] ?? 'Source',
+                'link' => $result['link'] ?? '#'
+            ];
+        
+            if (!$latest || ($price['date'] !== 'N/A' && strtotime($price['date']) > strtotime($latest['date']))) {
+                $latest = $price;
+            }
+        }
+    }
+    return $latest;
+}
+
+function extractDate($text) {
+    $patterns = [
+        '/(\d{1,2}\s+\w+\s+\d{4})/i',
+        '/(\d{4}-\d{1,2}-\d{1,2})/',
+        '/(\d{1,2}\/\d{1,2}\/\d{4})/'
+    ];
+    
+    foreach ($patterns as $pattern) {
+        if (preg_match($pattern, $text, $match)) {
+            return date('Y-m-d', strtotime($match[1]));
+        }
+    }
+    return 'N/A';
+}
+
 if ($action === "feedback"){
 
     $feedback = $conn->real_escape_string($data['feedback']);
@@ -186,13 +247,7 @@ if ($action === "feedback"){
     }
 
 }elseif ($action === "getFeedbacks") {
-    
-    if (!verifyToken()) {
-        http_response_code(401); // Unauthorized
-        echo json_encode(["success" => false, "message" => "Unauthorized"]);
-        exit;
-    }
-    
+     
     $sql = "SELECT feedback, rating FROM Feedbacks ORDER BY id DESC";
     $result = $conn->query($sql);
     
@@ -202,7 +257,7 @@ if ($action === "feedback"){
             $feedbacks[] = [
                 'username' => 'Anonymous User', // Default anonymous value
                 'rating' => (int)$row['rating'],
-                'comment' => $row['feedback'] // Map feedback to comment for Vue
+                'comment' => $row['feedback'] 
             ];
         }
         echo json_encode(["success" => true, "feedbacks" => $feedbacks]);
@@ -292,12 +347,6 @@ if ($action === "feedback"){
 
 }elseif($action === 'signup'){
 
-    if (!verifyToken()) {
-        http_response_code(401); // Unauthorized
-        echo json_encode(["success" => false, "message" => "Unauthorized"]);
-        exit;
-    }
-
     $email=$data['email'];
     $password=$data['initpassword'];
     $conpassword=$data['conpassword'];
@@ -350,7 +399,6 @@ if ($action === "feedback"){
                 preg_match('/^([a-zA-Z-]+)-(\d+|[a-zA-Z0-9]+)$/', $colName, $matches) &&
                 strpos($colName, 'Source-') !== 0
             ) {
-            
                 $baseName = $matches[1];
                 $suffix = $matches[2];
                 
@@ -395,68 +443,6 @@ if ($action === "feedback"){
 
     $columnsMap = [];
     $productList = [];
-
-    // Helper functions
-    function searchAPI($productType, $siteQuery) {
-        global $serp_api_key;
-    
-        $searchTerm = strpos(strtolower($productType), 'rice') !== false 
-        ? "SRP of $productType in the Philippines 2025"
-        : "Current price of $productType in the Philippines 2025";
-    
-    $query = [
-        "q" => "$searchTerm $siteQuery",
-        "hl" => "en",
-        "gl" => "ph",
-        "google_domain" => "google.com",
-        "num" => 3,
-        "api_key" => $serp_api_key
-    ];
-    
-        $url = "https://serpapi.com/search.json?" . http_build_query($query);
-        $response = file_get_contents($url);
-        return json_decode($response, true);
-    }
-
-    function extractLatestPrice($results) {   
-        if (!isset($results['organic_results'])) return null;
-    
-        $latest = null;
-
-        foreach ($results['organic_results'] as $result) {
-            if (preg_match('/(?:PHP|₱|P)\s*([\d,]+\.?\d*)/i', $result['snippet'] ?? '', $match)) {
-                    
-                $price = [
-                    'amount' => (float) str_replace(',', '', $match[1]),
-                    'currency' => '₱',
-                    'formatted' => '₱' . $match[1],
-                    'date' => extractDate($result['snippet'] ?? ''),
-                    'title' => $result['title'] ?? 'Source',
-                    'link' => $result['link'] ?? '#'
-                ];
-            
-                if (!$latest || ($price['date'] !== 'N/A' && strtotime($price['date']) > strtotime($latest['date']))) {
-                    $latest = $price;
-                }
-            }
-        }
-        return $latest;
-    }
-
-    function extractDate($text) {
-        $patterns = [
-            '/(\d{1,2}\s+\w+\s+\d{4})/i',
-            '/(\d{4}-\d{1,2}-\d{1,2})/',
-            '/(\d{1,2}\/\d{1,2}\/\d{4})/'
-        ];
-        
-        foreach ($patterns as $pattern) {
-            if (preg_match($pattern, $text, $match)) {
-                return date('Y-m-d', strtotime($match[1]));
-            }
-        }
-        return 'N/A';
-    }
 
     $checkSql = "SHOW COLUMNS FROM `Price-GOV`";
     $result = $conn->query($checkSql);
@@ -520,14 +506,14 @@ if ($action === "feedback"){
     
             // Search government sites (PSA and others)
             $govPrice = searchAPI($typeKey, 'site:.gov.ph OR site:psa.gov.ph');
-    $govPrice = $govPrice ? extractLatestPrice($govPrice) : null;
+            $govPrice = $govPrice ? extractLatestPrice($govPrice) : null;
             
-    $newsQuery = strpos(strtolower($typeKey), 'rice') !== false
-    ? 'site:inquirer.net OR site:gmanetwork.com/news'
-    : 'site:inquirer.net OR site:manilatimes.net';
+            $newsQuery = strpos(strtolower($typeKey), 'rice') !== false
+            ? 'site:inquirer.net OR site:gmanetwork.com/news'
+            : 'site:inquirer.net OR site:manilatimes.net';
 
-$newsPrice = searchAPI($typeKey, $newsQuery);
-$newsPrice = $newsPrice ? extractLatestPrice($newsPrice) : null;
+            $newsPrice = searchAPI($typeKey, $newsQuery);
+            $newsPrice = $newsPrice ? extractLatestPrice($newsPrice) : null;
 
             $latestPrice = null;
             if ($govPrice && $newsPrice) {
@@ -541,22 +527,22 @@ $newsPrice = $newsPrice ? extractLatestPrice($newsPrice) : null;
 
             if ($latestPrice) {
                 $priceColumn = $columnsMap[$normalizedKey]['price'];
-            $sourceColumn = $columnsMap[$normalizedKey]['source'];
+                $sourceColumn = $columnsMap[$normalizedKey]['source'];
                 
-            $columns[] = "`$priceColumn`";
-            $values[] = $latestPrice['amount'];
+                $columns[] = "`$priceColumn`";
+                $values[] = $latestPrice['amount'];
             
-            $columns[] = "`$sourceColumn`";
-            // Only store URL in source column
-            $values[] = "'" . addslashes($latestPrice['link']) . "'";
+                $columns[] = "`$sourceColumn`";
+                // Only store URL in source column
+                $values[] = "'" . addslashes($latestPrice['link']) . "'";
             
-            $updateCount++;
+                $updateCount++;
             } else {
                 // Include NULL values for products without updates
-            $columns[] = "`{$columnsMap[$normalizedKey]['price']}`";
-            $values[] = 'NULL';
-            $columns[] = "`{$columnsMap[$normalizedKey]['source']}`";
-            $values[] = 'NULL';
+                $columns[] = "`{$columnsMap[$normalizedKey]['price']}`";
+                $values[] = 'NULL';
+                $columns[] = "`{$columnsMap[$normalizedKey]['source']}`";
+                $values[] = 'NULL';
             }
         } 
         if ($updateCount > 0) {
@@ -632,11 +618,9 @@ $newsPrice = $newsPrice ? extractLatestPrice($newsPrice) : null;
 
     // Find the source column
     $parts = explode("-", $dynamicColumnName);
-$dynamicSuffix = end($parts); // Now we're passing a variable to 'end()'
+    $dynamicSuffix = end($parts); 
 
-$sourceColumn = "Source-" . $dynamicSuffix;
-
-    
+    $sourceColumn = "Source-" . $dynamicSuffix;
 
     $checkSql = "SHOW COLUMNS FROM `Price-GOV` LIKE '$itemName%'";
     $result = $conn->query($checkSql);
@@ -728,8 +712,206 @@ $sourceColumn = "Source-" . $dynamicSuffix;
         echo json_encode(["success" => false, "error" => "No record found for ID: " . $id, "counter" => $id]);
     }
 
-}
+}elseif ($action === "delProduct"){
 
+    $postData = json_decode(file_get_contents('php://input'), true);
+    $itemName = $conn->real_escape_string($postData['itemName']);
+
+    $checkSql = "SHOW COLUMNS FROM `Price-GOV` LIKE '$itemName%'";
+    $result = $conn->query($checkSql);
+
+    if ($result && $result->num_rows > 0) {
+        // Get the first column name that starts with the base name
+        $row = $result->fetch_assoc();
+        $dynamicColumnName = $row['Field']; // This should be something like 'Potatoes-JQY'
+
+        // Find the source column
+        $parts = explode("-", $dynamicColumnName);
+        $dynamicSuffix = end($parts); 
+        $sourceColumn = "Source-" . $dynamicSuffix;
+
+        // Now proceed with the update
+        $updateSql = "ALTER TABLE `Price-GOV` 
+                        DROP COLUMN `$dynamicColumnName`,
+                        DROP COLUMN `$sourceColumn`;";
+
+        if ($conn->query($updateSql)) {
+            echo json_encode(["success" => true, "message" => "Price updated successfully"]);
+        } else {
+            throw new Exception("Update failed: " . $conn->error);
+        }
+    } else {
+        echo json_encode(["success" => false, "error" => "Item column does not exist"]);
+    }
+    
+}elseif( $action === 'sumarizeData'){
+
+    $api_key = "";
+    $api_url = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=$api_key";
+
+    // Modified prompt without requiring web search
+    $postData = json_encode([
+        "contents" => [
+            [
+                "parts" => [
+                    [
+                        "text" => "Tell me more about $product, amd analyze this price trends $prices and give me a summary and prediction of the data. "
+                    ],
+                ],
+            ],
+        ],
+        "generationConfig" => [
+            "temperature" => 0.1,  // Lower temperature for more factual responses
+            "topP" => 0.7,
+            "topK" => 40,
+            "maxOutputTokens" => 1024  // Ensure we get a complete response
+        ]
+    ]);
+
+    $ch = curl_init();
+    curl_setopt($ch, CURLOPT_URL, $api_url);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+    curl_setopt($ch, CURLOPT_POST, 1);
+    curl_setopt($ch, CURLOPT_POSTFIELDS, $postData);
+    curl_setopt($ch, CURLOPT_HTTPHEADER, ["Content-Type: application/json"]);
+    curl_setopt($ch, CURLOPT_TIMEOUT, 30);
+
+    $response = curl_exec($ch);
+
+    if (curl_errno($ch)) {
+        return ["status" => "error", "message" => "Curl error: " . curl_error($ch)];
+    }
+
+    curl_close($ch);
+
+    if (!$response) {
+        return ["status" => "error", "message" => "Failed to fetch data from API"];
+    }
+
+    $data = json_decode($response, true);
+
+    if (json_last_error() !== JSON_ERROR_NONE) {
+        return ["status" => "error", "message" => "JSON Decode Error: " . json_last_error_msg()];
+    }
+
+    // Extract the text response from Gemini's response format
+    if (isset($data["candidates"][0]["content"]["parts"][0]["text"])) {
+        $textResponse = $data["candidates"][0]["content"]["parts"][0]["text"];
+
+        // Try to extract rice price information into a structured format
+        $result = [];
+
+        // Extract introduction
+        preg_match(
+            "/^(.*?)(?=\*\*|Rice Varieties|Current Rice Prices)/s",
+            $textResponse,
+            $introMatch
+        );
+        $introduction = isset($introMatch[1]) ? trim($introMatch[1]) : "";
+
+        if (!empty($introduction)) {
+            $result["introduction"] = $introduction;
+        }
+
+        // Extract rice varieties and prices
+        $priceData = [];
+
+        // Pattern looks for bold text followed by price ranges
+        preg_match_all(
+            "/\*\*(.*?)\*\*:?.*?((?:₱|P|PHP)\s*\d+(?:\.\d+)?(?:\s*-\s*(?:₱|P|PHP)?\s*\d+(?:\.\d+)?)?)/i",
+            $textResponse,
+            $matches,
+            PREG_SET_ORDER
+        );
+
+        if (empty($matches)) {
+            // Try alternative pattern if first one fails
+            preg_match_all(
+                "/([^:]+?):\s*((?:₱|P|PHP)\s*\d+(?:\.\d+)?(?:\s*-\s*(?:₱|P|PHP)?\s*\d+(?:\.\d+)?)?)/i",
+                $textResponse,
+                $matches,
+                PREG_SET_ORDER
+            );
+        }
+
+        foreach ($matches as $match) {
+            $variety = trim(str_replace("*", "", $match[1]));
+            $price = trim($match[2]);
+
+            // Normalize price format
+            $price = preg_replace("/P(?!HP)/i", "₱", $price);
+
+            // Skip if it's not rice-related
+            if (stripos($variety, "Rice") === false &&
+                stripos($variety, "Milled") === false &&
+                stripos($variety, "Bigas") === false &&
+                stripos($variety, "Sinandomeng") === false &&
+                stripos($variety, "Dinorado") === false &&
+                stripos($variety, "Jasmine") === false) {
+                continue;
+            }
+
+            $priceData[$variety] = $price;
+        }
+
+        // If no matches were found with the above patterns, try another approach
+        if (empty($priceData)) {
+            preg_match_all(
+                "/^[\s-]*([^:]+?):\s*((?:₱|P|PHP)\s*\d+(?:\.\d+)?(?:\s*-\s*(?:₱|P|PHP)?\s*\d+(?:\.\d+)?)?)/im",
+                $textResponse,
+                $listMatches,
+                PREG_SET_ORDER
+            );
+
+            foreach ($listMatches as $match) {
+                $variety = trim($match[1]);
+                $price = trim($match[2]);
+
+                // Normalize price format
+                $price = preg_replace("/P(?!HP)/i", "₱", $price);
+
+                // Skip duplicates
+                if (isset($priceData[strtolower($variety)])) {
+                    continue;
+                }
+
+                $priceData[$variety] = $price;
+            }
+        }
+
+        $result["prices"] = $priceData;
+
+        // Extract disclaimer
+        preg_match(
+            '/(Disclaimer:|Note:)(.*?)(?=\*\*|$)/is',
+            $textResponse,
+            $disclaimerMatch
+        );
+        if (!empty($disclaimerMatch[2])) {
+            $result["disclaimer"] = trim($disclaimerMatch[1]) . " " . trim($disclaimerMatch[2]);
+        }
+
+        // Extract sources
+        preg_match(
+            '/(Sources?:|References?:)(.*?)(?=\*\*|$)/is',
+            $textResponse,
+            $sourcesMatch
+        );
+        if (!empty($sourcesMatch[2])) {
+            $result["sources"] = trim($sourcesMatch[1]) . " " . trim($sourcesMatch[2]);
+        }
+
+        return ["status" => "success", "data" => $result];
+    } else {
+        return ["status" => "error", "message" => "No response text found in API response"];
+    }
+
+}elseif( $action === 'chartData'){
+
+}elseif( $action === 'newsandUpdates'){
+
+}
 
 
 else {

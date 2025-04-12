@@ -40,49 +40,56 @@ const routes = [
     path: "/adminHome",
     name: "adminDashboard",
     component: AdminHome,
-    meta: { requiresAuth: true },
+    meta: { requiresAuth: true, title: "Admin-Home" },
   },
 
   {
     path: "/adminPrice",
     name: "adminPrice",
     component: adminPrice,
-    meta: { requiresAuth: true }
+    meta: { requiresAuth: true, title: "Admin-Price" }
   },
 
   {
     path: "/addItem",
     name: "addItem",
     component: adminPrice,
-    meta: { requiresAuth: true }
+    meta: { requiresAuth: true, title: "Add" }
   },
 
   {
     path: "/editItem",
     name: "editItem",
     component: adminPrice,
-    meta: { requiresAuth: true }
+    meta: { requiresAuth: true, title: "Edit" }
+  },
+
+  {
+    path: "/deleteItem",
+    name: "deleteItem",
+    component: adminPrice,
+    meta: { requiresAuth: true, title: "Delete" }
   },
 
   {
     path: "/adminUser",
     name: "adminUser",
     component: adminUser,
-    meta: { requiresAuth: true }
+    meta: { requiresAuth: true, title: "Admin-User" }
   },
 
   {
     path: "/adminControl",
     name: "adminControl",
     component: adminCtrl,
-    meta: { requiresAuth: true }
+    meta: { requiresAuth: true, title: "Admin-Control" }
   },
 
   {
     path: "/adminReset",
     name: "adminReset",
     component: adminReset,
-    meta: { title: "Reset" },
+    meta: { title: "Reset"},
   },
 
   {

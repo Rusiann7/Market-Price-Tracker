@@ -79,12 +79,13 @@
       <div class="header-section">
         <h2 class="section-title">Market Prices</h2>
         <button class="btn btn-icon" @click.prevent="$router.push('/addItem')">
-          <svg 
+          <svg
+            xmlns="http://www.w3.org/2000/svg" 
             width="16" 
             height="16" 
             viewBox="0 0 24 24" 
             fill="#000000" 
-            xmlns="http://www.w3.org/2000/svg">
+            >
             <path d="M12 4V20M4 12H20" stroke="white" stroke-width="2" stroke-linecap="round"/>
           </svg>
         </button>
@@ -96,6 +97,15 @@
             fill="#000000" 
             >
             <path d="M200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h357l-80 80H200v560h560v-278l80-80v358q0 33-23.5 56.5T760-120H200Zm280-360ZM360-360v-170l367-367q12-12 27-18t30-6q16 0 30.5 6t26.5 18l56 57q11 12 17 26.5t6 29.5q0 15-5.5 29.5T897-728L530-360H360Zm481-424-56-56 56 56ZM440-440h56l232-232-28-28-29-28-231 231v57Zm260-260-29-28 29 28 28 28-28-28Z"/>
+          </svg>
+        </button>
+        <button class="btn btn-icon" @click.prevent="$router.push('/deleteItem')">
+          <svg xmlns="http://www.w3.org/2000/svg" 
+            height="24px" 
+            viewBox="0 -960 960 960" 
+            width="24px" 
+            fill="#000000">
+            <path d="M280-120q-33 0-56.5-23.5T200-200v-520h-40v-80h200v-40h240v40h200v80h-40v520q0 33-23.5 56.5T680-120H280Zm400-600H280v520h400v-520ZM360-280h80v-360h-80v360Zm160 0h80v-360h-80v360ZM280-720v520-520Z"/>
           </svg>
         </button>
       </div>
@@ -173,6 +183,26 @@
         />
         <br>
         <button type="submit" class="btn">Change</button>
+      </form>
+    </div>
+  </div>
+</div>
+
+  <div v-if="$route.path === '/deleteItem'">
+    <div class="addItem">
+      <div class="form-box">
+      <form @submit.prevent="editItem">
+      <br>
+        <p>Delete price of:</p>
+        <br>
+        <select v-model="selectedItem" class="btn" required>
+          <option value="">-- Select an item --</option>
+          <option v-for="price in prices" :key="price.RiceType" :value="price.RiceType">
+            {{ price.RiceType }}
+          </option>
+        </select>
+        <br>
+        <button type="submit" class="btn">Delete</button>
       </form>
     </div>
   </div>
@@ -305,7 +335,6 @@ export default {
                 itemName: this.selectedItem, 
                 newPrice: this.FormDataP.newPrice,
                 sourceUrl: "/addedadmin" }),
-                
         });
 
         const result = await response.json();
@@ -315,10 +344,47 @@ export default {
           this.selectedItem = null;
           this.$router.push('/adminPrice'); // Navigate back to the price list
         } else {
-          console.error("Failed to add item:", result.error);
+          console.error("Failed to edit item:", result.error);
         }
       } catch (error) {
-        console.error("Error adding items:", error);
+        console.error("Error editing items:", error);
+      }
+    },
+
+    async delItem(){
+      try {
+
+        if (!this.selectedItem || !this.FormDataP.newPrice) {
+            alert("Please select an item and enter a price.");
+            return;
+        }
+
+        const token = getToken();
+        if (!token) {
+          console.error("No token found, redirecting to login.");
+          this.$router.replace("/login");
+          return;
+        }
+
+        const response = await fetch(this.urlappphp, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ action: "delItem", 
+                itemName: this.selectedItem, }),    
+        });
+
+        const result = await response.json();
+
+        if (result.success) {
+          this.selectedItem = null;
+          this.$router.push('/adminPrice'); // Navigate back to the price list
+        } else {
+          console.error("Failed to delete item:", result.error);
+        }
+      } catch (error) {
+        console.error("Error deleting items:", error);
       }
     },
 
