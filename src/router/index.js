@@ -5,13 +5,14 @@ import Prices from "@/components/user/prices.vue";
 import Feedback from "@/components/user/Feedback.vue";
 import AdminHome from "@/components/admin/admin-home.vue";
 import Compare from "@/components/user/compare.vue";
-import Login from "@/components/user/login.vue";
+import Login from "@/login.vue";
 import adminPrice from "@/components/admin/admin-price.vue";
 import adminUser from "@/components/admin/admin-user.vue";
 import adminReset from "@/components/admin/admin-reset.vue";
 import adminCtrl from '@/components/admin/admin-ctrl.vue';
 import termsAndConditions from '@/components/terms-and-conditions.vue';
 import addedAdmin from '@/components/added-admin.vue';
+import newsandupdates from '@/components/user/news.vue';
 import App from "@/App.vue";
 
 const routes = [
@@ -132,7 +133,14 @@ const routes = [
     path: "/addedadmin",
     name: "addAdmin",
     component: addedAdmin,
-    meta: {title: "Terms and Condition"}
+    meta: {title: "Added Admin"}
+  },
+
+  {
+    path: "/newsandupdates",
+    name: "NewsUpdates",
+    component: newsandupdates,
+    meta: {title: "News and Updates"}
   },
 
   {
