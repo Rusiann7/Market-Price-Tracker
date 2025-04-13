@@ -1,4 +1,4 @@
-# market
+# Market Price Tracker
 
 ## Project setup
 ```
