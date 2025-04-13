@@ -191,7 +191,7 @@
   <div v-if="$route.path === '/deleteItem'">
     <div class="addItem">
       <div class="form-box">
-      <form @submit.prevent="editItem">
+      <form @submit.prevent="delItem">
       <br>
         <p>Delete price of:</p>
         <br>
@@ -294,6 +294,7 @@ export default {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
           },
           body: JSON.stringify({ action: "addItems", itemName: newItemName }),
         });
@@ -330,6 +331,7 @@ export default {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
           },
           body: JSON.stringify({ action: "changePrice", 
                 itemName: this.selectedItem, 
@@ -354,8 +356,8 @@ export default {
     async delItem(){
       try {
 
-        if (!this.selectedItem || !this.FormDataP.newPrice) {
-            alert("Please select an item and enter a price.");
+        if (!this.selectedItem) {
+            alert("Please select an item.");
             return;
         }
 
@@ -370,9 +372,10 @@ export default {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
           },
           body: JSON.stringify({ action: "delItem", 
-                itemName: this.selectedItem, }),    
+          itemName: this.selectedItem, }),    
         });
 
         const result = await response.json();

@@ -37,10 +37,16 @@ if ($_SERVER['REQUEST_METHOD'] !== 'OPTIONS') {
 
 $action = isset($data['action']) ? $data['action'] : '';
 
-$host ="rusiann7.helioho.st";
-$user ="rusiann7_rusiann";
+$host ="";
+$user ="";
 $password="";
 $dbname="";
+
+//delete this 
+$api_key = "";
+$mail->Password   = '';                               //SMTP password
+$serp_api_key = '';
+
 
 $conn = new mysqli($host, $user, $password, $dbname);
 
@@ -55,13 +61,13 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
     if (isset($data['feedbackData'])) {
         $data = $data['feedbackData'];
     }
-    // Check for reset data
+
     else if (isset($data['resetData'])){
         $data = $data['resetData'];
     }
-    // If direct feedback data is sent
+
     else if (isset($data['feedback']) || isset($data['rating'])) {
-        // Use the data as is
+
     }
 
     $action = isset($data['action']) ? $data['action'] : '';
@@ -199,7 +205,7 @@ if ($action === "feedback"){
         $mail->Host       = 'smtp.gmail.com';                     //Set the SMTP server to send through
         $mail->SMTPAuth   = true;                                   //Enable SMTP authentication
         $mail->Username   = 'systemmailer678@gmail.com';                     //SMTP username
-        $mail->Password   = '';                               //SMTP password
+        
         $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;            //Enable implicit TLS encryption
         $mail->Port       = 465;                                    //TCP port to connect to; use 587 if you have set `SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS`
 
@@ -439,7 +445,7 @@ if ($action === "feedback"){
 
 }elseif ($action === 'fetchPrices'){
 
-    $serp_api_key = '';
+    
 
     $columnsMap = [];
     $productList = [];
@@ -712,13 +718,13 @@ if ($action === "feedback"){
         echo json_encode(["success" => false, "error" => "No record found for ID: " . $id, "counter" => $id]);
     }
 
-}elseif ($action === "delProduct"){
+}elseif ($action === "delItem"){
 
     $postData = json_decode(file_get_contents('php://input'), true);
     $itemName = $conn->real_escape_string($postData['itemName']);
 
-    $checkSql = "SHOW COLUMNS FROM `Price-GOV` LIKE '$itemName%'";
-    $result = $conn->query($checkSql);
+    $sql1 = "SHOW COLUMNS FROM `Price-GOV` LIKE '$itemName%'";
+    $result = $conn->query($sql1);
 
     if ($result && $result->num_rows > 0) {
         // Get the first column name that starts with the base name
@@ -730,15 +736,14 @@ if ($action === "feedback"){
         $dynamicSuffix = end($parts); 
         $sourceColumn = "Source-" . $dynamicSuffix;
 
-        // Now proceed with the update
-        $updateSql = "ALTER TABLE `Price-GOV` 
+        $sql2 = "ALTER TABLE `Price-GOV` 
                         DROP COLUMN `$dynamicColumnName`,
                         DROP COLUMN `$sourceColumn`;";
 
-        if ($conn->query($updateSql)) {
-            echo json_encode(["success" => true, "message" => "Price updated successfully"]);
+        if ($conn->query($sql2)) {
+            echo json_encode(["success" => true, "message" => "Item deleted successfully"]);
         } else {
-            throw new Exception("Update failed: " . $conn->error);
+            throw new Exception("Deleted failed: " . $conn->error);
         }
     } else {
         echo json_encode(["success" => false, "error" => "Item column does not exist"]);
@@ -746,7 +751,7 @@ if ($action === "feedback"){
     
 }elseif( $action === 'sumarizeData'){
 
-    $api_key = "";
+    
     $api_url = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=$api_key";
 
     // Modified prompt without requiring web search
