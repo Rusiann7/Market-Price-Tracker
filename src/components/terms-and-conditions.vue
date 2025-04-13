@@ -163,6 +163,7 @@ export default {
 .main-content {
   padding-top: 0;
   margin-top: 100px;
+  margin-bottom: 100px;
   align-items: left;
   justify-content: left;
   display: flex;
