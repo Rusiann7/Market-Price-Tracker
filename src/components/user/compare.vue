@@ -61,6 +61,11 @@
     </ul>
   </nav>
 
+  <div class="image-container">
+    <img src="@/assets/main.jpeg" class="main-image" alt="Blurred Background">
+    <div class="img-overlay"></div>
+  </div>
+
   <div class="main-content"> 
     <div class="prices-container">
       <div class="latest-container"><!--Latest Content-->
@@ -91,7 +96,7 @@
 
         <div class="compare-content"> 
 
-          <button @click="increaseCounter">
+          <button @click="increaseCounter" class="btn">
             <svg xmlns="http://www.w3.org/2000/svg" 
               height="24px" viewBox="0 -960 960 960" 
               width="24px" 
@@ -104,7 +109,7 @@
             {{counter}}
           </div>
 
-          <button @click="decreaseCounter">
+          <button @click="decreaseCounter" class="btn">
             <svg xmlns="http://www.w3.org/2000/svg" 
               height="24px" viewBox="0 -960 960 960" 
               width="24px" fill="#e3e3e3">
@@ -258,6 +263,7 @@ export default{
 </script>
 
 <style scoped>
+/* Added navbar styles */
 * {
   margin: 0;
   padding: 0;
@@ -273,7 +279,7 @@ body {
 }
 
 nav {
-  background-color: white;
+  background-color: #2d333f;
   box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.1);
   position: fixed;
   top: 0;
@@ -308,7 +314,7 @@ nav a {
   text-decoration: none;
   display: flex;
   align-items: center;
-  color: black;
+  color: #e3e3e3;
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   font-weight: 500;
   font-size: 15px;
@@ -322,7 +328,12 @@ nav li:first-child a {
 }
 
 nav a:hover {
-  background-color: #f0f0f0;
+  background-color: #3a4252;
+  color: white;
+}
+
+nav a:active {
+    background-color: #4a5568;  /* Even lighter for pressed state */
 }
 
 nav li:first-child {
@@ -359,8 +370,16 @@ nav li:first-child {
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
 
+.sidebar a:hover {
+    background-color: #3a4252;
+}
+
 .menu-btn {
   display: none;
+}
+
+.menu-btn:hover {
+  background-color: #3a4252;
 }
 
 @media (max-width: 800px) {
@@ -404,6 +423,8 @@ nav li:first-child {
 
 /* Main container for the two columns */
 .prices-container {
+  position: relative; /* Make sure content appears above overlay */
+  z-index: 2;
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
@@ -454,5 +475,53 @@ nav li:first-child {
 
 .table-content tbody tr:last-of-type {
   border-bottom: #1e1e1e;
+}
+
+.btn {
+  margin-top: 10px;
+  padding: 10px 20px;
+  background: #ffe082;
+  color: #001821;
+  border: none;
+  border-radius: 5px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.btn:hover {
+  background: #ffd448; /* Lighter yellow (#ffc107 → #ffe082) */
+  color: #001821; /* Dark text on hover for contrast */
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.image-container {
+  position: fixed; /* Changed from relative to fixed */
+  width: 100%;
+  height: 100vh;
+  top: 0;
+  left: 0;
+  z-index: 1;
+}
+
+.main-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: blur(5px);
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.img-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(45, 51, 63, 0.452);
 }
 </style>
