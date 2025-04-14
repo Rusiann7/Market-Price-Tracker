@@ -61,8 +61,13 @@
     </ul>
   </nav>
 
+  <div class="image-container">
+    <img src="@/assets/main.jpeg" class="main-image" alt="Blurred Background">
+    <div class="img-overlay"></div>
+  </div>
+
   <div class="price-container">
-    <h1 style="color: black">Prices & Analytics</h1>
+    <h1 style="color: white">Prices & Analytics</h1>
     <br>
 
     <div class="prices-container">
@@ -127,7 +132,7 @@ export default {
           {
             label: "Price Data",
             data: [10, 20, 15, 25, 30],
-            backgroundColor: "blue",
+            backgroundColor: "#ffe082",
           },
         ],
       },
@@ -202,26 +207,30 @@ export default {
 </script>
 
 <style scoped>
-
-
+/* Added navbar styles */
 * {
+  margin: 0;
+  padding: 0;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  box-sizing: border-box;
+}
+
+html,
+body {
   margin: 0;
   padding: 0;
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
 
-body {
-  margin: 0;
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-}
-
 nav {
-  background-color: white;
+  background-color: #2d333f;
   box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.1);
-  position: sticky;
+  position: fixed;
   top: 0;
   z-index: 100;
   margin: 0;
+  padding: 0;
+  width: 100%;
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
 
@@ -233,12 +242,14 @@ nav ul {
   align-items: center;
   margin: 0;
   padding: 0;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
 
 nav li {
   height: 50px;
   margin: 0;
   padding: 0;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
 
 nav a {
@@ -247,7 +258,7 @@ nav a {
   text-decoration: none;
   display: flex;
   align-items: center;
-  color: black;
+  color: #e3e3e3;
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   font-weight: 500;
   font-size: 15px;
@@ -257,10 +268,16 @@ nav a {
 nav li:first-child a {
   font-size: 18px;
   font-weight: 600;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
 
 nav a:hover {
-  background-color: #f0f0f0;
+  background-color: #3a4252;
+  color: white;
+}
+
+nav a:active {
+    background-color: #4a5568;  /* Even lighter for pressed state */
 }
 
 nav li:first-child {
@@ -283,19 +300,30 @@ nav li:first-child {
   justify-content: flex-start;
   margin: 0;
   padding: 0;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
 
 .sidebar li {
   width: 100%;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
 
 .sidebar a {
   width: 100%;
   font-size: 16px;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.sidebar a:hover {
+    background-color: #3a4252;
 }
 
 .menu-btn {
   display: none;
+}
+
+.menu-btn:hover {
+  background-color: #3a4252;
 }
 
 @media (max-width: 800px) {
@@ -314,6 +342,8 @@ nav li:first-child {
 }
 
 .price-container {
+  position: relative; /* Make sure content appears above overlay */
+  z-index: 2;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -341,7 +371,7 @@ nav li:first-child {
 /* Chart Section (Left Side) */
 .chart-section {
   width: 30%;
-  background-color: #1e1e1e;
+  background-color: #232831;
   color: white;
   padding: 25px;
   border-radius: 15px;
@@ -365,8 +395,8 @@ nav li:first-child {
 /* Price List Container (Right Side) */
 .list-price-container {
   width: 65%;
-  background-color: #fff;
-  color: #333;
+  background-color: #232831;
+  color: white;
   max-height: 70vh;
   overflow-y: auto;
   padding: 20px;
@@ -378,7 +408,7 @@ nav li:first-child {
   margin-bottom: 20px;
   font-size: 1.4rem;
   font-weight: bold;
-  color: #333;
+  color: #ffffff;
   text-align: center;
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
@@ -514,4 +544,38 @@ nav li:first-child {
   border-bottom: #1e1e1e;
 }
 
+.section-title, h2 {
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: white
+}
+
+.image-container {
+  position: fixed; /* Changed from relative to fixed */
+  width: 100%;
+  height: 100vh;
+  top: 0;
+  left: 0;
+  z-index: 1;
+}
+
+.main-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: blur(5px);
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.img-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(45, 51, 63, 0.452);
+}
 </style>
