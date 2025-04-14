@@ -110,6 +110,7 @@
         </button>
       </div>
         <div class="price-list">
+          <div class="scroll">
           <table class="table-content">
             <thead>
               <tr>
@@ -127,6 +128,7 @@
               </tr>
             </tbody>
           </table>
+        </div>
         </div>
       </div>
   </div>
@@ -610,6 +612,23 @@ nav li:first-child {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
+.list-price-container {
+  width: 100%;
+  max-width: 100%;
+  overflow: hidden;
+}
+
+.price-list {
+  width: 100%;
+  overflow: hidden;
+}
+
+.scroll {
+  max-height: 500px; /* Adjust this value as needed */
+  overflow-y: auto;
+  position: relative;
+  border-radius: 4px; /* Optional rounded corners */
+}
 
 .main-content {
   position: relative; /* Make sure content appears above overlay */
