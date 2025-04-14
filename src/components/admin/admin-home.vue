@@ -67,6 +67,10 @@
     <div class="img-overlay"></div>
   </div>
 
+  <div class="top-text">
+    <h1>Feedbacks</h1>
+  </div>
+
   <div class="rating-reviews" id="reviews">
     <h1 style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif">
       Ratings & Reviews
@@ -415,7 +419,7 @@ nav li:first-child {
   width: 30%; 
   height: auto;
   position: sticky; 
-  top: 100px;
+  top: 215px;
 }
 
 /* Overall Rating value style */
@@ -595,6 +599,15 @@ nav li:first-child {
   .user-stars {
     font-size: 1rem;
   }
+}
+
+.top-text{
+  position: relative; /* Make sure content appears above overlay */
+  z-index: 2;
+  text-align: center;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  padding-top: 75px;
+  color: #ffffff;
 }
 
 .image-container {

@@ -70,6 +70,8 @@
   <div class="main-content"> 
     <div class="prices-container">
       <div class="latest-container"><!--Latest Content-->
+
+        <h2>Latest Prices</h2>
         
         <div class="price-list">
           <table class="table-content">
@@ -94,8 +96,12 @@
             </tbody>
           </table>
         </div>
+      </div>  
 
         <div class="compare-content"> 
+
+          <h2>Older Prices</h2>
+          <br>
 
           <button @click="increaseCounter" class="btn">
             <svg xmlns="http://www.w3.org/2000/svg" 
@@ -138,7 +144,7 @@
             </table>
           </div>
         </div>
-      </div>
+      
     </div>
   </div>
 </template>
@@ -237,7 +243,7 @@
     decreaseCounter(){
       if (this.counter > 1) {
         this.counter--;
-        this.getCompare(); // Fetch data when counter changes
+        this.getCompare();
       }
     },
   },
@@ -397,6 +403,24 @@ nav li:first-child {
   max-width: 1200px;
   margin: 20px auto;
   gap: 40px;
+  position: relative; /* Make sure content appears above overlay */
+  z-index: 2;
+  background-color: #232831;
+  color: white;
+  max-height: 70vh;
+  overflow-y: auto;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.latest-container h2 {
+  margin-bottom: 20px;
+  font-size: 1.4rem;
+  font-weight: bold;
+  color: #ffffff;
+  text-align: center;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
 
 .price-container {
@@ -489,8 +513,39 @@ nav li:first-child {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
+.btn svg {
+  fill: #000000;
+}
+
 .counter {
   color: white;
+}
+
+.compare-content {
+  width: 65%;
+  background-color: #232831;
+  color: white;
+  max-height: 70vh;
+  overflow-y: auto;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.compare-content h2 {
+  margin-bottom: 20px;
+  font-size: 1.4rem;
+  font-weight: bold;
+  color: #ffffff;
+  text-align: center;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+
+.main-content {
+  max-width: 1400px;
+  margin: 40px auto;
+  padding: 0 20px;
 }
 
 .image-container {
@@ -520,4 +575,5 @@ nav li:first-child {
   height: 100%;
   background-color: rgba(45, 51, 63, 0.452);
 }
+
 </style>
