@@ -2,20 +2,20 @@
   <nav>
     <ul class="sidebar" ref="sidebar">
       <li @click="hideSidebar">
-        <a href="#"
-          ><svg
+        <a href="#">
+          <svg
             xmlns="http://www.w3.org/2000/svg"
             height="26"
             viewBox="0 -960 960 960"
             width="26"
             fill="#e3e3e3"
-          >
+            >
+
             <path
               d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z"
             />
           </svg>
-          ></a
-        >
+        </a>
       </li>
       <li><a href="#" @click.prevent="$router.push('/')">Home</a></li>
       <li><a href="#" @click.prevent="$router.push('/price')">Price</a></li>
@@ -23,6 +23,7 @@
       <li><a href="#" @click.prevent="$router.push('/compare')">News and Updates</a></li>
       <li><a href="#" @click.prevent="$router.push('/feedback')">Feedback</a></li>
     </ul>
+
     <ul>
       <li>
         <a href="#" @click.prevent="$router.push('/')">Market Price Tracker</a>
@@ -50,13 +51,13 @@
             viewBox="0 -960 960 960"
             width="26"
             fill="#e3e3e3"
-          >
+            >
+
             <path
               d="M120-240v-80h720v80H120Zm0-200v-80h720v80H120Zm0-200v-80h720v80H120Z"
             />
           </svg>
-          ></a
-        >
+        </a>
       </li>
     </ul>
   </nav>
@@ -104,7 +105,7 @@
             </svg>
           </button>
 
-          <div class="counter" >
+          <div class="counter">
             {{counter}}
           </div>
 
@@ -116,42 +117,34 @@
             </svg>
           </button>
 
-        <div class="price-list">
-          <table class="table-content">
-            <thead>
-              <tr>
-                <th>Products</th>
-                <th>Price</th>
-                <th>Source</th>
-              </tr>
-            </thead>
+          <div class="price-list">
+            <table class="table-content">
+              <thead>
+                <tr>
+                  <th>Products</th>
+                  <th>Price</th>
+                  <th>Source</th>
+                </tr>
+              </thead>
 
-            <tbody>
-              <tr 
-                v-for="price in comparePrices" :key="'compare-'+price.RiceType">
-                <td>{{ price.RiceType }}</td>
-                <td>₱{{ price.Price }}</td>
-                <td><a :href="price.Source" target="_blank" rel="noopener noreferrer" @click.stop style="color: black;">Source</a></td>
-              </tr>
-            </tbody>
-          </table>
+              <tbody>
+                <tr 
+                  v-for="price in comparePrices" :key="'compare-'+price.RiceType">
+                  <td>{{ price.RiceType }}</td>
+                  <td>₱{{ price.Price }}</td>
+                  <td><a :href="price.Source" target="_blank" rel="noopener noreferrer" @click.stop style="color: black;">Source</a></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
         </div>
-
-        </div>
-
+      </div>
     </div>
-
-
-    </div>
-    
-    
-
   </div>
 </template>
 
 <script>
-
-export default{
+  export default{
 
     name: 'comPare',
     data(){
@@ -243,17 +236,17 @@ export default{
 
     decreaseCounter(){
       if (this.counter > 1) {
-                this.counter--;
-                this.getCompare(); // Fetch data when counter changes
-            }
+        this.counter--;
+        this.getCompare(); // Fetch data when counter changes
+      }
     },
-    },
+  },
 
     mounted(){
-    this.getPrices();
-    this.getCompare();
-    document.addEventListener("click", this.handleClickOutside);
-  },
+      this.getPrices();
+      this.getCompare();
+      document.addEventListener("click", this.handleClickOutside);
+    },
 
     beforeUnmount() {
       document.removeEventListener("click", this.handleClickOutside);
@@ -332,7 +325,7 @@ nav a:hover {
 }
 
 nav a:active {
-    background-color: #4a5568;  /* Even lighter for pressed state */
+  background-color: #4a5568;  /* Even lighter for pressed state */
 }
 
 nav li:first-child {
@@ -370,7 +363,7 @@ nav li:first-child {
 }
 
 .sidebar a:hover {
-    background-color: #3a4252;
+  background-color: #3a4252;
 }
 
 .menu-btn {

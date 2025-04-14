@@ -3,20 +3,20 @@
   <nav>
     <ul class="sidebar" ref="sidebar">
       <li @click="hideSidebar">
-        <a href="#"
-          ><svg
+        <a href="#">
+          <svg
             xmlns="http://www.w3.org/2000/svg"
             height="26"
             viewBox="0 -960 960 960"
             width="26"
             fill="#e3e3e3"
           >
-            <path
-              d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z"
-            />
+          <path
+            d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z"
+          />
           </svg>
-          ></a
-        >
+        </a>
+
       </li>
       <li><a href="#" @click.prevent="$router.push('/adminHome')">Home</a></li>
       <li><a href="#" @click.prevent="$router.push('/adminPrice')">Price</a></li>
@@ -24,11 +24,11 @@
       <li><a href="#" @click.prevent="$router.push('/adminControl')">Control Panel</a></li>
       <li><a href="#" @click.prevent="logout">Log Out</a></li>
     </ul>
+
     <ul>
       <li>
         <a href="#" @click.prevent="$router.push('/adminHome')"
-          >Market Price Tracker-Admin</a
-        >
+          >Market Price Tracker-Admin</a>
       </li>
       <li class="hideMobile">
         <a href="#" @click.prevent="$router.push('/adminHome')">Home</a>
@@ -46,8 +46,8 @@
         <a href="#" @click.prevent="logout">Log Out</a>
       </li>
       <li class="menu-btn" @click="showSidebar">
-        <a href="#"
-          ><svg
+        <a href="#">
+          <svg
             xmlns="http://www.w3.org/2000/svg"
             height="26"
             viewBox="0 -960 960 960"
@@ -58,8 +58,7 @@
               d="M120-240v-80h720v80H120Zm0-200v-80h720v80H120Zm0-200v-80h720v80H120Z"
             />
           </svg>
-          ></a
-        >
+        </a>
       </li>
     </ul>
   </nav>
@@ -97,8 +96,7 @@
           v-model="FormData.email"
           required
         />
-
-        <br />
+        <br/>
 
         <p>Password:</p>
 
@@ -109,8 +107,7 @@
           v-model="FormData.initpassword"
           required
         />
-
-        <br />
+        <br/>
 
         <p>Confirm Password:</p>
 
@@ -121,13 +118,11 @@
           v-model="FormData.conpassword"
           required
         />
-
-        <br />
+        <br/>
 
         <input type="checkbox" class="check-box" />
         <span> I agree to the <a :href="$router.resolve('/termsandcondition').href" target="_blank" rel="noopener noreferrer" style="color: white">Terms and Conditions</a> </span>
-
-        <br />
+        <br/>
 
         <button type="submit" class="btn" value="POST">Sign up</button>
       </form>
@@ -199,15 +194,15 @@ export default {
     },
 
     handleClickOutside(event) {
-        if (this.$refs.sidebar &&this.$refs.sidebar.style.display === "flex") {
-          const isClickInsideSidebar = this.$refs.sidebar.contains(event.target);
-          const isClickOnMenuButton = event.target.closest(".menu-btn"); 
+      if (this.$refs.sidebar &&this.$refs.sidebar.style.display === "flex") {
+        const isClickInsideSidebar = this.$refs.sidebar.contains(event.target);
+        const isClickOnMenuButton = event.target.closest(".menu-btn"); 
 
-          if (!isClickInsideSidebar && !isClickOnMenuButton) {
-            this.hideSidebar(); 
-          }
+        if (!isClickInsideSidebar && !isClickOnMenuButton) {
+          this.hideSidebar(); 
         }
-      },
+      }
+    },
 
     showSidebar() {
       this.$refs.sidebar.style.display = "flex";
@@ -228,9 +223,9 @@ export default {
     document.addEventListener("click", this.handleClickOutside);
   },
 
-    beforeUnmount() {
-      document.removeEventListener("click", this.handleClickOutside);
-    },
+  beforeUnmount() {
+    document.removeEventListener("click", this.handleClickOutside);
+  },
 };
 </script>
 
@@ -305,7 +300,7 @@ nav a:hover {
 }
 
 nav a:active {
-    background-color: #4a5568;  /* Even lighter for pressed state */
+  background-color: #4a5568;  /* Even lighter for pressed state */
 }
 
 nav li:first-child {
@@ -343,7 +338,7 @@ nav li:first-child {
 }
 
 .sidebar a:hover {
-    background-color: #3a4252;
+  background-color: #3a4252;
 }
 
 .menu-btn {

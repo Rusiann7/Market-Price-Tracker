@@ -15,8 +15,7 @@
               d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z"
             />
           </svg>
-          ></a
-        >
+          </a>
       </li>
       <li><a href="#" @click.prevent="$router.push('/adminHome')">Home</a></li>
       <li><a href="#" @click.prevent="$router.push('/adminPrice')">Price</a></li>
@@ -24,6 +23,7 @@
       <li><a href="#" @click.prevent="$router.push('/adminControl')">Control Panel</a></li>
       <li><a href="#" @click.prevent="logout">Log Out</a></li>
     </ul>
+
     <ul>
       <li>
         <a href="#" @click.prevent="$router.push('/adminHome')"
@@ -58,8 +58,7 @@
               d="M120-240v-80h720v80H120Zm0-200v-80h720v80H120Zm0-200v-80h720v80H120Z"
             />
           </svg>
-          ></a
-        >
+          </a>
       </li>
     </ul>
   </nav>
@@ -76,13 +75,12 @@
       <h3>Update Prices</h3>
       <br>
       <button type="submit" class="btn" @click.prevent="fetchPrices">Update</button>
-      <p>temporary lang toh wait sa cron job di ko pa alam kung paano</p>
+      <br>
+      <p> <strong>Do not use too much</strong></p>
     </div>
   </div>
   
-
 </template>
-
 
 <script>
 import { getToken, removeToken } from "@/utils/auth";
@@ -96,77 +94,76 @@ export default {
     },
 
     methods: {
+      async fetchPrices(){
+        try {
+          const token = getToken();
 
-        async fetchPrices(){
-            try {
-                const token = getToken();
-
-                if (!token) {
-                    console.error("No token found, redirecting to login.");
-                    this.$router.replace("/login");
-                    return;
-                }
-
-                const response = await fetch(this.urlappphp, {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                        Authorization: `Bearer ${token}`,
-                    },
-                    body: JSON.stringify({ action: "fetchPrices" }),
-                });
-
-                const result = await response.json();
-
-                if (result.success) {
-                    alert("Prices updated successfully!");
-                } else {
-                    console.error("Failed to fetch new prices:", result.error);
-                }
-            } catch (error) {
-                console.error("Error fetching new prices:", error);
+            if (!token) {
+              console.error("No token found, redirecting to login.");
+              this.$router.replace("/login");
+              return;
             }
-        },
 
-        async logout() {
-            try {
-                removeToken();
-                this.localUserData = {};
-                this.$router.replace("/");
-            } catch (error) {
-                console.error("Logout error:", error);
+            const response = await fetch(this.urlappphp, {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
+              },
+              body: JSON.stringify({ action: "fetchPrices" }),
+            });
+
+            const result = await response.json();
+
+            if (result.success) {
+              alert("Prices updated successfully!");
+            }else {
+              console.error("Failed to fetch new prices:", result.error);
             }
-        },
+        }catch (error) {
+            console.error("Error fetching new prices:", error);
+          }
+      },
 
-        showSidebar() {
-            this.$refs.sidebar.style.display = "flex";
-        },
-
-        hideSidebar() {
-            this.$refs.sidebar.style.display = "none";
-        },
-
-        handleClickOutside(event) {
-      if (this.$refs.sidebar &&this.$refs.sidebar.style.display === "flex") {
-        const isClickInsideSidebar = this.$refs.sidebar.contains(event.target);
-        const isClickOnMenuButton = event.target.closest(".menu-btn"); 
-
-        if (!isClickInsideSidebar && !isClickOnMenuButton) {
-          this.hideSidebar(); 
+      async logout() {
+        try {
+          removeToken();
+          this.localUserData = {};
+          this.$router.replace("/");
+        }catch (error) {
+            console.error("Logout error:", error);
         }
-      }
-    },
+      },
+
+      showSidebar() {
+        this.$refs.sidebar.style.display = "flex";
+      },
+
+      hideSidebar() {
+        this.$refs.sidebar.style.display = "none";
+      },
+
+      handleClickOutside(event) {
+        if (this.$refs.sidebar &&this.$refs.sidebar.style.display === "flex") {
+          const isClickInsideSidebar = this.$refs.sidebar.contains(event.target);
+          const isClickOnMenuButton = event.target.closest(".menu-btn"); 
+
+          if (!isClickInsideSidebar && !isClickOnMenuButton) {
+            this.hideSidebar(); 
+          }
+        }
+      },
     },
 
     mounted() {
-    document.addEventListener("click", this.handleClickOutside);
-  },
+      document.addEventListener("click", this.handleClickOutside);
+    },
 
-  beforeUnmount() {
-    document.removeEventListener("click", this.handleClickOutside);
-  },
+    beforeUnmount() {
+      document.removeEventListener("click", this.handleClickOutside);
+    },
      
-}
+  }
 </script>
 
 <style scoped>
@@ -240,7 +237,7 @@ nav a:hover {
 }
 
 nav a:active {
-    background-color: #4a5568;  /* Even lighter for pressed state */
+  background-color: #4a5568;  /* Even lighter for pressed state */
 }
 
 nav li:first-child {

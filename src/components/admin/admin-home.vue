@@ -15,8 +15,7 @@
               d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z"
             />
           </svg>
-          ></a
-        >
+          </a>
       </li>
       <li><a href="#" @click.prevent="$router.push('/adminHome')">Home</a></li>
       <li><a href="#" @click.prevent="$router.push('/adminPrice')">Price</a></li>
@@ -24,11 +23,11 @@
       <li><a href="#" @click.prevent="$router.push('/adminControl')">Control Panel</a></li>
       <li><a href="#" @click.prevent="logout">Log Out</a></li>
     </ul>
+
     <ul>
       <li>
         <a href="#" @click.prevent="$router.push('/adminHome')"
-          >Market Price Tracker-Admin</a
-        >
+          >Market Price Tracker-Admin</a>
       </li>
       <li class="hideMobile">
         <a href="#" @click.prevent="$router.push('/adminHome')">Home</a>
@@ -58,8 +57,7 @@
               d="M120-240v-80h720v80H120Zm0-200v-80h720v80H120Zm0-200v-80h720v80H120Z"
             />
           </svg>
-          ></a
-        >
+        </a>
       </li>
     </ul>
   </nav>
@@ -82,8 +80,7 @@
             v-for="star in 5"
             :key="star"
             :class="{ filled: star <= roundedRating }"
-            >★</span
-          >
+            >★</span>
         </div>
         <p>{{ averageRating }}/5</p>
       </div>
@@ -104,8 +101,7 @@
                   v-for="star in 5"
                   :key="star"
                   :class="{ filled: star <= feedback.rating }"
-                  >★</span
-                >
+                  >★</span>
               </div>
             </div>
             <!-- User Feedback -->
@@ -160,10 +156,10 @@ export default {
           this.feedbackList = result.feedbacks;
           this.populateFeedbackRatings();
           this.calculateAverageRating();
-        } else {
+        }else {
           console.error("Failed to fetch feedbacks:", result.error);
         }
-      } catch (error) {
+      }catch (error) {
         console.error("Error fetching feedbacks:", error);
       }
     },
@@ -221,9 +217,9 @@ export default {
     document.addEventListener("click", this.handleClickOutside);
   },
 
-    beforeUnmount() {
-      document.removeEventListener("click", this.handleClickOutside);
-    },
+  beforeUnmount() {
+    document.removeEventListener("click", this.handleClickOutside);
+  },
 };
 </script>
 
@@ -308,7 +304,7 @@ nav a:hover {
 }
 
 nav a:active {
-    background-color: #4a5568;  /* Even lighter for pressed state */
+  background-color: #4a5568;  /* Even lighter for pressed state */
 }
 
 nav li:first-child {
@@ -346,7 +342,7 @@ nav li:first-child {
 }
 
 .sidebar a:hover {
-    background-color: #3a4252;
+  background-color: #3a4252;
 }
 
 .menu-btn {

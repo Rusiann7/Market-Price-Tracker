@@ -3,20 +3,19 @@
   <nav>
     <ul class="sidebar" ref="sidebar">
       <li @click="hideSidebar">
-        <a href="#"
-          ><svg
+        <a href="#">
+          <svg
             xmlns="http://www.w3.org/2000/svg"
             height="26"
             viewBox="0 -960 960 960"
             width="26"
             fill="#e3e3e3"
-          >
+            >
             <path
               d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z"
             />
           </svg>
-          ></a
-        >
+        </a>
       </li>
       <li><a href="#" @click.prevent="$router.push('/')">Home</a></li>
       <li><a href="#" @click.prevent="$router.push('/price')">Price</a></li>
@@ -24,6 +23,7 @@
       <li><a href="#" @click.prevent="$router.push('/newsandupdates')">News and Updates</a></li>
       <li><a href="#" @click.prevent="$router.push('/feedback')">Feedback</a></li>
     </ul>
+
     <ul>
       <li>
         <a href="#" @click.prevent="$router.push('/')">Market Price Tracker</a>
@@ -44,20 +44,20 @@
         <a href="#" @click.prevent="$router.push('/feedback')">Feedback</a>
       </li>
       <li class="menu-btn" @click="showSidebar">
-        <a href="#"
-          ><svg
+        <a href="#">
+          <svg
             xmlns="http://www.w3.org/2000/svg"
             height="26"
             viewBox="0 -960 960 960"
             width="26"
             fill="#e3e3e3"
-          >
+            >
+
             <path
               d="M120-240v-80h720v80H120Zm0-200v-80h720v80H120Zm0-200v-80h720v80H120Z"
             />
           </svg>
-          ></a
-        >
+        </a>
       </li>
     </ul>
   </nav>
@@ -87,7 +87,6 @@
 export default {
   name: "LandingPage",
   methods: {
-    // Added sidebar methods
     showSidebar() {
       this.$refs.sidebar.style.display = "flex";
     },
@@ -107,6 +106,7 @@ export default {
       }
     },
   },
+
   mounted() {
     document.addEventListener("click", this.handleClickOutside);
   },
@@ -189,7 +189,7 @@ nav a:hover {
 }
 
 nav a:active {
-    background-color: #4a5568;  /* Even lighter for pressed state */
+  background-color: #4a5568;  /* Even lighter for pressed state */
 }
 
 nav li:first-child {
@@ -227,7 +227,7 @@ nav li:first-child {
 }
 
 .sidebar a:hover {
-    background-color: #3a4252;
+  background-color: #3a4252;
 }
 
 .menu-btn {

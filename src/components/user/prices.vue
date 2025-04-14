@@ -2,20 +2,20 @@
   <nav>
     <ul class="sidebar" ref="sidebar">
       <li @click="hideSidebar">
-        <a href="#"
-          ><svg
+        <a href="#">
+          <svg
             xmlns="http://www.w3.org/2000/svg"
             height="26"
             viewBox="0 -960 960 960"
             width="26"
             fill="#e3e3e3"
-          >
+            >
+
             <path
               d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z"
             />
           </svg>
-          ></a
-        >
+        </a>
       </li>
       <li><a href="#" @click.prevent="$router.push('/')">Home</a></li>
       <li><a href="#" @click.prevent="$router.push('/price')">Price</a></li>
@@ -23,6 +23,7 @@
       <li><a href="#" @click.prevent="$router.push('/newsandupdates')">News and Updates</a></li>
       <li><a href="#" @click.prevent="$router.push('/feedback')">Feedback</a></li>
     </ul>
+
     <ul>
       <li>
         <a href="#" @click.prevent="$router.push('/')">Market Price Tracker</a>
@@ -43,20 +44,20 @@
         <a href="#" @click.prevent="$router.push('/feedback')">Feedback</a>
       </li>
       <li class="menu-btn" @click="showSidebar">
-        <a href="#"
-          ><svg
+        <a href="#">
+          <svg
             xmlns="http://www.w3.org/2000/svg"
             height="26"
             viewBox="0 -960 960 960"
             width="26"
             fill="#e3e3e3"
-          >
+            >
+
             <path
               d="M120-240v-80h720v80H120Zm0-200v-80h720v80H120Zm0-200v-80h720v80H120Z"
             />
           </svg>
-          ></a
-        >
+          </a>
       </li>
     </ul>
   </nav>
@@ -82,6 +83,7 @@
       <!-- Price List Container (Right Side) -->
       <div class="list-price-container">
         <br>
+
         <h2 class="section-title">Market Prices</h2>
         <div class="price-list">
           <table class="table-content">
@@ -277,7 +279,7 @@ nav a:hover {
 }
 
 nav a:active {
-    background-color: #4a5568;  /* Even lighter for pressed state */
+  background-color: #4a5568;  /* Even lighter for pressed state */
 }
 
 nav li:first-child {

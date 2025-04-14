@@ -1,9 +1,9 @@
 <template>
 
-<div class="image-container">
-    <img src="@/assets/main.jpeg" class="main-image" alt="Blurred Background">
-    <div class="img-overlay"></div>
-  </div>
+    <div class="image-container">
+        <img src="@/assets/main.jpeg" class="main-image" alt="Blurred Background">
+        <div class="img-overlay"></div>
+    </div>
 
     <div class="container">
         
@@ -161,7 +161,6 @@
                     });
                     const result = await response.json();
                     if (result.success) {// ito yung routes
-                        //localStorage.setItem('resetEmail', JSON.stringify(this.resetData.code))
                         this.$router.push('/password');
                     } else {
                         this.responseMessage = result.error || "Login failed";
@@ -220,7 +219,7 @@
     color: white;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     /*background: linear-gradient(135deg, #2c2c2c, #333333);*/
-  background-color: #232831;
+    background-color: #232831;
     border-radius: 15px;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
     box-sizing: border-box;
@@ -244,8 +243,8 @@
   box-sizing: border-box;
 }
     
-    /* Submit Button */
-    .btn {
+
+.btn {
   margin-top: 10px;
   padding: 10px 20px;
   background: #ffe082;
@@ -272,8 +271,8 @@
 }
 
 .top-text{
-    position: relative; /* Make sure content appears above overlay */
-    z-index: 2;
+position: relative; /* Make sure content appears above overlay */
+z-index: 2;
   text-align: center;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   padding-top: 75px;

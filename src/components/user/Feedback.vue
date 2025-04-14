@@ -3,20 +3,20 @@
   <nav>
     <ul class="sidebar" ref="sidebar">
       <li @click="hideSidebar">
-        <a href="#"
-          ><svg
+        <a href="#">
+          <svg
             xmlns="http://www.w3.org/2000/svg"
             height="26"
             viewBox="0 -960 960 960"
             width="26"
             fill="#e3e3e3"
-          >
+            >
+
             <path
               d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z"
             />
           </svg>
-          ></a
-        >
+        </a>
       </li>
       <li><a href="#" @click.prevent="$router.push('/')">Home</a></li>
       <li><a href="#" @click.prevent="$router.push('/price')">Price</a></li>
@@ -24,6 +24,7 @@
       <li><a href="#" @click.prevent="$router.push('/newsandupdates')">News and Updates</a></li>
       <li><a href="#" @click.prevent="$router.push('/feedback')">Feedback</a></li>
     </ul>
+
     <ul>
       <li>
         <a href="#" @click.prevent="$router.push('/')">Market Price Tracker</a>
@@ -44,20 +45,20 @@
         <a href="#" @click.prevent="$router.push('/feedback')">Feedback</a>
       </li>
       <li class="menu-btn" @click="showSidebar">
-        <a href="#"
-          ><svg
+        <a href="#">
+          <svg
             xmlns="http://www.w3.org/2000/svg"
             height="26"
             viewBox="0 -960 960 960"
             width="26"
             fill="#e3e3e3"
-          >
+            >
+
             <path
               d="M120-240v-80h720v80H120Zm0-200v-80h720v80H120Zm0-200v-80h720v80H120Z"
             />
           </svg>
-          ></a
-        >
+        </a>
       </li>
     </ul>
   </nav>
@@ -71,7 +72,6 @@
     <div class="feedback-content">
       <!-- Feedback Form -->
       <div v-if="!feedbackSubmitted" class="feedback-form">
-        <!--<img src="@/assets/cinemania_logo.png" alt="Cinemania Logo" class="logo" />-->
         <h2>HOW WAS YOUR EXPERIENCE</h2>
         <p>We value your feedback.</p>
         <p>Please rate your overall experience</p>
@@ -83,19 +83,19 @@
             :key="star"
             :class="{ filled: star <= rating }"
             @click="setRating(star)"
-            >★</span
-          >
+            >★</span>
         </div>
 
         <label for="feedback" class="feedback-label"
-          >Tell us how we can improve</label
-        >
+          >Tell us how we can improve</label>
+
         <textarea
           id="feedback"
           v-model="feedback"
           class="feedback-input"
           required
-        ></textarea>
+          >
+        </textarea>
 
         <button type="submit" class="btn" @click.prevent="submitFeedback">
           Submit
@@ -104,16 +104,17 @@
 
       <!-- Appreciation Message -->
       <div v-else class="appreciation-message">
-        <!--<img src="@/assets/cinemania_logo.png" alt="Cinemania Logo" class="logo" />-->
         <div class="stars fixed">
           <span
             v-for="star in 5"
             :key="star"
             :class="{ filled: star <= rating }"
-            >★</span
-          >
+            >★
+          </span>
         </div>
+        
         <p class="thank-you">Thank you for your feedback!</p>
+
       </div>
     </div>
   </div>
@@ -279,7 +280,7 @@ nav a:hover {
 }
 
 nav a:active {
-    background-color: #4a5568;  /* Even lighter for pressed state */
+  background-color: #4a5568;  /* Even lighter for pressed state */
 }
 
 nav li:first-child {
@@ -317,7 +318,7 @@ nav li:first-child {
 }
 
 .sidebar a:hover {
-    background-color: #3a4252;
+  background-color: #3a4252;
 }
 
 .menu-btn {
