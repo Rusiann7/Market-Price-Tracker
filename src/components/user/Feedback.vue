@@ -426,7 +426,7 @@ nav li:first-child {
 .btn {
   margin-top: 10px;
   padding: 10px 20px;
-  background: #ffce3b;
+  background: #ffe082;
   color: #001821;
   border: none;
   border-radius: 5px;
@@ -437,7 +437,7 @@ nav li:first-child {
 }
 
 .btn:hover {
-  background: #ffda5f; /* Lighter yellow (#ffc107 → #ffe082) */
+  background: #ffd448; /* Lighter yellow (#ffc107 → #ffe082) */
   color: #001821; /* Dark text on hover for contrast */
   transform: translateY(-2px);
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);

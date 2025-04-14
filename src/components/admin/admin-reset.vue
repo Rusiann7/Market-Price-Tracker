@@ -1,4 +1,10 @@
 <template>
+
+<div class="image-container">
+    <img src="@/assets/main.jpeg" class="main-image" alt="Blurred Background">
+    <div class="img-overlay"></div>
+  </div>
+
     <div class="container">
         
         <div class="top-text" v-if="$route.path === '/adminReset'">
@@ -200,6 +206,8 @@
 <style scoped>
     
 .main-content{
+    position: relative;
+    z-index: 2;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -211,7 +219,8 @@
     width: 90%;
     color: white;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: linear-gradient(135deg, #2c2c2c, #333333);
+    /*background: linear-gradient(135deg, #2c2c2c, #333333);*/
+  background-color: #232831;
     border-radius: 15px;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
     box-sizing: border-box;
@@ -236,21 +245,22 @@
 }
     
     /* Submit Button */
-.btn {
-  margin-top: 20px;
+    .btn {
+  margin-top: 10px;
   padding: 10px 20px;
-  background: #ffd700;
-  color: #000;
+  background: #ffe082;
+  color: #001821;
   border: none;
   border-radius: 5px;
   font-size: 1rem;
   cursor: pointer;
-  transition: background 0.3s ease, transform 0.2s ease;
+  transition: all 0.3s ease;
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
 
 .btn:hover {
-  background: #ffc107;
+  background: #ffd448; /* Lighter yellow (#ffc107 → #ffe082) */
+  color: #001821; /* Dark text on hover for contrast */
   transform: translateY(-2px);
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
@@ -262,8 +272,39 @@
 }
 
 .top-text{
+    position: relative; /* Make sure content appears above overlay */
+    z-index: 2;
   text-align: center;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   padding-top: 75px;
+  color: #ffffff;
+}
+
+.image-container {
+  position: fixed; /* Changed from relative to fixed */
+  width: 100%;
+  height: 100vh;
+  top: 0;
+  left: 0;
+  z-index: 1;
+}
+
+.main-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: blur(5px);
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.img-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(45, 51, 63, 0.452);
 }
 </style>
