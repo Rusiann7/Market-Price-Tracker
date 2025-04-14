@@ -99,8 +99,7 @@
           <button @click="increaseCounter" class="btn">
             <svg xmlns="http://www.w3.org/2000/svg" 
               height="24px" viewBox="0 -960 960 960" 
-              width="24px" 
-              fill="#e3e3e3">
+              width="24px" fill="#000000">
               <path d="m313-440 224 224-57 56-320-320 320-320 57 56-224 224h487v80H313Z"/>
             </svg>
           </button>
@@ -112,7 +111,7 @@
           <button @click="decreaseCounter" class="btn">
             <svg xmlns="http://www.w3.org/2000/svg" 
               height="24px" viewBox="0 -960 960 960" 
-              width="24px" fill="#e3e3e3">
+              width="24px" fill="#000000">
               <path d="M647-440H160v-80h487L423-744l57-56 320 320-320 320-57-56 224-224Z"/>
             </svg>
           </button>
@@ -495,6 +494,10 @@ nav li:first-child {
   color: #001821; /* Dark text on hover for contrast */
   transform: translateY(-2px);
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.counter {
+  color: white;
 }
 
 .image-container {
