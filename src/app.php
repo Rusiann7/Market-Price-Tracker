@@ -20,6 +20,8 @@ use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
+use Google\GenerativeAI\GenerativeAI;
+
 
 define('JWT_SECRET_KEY', 'market');
 define('JWT_EXPIRE_TIME', 3600);
@@ -37,16 +39,10 @@ if ($_SERVER['REQUEST_METHOD'] !== 'OPTIONS') {
 
 $action = isset($data['action']) ? $data['action'] : '';
 
-$host ="";
+$host ="rusiann7.helioho.st";
 $user ="";
 $password="";
 $dbname="";
-
-//delete this 
-$api_key = "";
-$mail->Password   = '';                               //SMTP password
-$serp_api_key = '';
-
 
 $conn = new mysqli($host, $user, $password, $dbname);
 
@@ -107,7 +103,7 @@ function verifyToken() {
 }
 
 function searchAPI($productType, $siteQuery) {
-    global $serp_api_key;
+    $serp_api_key = '';
 
     $searchTerm = strpos(strtolower($productType), 'rice') !== false 
     ? "SRP of $productType in the Philippines 2025"
@@ -167,6 +163,25 @@ function extractDate($text) {
     return 'N/A';
 }
 
+function AIsummarizer($productName, $value){
+    
+    $yourApiKey = '';
+
+    try {
+        $client = Gemini::client($yourApiKey);
+        $model = $client->generativeModel('gemini-2.0-flash');
+
+        $priceStr = implode(', ', $value);
+        $prompt = "Give a short information about $productName. Summarize price information for $productName with price in Philippine Peso: $priceStr";
+
+        $result = $model->generateContent($prompt);
+        
+        return $result->text();
+    }catch(Exception $e){
+        error_log("AI Summarizer Error: " . $e->getMessage());
+    }
+}
+
 if ($action === "feedback"){
 
     $feedback = $conn->real_escape_string($data['feedback']);
@@ -205,7 +220,7 @@ if ($action === "feedback"){
         $mail->Host       = 'smtp.gmail.com';                     //Set the SMTP server to send through
         $mail->SMTPAuth   = true;                                   //Enable SMTP authentication
         $mail->Username   = 'systemmailer678@gmail.com';                     //SMTP username
-        
+        $mail->Password   = '';                               //SMTP password
         $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;            //Enable implicit TLS encryption
         $mail->Port       = 465;                                    //TCP port to connect to; use 587 if you have set `SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS`
 
@@ -445,8 +460,6 @@ if ($action === "feedback"){
 
 }elseif ($action === 'fetchPrices'){
 
-    
-
     $columnsMap = [];
     $productList = [];
 
@@ -474,7 +487,7 @@ if ($action === "feedback"){
 
             $sourceCheck = $conn->query("SHOW COLUMNS FROM `Price-GOV` LIKE '$sourceColumn'");
             if ($sourceCheck->num_rows === 0) {
-                continue; // Skip if no matching source column
+                continue; 
             }
 
             $normalizedKey = strtolower(str_replace(['-', '_', ' '], '', $baseName));
@@ -492,7 +505,7 @@ if ($action === "feedback"){
 
     if (empty($productList)) {
         echo json_encode(["success" => false, "error" => "Product list is empty."]);
-        return; // Stop further execution
+        return;
     }
 
     try {
@@ -567,7 +580,6 @@ if ($action === "feedback"){
         } else {
             echo json_encode(["success" => false, "message" => "No new prices found"]);
         }
-
 
     }catch (Exception $e) {
         echo json_encode(["success" => false, "message" => "Error updating prices: " . $e->getMessage()]);
@@ -737,8 +749,8 @@ if ($action === "feedback"){
         $sourceColumn = "Source-" . $dynamicSuffix;
 
         $sql2 = "ALTER TABLE `Price-GOV` 
-                        DROP COLUMN `$dynamicColumnName`,
-                        DROP COLUMN `$sourceColumn`;";
+                DROP COLUMN `$dynamicColumnName`,
+                DROP COLUMN `$sourceColumn`;";
 
         if ($conn->query($sql2)) {
             echo json_encode(["success" => true, "message" => "Item deleted successfully"]);
@@ -751,174 +763,60 @@ if ($action === "feedback"){
     
 }elseif( $action === 'sumarizeData'){
 
-    
-    $api_url = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=$api_key";
-
-    // Modified prompt without requiring web search
-    $postData = json_encode([
-        "contents" => [
-            [
-                "parts" => [
-                    [
-                        "text" => "Tell me more about $product, amd analyze this price trends $prices and give me a summary and prediction of the data. "
-                    ],
-                ],
-            ],
-        ],
-        "generationConfig" => [
-            "temperature" => 0.1,  // Lower temperature for more factual responses
-            "topP" => 0.7,
-            "topK" => 40,
-            "maxOutputTokens" => 1024  // Ensure we get a complete response
-        ]
-    ]);
-
-    $ch = curl_init();
-    curl_setopt($ch, CURLOPT_URL, $api_url);
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-    curl_setopt($ch, CURLOPT_POST, 1);
-    curl_setopt($ch, CURLOPT_POSTFIELDS, $postData);
-    curl_setopt($ch, CURLOPT_HTTPHEADER, ["Content-Type: application/json"]);
-    curl_setopt($ch, CURLOPT_TIMEOUT, 30);
-
-    $response = curl_exec($ch);
-
-    if (curl_errno($ch)) {
-        return ["status" => "error", "message" => "Curl error: " . curl_error($ch)];
-    }
-
-    curl_close($ch);
-
-    if (!$response) {
-        return ["status" => "error", "message" => "Failed to fetch data from API"];
-    }
-
-    $data = json_decode($response, true);
-
-    if (json_last_error() !== JSON_ERROR_NONE) {
-        return ["status" => "error", "message" => "JSON Decode Error: " . json_last_error_msg()];
-    }
-
-    // Extract the text response from Gemini's response format
-    if (isset($data["candidates"][0]["content"]["parts"][0]["text"])) {
-        $textResponse = $data["candidates"][0]["content"]["parts"][0]["text"];
-
-        // Try to extract rice price information into a structured format
-        $result = [];
-
-        // Extract introduction
-        preg_match(
-            "/^(.*?)(?=\*\*|Rice Varieties|Current Rice Prices)/s",
-            $textResponse,
-            $introMatch
-        );
-        $introduction = isset($introMatch[1]) ? trim($introMatch[1]) : "";
-
-        if (!empty($introduction)) {
-            $result["introduction"] = $introduction;
-        }
-
-        // Extract rice varieties and prices
-        $priceData = [];
-
-        // Pattern looks for bold text followed by price ranges
-        preg_match_all(
-            "/\*\*(.*?)\*\*:?.*?((?:₱|P|PHP)\s*\d+(?:\.\d+)?(?:\s*-\s*(?:₱|P|PHP)?\s*\d+(?:\.\d+)?)?)/i",
-            $textResponse,
-            $matches,
-            PREG_SET_ORDER
-        );
-
-        if (empty($matches)) {
-            // Try alternative pattern if first one fails
-            preg_match_all(
-                "/([^:]+?):\s*((?:₱|P|PHP)\s*\d+(?:\.\d+)?(?:\s*-\s*(?:₱|P|PHP)?\s*\d+(?:\.\d+)?)?)/i",
-                $textResponse,
-                $matches,
-                PREG_SET_ORDER
-            );
-        }
-
-        foreach ($matches as $match) {
-            $variety = trim(str_replace("*", "", $match[1]));
-            $price = trim($match[2]);
-
-            // Normalize price format
-            $price = preg_replace("/P(?!HP)/i", "₱", $price);
-
-            // Skip if it's not rice-related
-            if (stripos($variety, "Rice") === false &&
-                stripos($variety, "Milled") === false &&
-                stripos($variety, "Bigas") === false &&
-                stripos($variety, "Sinandomeng") === false &&
-                stripos($variety, "Dinorado") === false &&
-                stripos($variety, "Jasmine") === false) {
-                continue;
-            }
-
-            $priceData[$variety] = $price;
-        }
-
-        // If no matches were found with the above patterns, try another approach
-        if (empty($priceData)) {
-            preg_match_all(
-                "/^[\s-]*([^:]+?):\s*((?:₱|P|PHP)\s*\d+(?:\.\d+)?(?:\s*-\s*(?:₱|P|PHP)?\s*\d+(?:\.\d+)?)?)/im",
-                $textResponse,
-                $listMatches,
-                PREG_SET_ORDER
-            );
-
-            foreach ($listMatches as $match) {
-                $variety = trim($match[1]);
-                $price = trim($match[2]);
-
-                // Normalize price format
-                $price = preg_replace("/P(?!HP)/i", "₱", $price);
-
-                // Skip duplicates
-                if (isset($priceData[strtolower($variety)])) {
-                    continue;
-                }
-
-                $priceData[$variety] = $price;
-            }
-        }
-
-        $result["prices"] = $priceData;
-
-        // Extract disclaimer
-        preg_match(
-            '/(Disclaimer:|Note:)(.*?)(?=\*\*|$)/is',
-            $textResponse,
-            $disclaimerMatch
-        );
-        if (!empty($disclaimerMatch[2])) {
-            $result["disclaimer"] = trim($disclaimerMatch[1]) . " " . trim($disclaimerMatch[2]);
-        }
-
-        // Extract sources
-        preg_match(
-            '/(Sources?:|References?:)(.*?)(?=\*\*|$)/is',
-            $textResponse,
-            $sourcesMatch
-        );
-        if (!empty($sourcesMatch[2])) {
-            $result["sources"] = trim($sourcesMatch[1]) . " " . trim($sourcesMatch[2]);
-        }
-
-        return ["status" => "success", "data" => $result];
-    } else {
-        return ["status" => "error", "message" => "No response text found in API response"];
-    }
+    echo json_encode(["success" => false, "error" => "wag gamitin toh: "]);
 
 }elseif( $action === 'chartData'){
 
+    $postData = json_decode(file_get_contents('php://input'), true);
+    $itemName = $conn->real_escape_string($postData['itemName']);
+    $searchPattern = str_replace(' ', '-', $itemName) . '%';
+
+    $sql1 = "SHOW COLUMNS FROM `Price-GOV` LIKE '$searchPattern'";
+    $result = $conn->query($sql1);
+
+    if ($result && $result->num_rows > 0) {
+        $row = $result->fetch_assoc();
+        $dynamicColumnName = $row['Field']; // This should be something like 'Potatoes-JQY'
+
+        $sq2 = "SELECT `" . $dynamicColumnName . "` FROM `Price-GOV` ORDER BY id ASC";
+        $result = $conn->query($sq2);
+
+        $prices = [];
+
+        while ($row = $result->fetch_assoc()) {
+            if (isset($row[$dynamicColumnName]) && is_numeric($row[$dynamicColumnName])) {
+                $prices[] = (float)$row[$dynamicColumnName];
+            }
+        }
+        if (!empty($prices)) {
+            $productName = preg_replace('/-[^-]+$/', '', $dynamicColumnName);
+            $productName = str_replace('-', ' ', $productName);
+
+            echo json_encode(["success" => true, "data" =>['RiceType' => $productName, 'Prices' => $prices], "message" => AIsummarizer($productName, $prices), "debug" => "blah blah " . implode(', ', $prices)]);
+        } else {
+            echo json_encode(["success" => false, "error" => "No valid price data found"]);
+        }
+    }
 }elseif( $action === 'newsandUpdates'){
+    
+    $queryString = http_build_query([
+        'access_key' => 'ACCESS_KEY',
+        'keywords' => 'food industry, market prices', 
+        'categories' => 'business',
+        'countries' => 'ph',
+      ]);
+      
+      $ch = curl_init(sprintf('%s?%s', 'https://api.mediastack.com/v1/news', $queryString));
+      curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+      
+      $json = curl_exec($ch);
+      
+      curl_close($ch);
+      
+      $apiResult = json_decode($json, true);
+      
+      echo json_encode(["success" => true, "data" => $apiResult]);
 
-}
-
-
-else {
+}else {
     echo json_encode(["success" => false, "message" => "Invalid action"]);
 }
