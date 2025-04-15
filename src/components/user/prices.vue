@@ -76,7 +76,8 @@
       <div class="chart-section">
         <h3>Price Trends</h3>
         <div class="chart-wrapper">
-          <Bar :data="chartData" :options="chartOptions" />
+          <Bar v-if="chartData" :data="chartData" :options="chartOptions" />
+          <div v-else>No data available</div>
         </div>
       </div>
 
@@ -97,9 +98,10 @@
 
             <tbody>
               <tr 
-                v-for="price in prices" 
+                v-for="price in prices"
                 :key="price.RiceType + price.Source" 
                 @click="handleRowClick(price)"
+                :class="{ 'selected-row': selectedItem && selectedItem.RiceType === price.RiceType }"
               >
                 <td>{{ price.RiceType }}</td>
                 <td>₱{{ price.Price }}</td>
@@ -121,22 +123,15 @@ ChartJS.register(Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale)
 
 export default {
   name: "PricePage",
-  components: {
-    Bar,
-  },
+  components: {Bar},
   data() {
     return {
       urlappphp: process.env.VUE_APP_URLAPPPHP,
+      selectedItem: null,
       prices: [],
       chartData: {
-        labels: ["1", "2", "3", "4", "5"],
-        datasets: [
-          {
-            label: "Price Data",
-            data: [10, 20, 15, 25, 30],
-            backgroundColor: "#ffe082",
-          },
-        ],
+        labels: [],
+        datasets: []
       },
       chartOptions: {
         responsive: true,
@@ -194,6 +189,36 @@ export default {
         }
       }
     },
+
+    async handleRowClick(price){
+      try {
+        const response = await fetch(this.urlappphp, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ action: "chartData", itemName: price.RiceType}),
+        });
+
+        const result = await response.json();
+
+        if (result.success) {
+          this.chartData = {
+            labels: result.data.Prices.map((_, index) => `Price ${index + 1}`),
+            datasets: [{
+              label: `Price of ${result.data.RiceType}`,
+              data: result.data.Prices,
+              backgroundColor: "#ffe082",
+            }]
+          };
+          this.selectedItem = price;
+        } else {
+          console.error("Failed to fetch Prices:", result.error);
+        }
+      } catch (error) {
+        console.error("Error fetching Prices:", error);
+      }
+    }
   },
 
 

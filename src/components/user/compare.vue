@@ -87,7 +87,7 @@
               <tr 
                 v-for="price in prices" 
                 :key="price.RiceType + price.Source" 
-                @click="handleRowClick(price)"
+                
               >
                 <td>{{ price.RiceType }}</td>
                 <td>₱{{ price.Price }}</td>
