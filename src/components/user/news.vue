@@ -71,8 +71,26 @@
   <br>
   <br>
   <br>
+  <br>
+
   <div class="main-container">
-    <h1>Hello</h1>
+    <h2>News and Updtates</h2>
+    <div class="news-list">
+          <div
+            v-for="(newsItem, index) in newsList"
+            :key="index"
+            class="news-item"
+            >
+            <!-- news items -->
+            <img src="{{ newsItem.image }}" alt="Image not found" class="news-image">
+            <strong class="title">{{ newsItem.title }}</strong>
+            <p class="comment">{{ newsItem.description }}</p>
+            <p class="date">{{ newsItem.published_at }}</p>
+            <button type="submit" class="btn" @click.prevent="openLink(newsItem.url)">
+              Read More
+            </button>
+          </div>
+        </div>
   </div>
     
 </template>
@@ -80,6 +98,57 @@
 <script>
 export default {
   name: "NewsUpdates",
+  data() {
+    return {
+      urlappphp: process.env.VUE_APP_URLAPPPHP,
+      newsList: [],
+    }
+  },
+
+  methods: {
+    async getNews() {
+      try {
+        const response = await fetch(this.urlappphp, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({ action: "newsandUpdates" }),
+        });
+
+        const result = await response.json();
+        console.log("News response:", result);
+
+        if (result.success) {
+          this.newsList = result.data.data.filter(item => 
+  /economy|price|inflation|market|goods|supply/i.test(item.title + item.description) 
+  || true // if nothing matches, just return everything
+);
+          this.populateNews();
+        }else {
+          console.error("Failed to fetch news:", result.error);
+        }
+      }catch (error) {
+        console.error("Error fetching news:", error);
+      }
+    },
+
+    showSidebar() {
+      this.$refs.sidebar.style.display = "flex";
+    },
+
+    hideSidebar() {
+      this.$refs.sidebar.style.display = "none";
+    },
+
+    openLink(url) {
+    window.open(url, "_blank");
+    }
+  },
+
+  mounted(){
+    this.getNews();
+  }
 };
 </script>
 

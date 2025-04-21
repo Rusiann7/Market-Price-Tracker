@@ -40,9 +40,9 @@ if ($_SERVER['REQUEST_METHOD'] !== 'OPTIONS') {
 $action = isset($data['action']) ? $data['action'] : '';
 
 $host ="rusiann7.helioho.st";
-$user ="";
-$password="";
-$dbname="";
+$user ="rusiann7_rusiann";
+$password="Wr#Pfvy9Pw9bg0^p";
+$dbname="rusiann7_market";
 
 $conn = new mysqli($host, $user, $password, $dbname);
 
@@ -103,7 +103,7 @@ function verifyToken() {
 }
 
 function searchAPI($productType, $siteQuery) {
-    $serp_api_key = '';
+    $serp_api_key = 'cbcd88481afab931e69c1ed720fec2060c15685356416dd82e7c8a31abe0d222';
 
     $searchTerm = strpos(strtolower($productType), 'rice') !== false 
     ? "SRP of $productType in the Philippines 2025"
@@ -165,7 +165,7 @@ function extractDate($text) {
 
 function AIsummarizer($productName, $value){
     
-    $yourApiKey = '';
+    $yourApiKey = 'AIzaSyAZ4TMBO6PM1VMuJ7OT638zQp93aRjL37A';
 
     try {
         $client = Gemini::client($yourApiKey);
@@ -220,7 +220,7 @@ if ($action === "feedback"){
         $mail->Host       = 'smtp.gmail.com';                     //Set the SMTP server to send through
         $mail->SMTPAuth   = true;                                   //Enable SMTP authentication
         $mail->Username   = 'systemmailer678@gmail.com';                     //SMTP username
-        $mail->Password   = '';                               //SMTP password
+        $mail->Password   = 'gowo rwob sjza ipdp';                               //SMTP password
         $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;            //Enable implicit TLS encryption
         $mail->Port       = 465;                                    //TCP port to connect to; use 587 if you have set `SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS`
 

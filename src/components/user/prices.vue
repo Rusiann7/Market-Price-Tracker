@@ -83,9 +83,9 @@
 
       <!-- Price List Container (Right Side) -->
       <div class="list-price-container">
-        <br>
-
-        <h2 class="section-title">Market Prices</h2>
+        <div class="title-section">
+          <h2>Market Prices</h2>
+        </div>
         <div class="price-list">
           <table class="table-content">
             <thead>
@@ -571,11 +571,11 @@ nav li:first-child {
   border-bottom: #1e1e1e;
 }
 
-.section-title, h2 {
-  margin: 0;
-  font-size: 1.25rem;
-  font-weight: 600;
-  color: white
+.title-section {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  
 }
 
 .image-container {
