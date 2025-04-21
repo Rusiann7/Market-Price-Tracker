@@ -67,31 +67,28 @@
     <div class="img-overlay"></div>
   </div>
 
-  <br>
-  <br>
-  <br>
-  <br>
-  <br>
-
-  <div class="main-container">
-    <h2>News and Updtates</h2>
-    <div class="news-list">
-          <div
-            v-for="(newsItem, index) in newsList"
-            :key="index"
-            class="news-item"
-            >
-            <!-- news items -->
-            <img src="{{ newsItem.image }}" alt="Image not found" class="news-image">
-            <strong class="title">{{ newsItem.title }}</strong>
-            <p class="comment">{{ newsItem.description }}</p>
-            <p class="date">{{ newsItem.published_at }}</p>
-            <button type="submit" class="btn" @click.prevent="openLink(newsItem.url)">
-              Read More
-            </button>
-          </div>
+  <div class="main-content">
+    <div class="main-container">
+      <h2>News and Updates</h2>
+      <div class="news-list">
+        <div v-for="(newsItem, index) in newsList" :key="index" class="news-item">
+          <!-- news items -->
+          <!--<img src="{{ newsItem.image }}" alt="Image not found" class="news-image">-->
+          <strong class="title">{{ newsItem.title }}</strong>
+          <br>
+          <br>
+          <p class="comment">{{ newsItem.description }}</p>
+          <br>
+          <p class="date">Date: {{ newsItem.published_at }}</p>
+          <br>
+          <button type="submit" class="btn" @click.prevent="openLink(newsItem.url)">
+            Read More
+          </button>
         </div>
+      </div>
+    </div>
   </div>
+  
     
 </template>
 
@@ -121,10 +118,7 @@ export default {
 
         if (result.success) {
           this.newsList = result.data.data.filter(item => 
-  /economy|price|inflation|market|goods|supply/i.test(item.title + item.description) 
-  || true // if nothing matches, just return everything
-);
-          this.populateNews();
+          /economy|price|inflation|market|goods|supply/i.test(item.title + item.description) || true); // if nothing matches, just return everything
         }else {
           console.error("Failed to fetch news:", result.error);
         }
@@ -142,7 +136,7 @@ export default {
     },
 
     openLink(url) {
-    window.open(url, "_blank");
+      window.open(url, "_blank");
     }
   },
 
@@ -287,6 +281,71 @@ nav li:first-child {
   }
 }
 
+.main-content {
+  position: relative; /* Make sure content appears above overlay */
+  z-index: 2; /* Ensure content is above the image */
+  padding: 20px;
+  color: white;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  margin-top: 50px;
+}
+
+.main-container {
+  width: 100%; 
+  background-color: #232831;
+  color: #ffffff;
+  max-height: 70vh; 
+  overflow-y: auto;
+  padding: 20px;
+  border-radius: 12px; 
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  margin: 25px ;
+  scrollbar-width: thin;
+  scrollbar-color: #4a5568 #2d3748;
+}
+
+.news-item {
+  border-top: 2px solid #ddd;
+  padding: 15px;
+  transition: background-color 0.3s ease;
+  width: 100%;
+  text-align: left;
+}
+
+.news-item:hover {
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+  background-color: #4a5568;
+}
+
+h2 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.btn {
+  margin-top: 10px;
+  padding: 10px 20px;
+  background: #ffe082;
+  color: #001821;
+  border: none;
+  border-radius: 5px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.btn:hover {
+  background: #ffd448; /* Lighter yellow (#ffc107 → #ffe082) */
+  color: #001821; /* Dark text on hover for contrast */
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
 .image-container {
   position: fixed; /* Changed from relative to fixed */
   width: 100%;
@@ -315,11 +374,5 @@ nav li:first-child {
   background-color: rgba(45, 51, 63, 0.452);
 }
 
-.main-container {
-  position: relative; /* Make sure content appears above overlay */
-  z-index: 2; /* Ensure content is above the image */
-  padding: 20px;
-  color: white;
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-}
+
 </style>
