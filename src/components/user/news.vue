@@ -147,7 +147,7 @@ export default {
   },
 
   mounted(){
-    this.getNews();
+    //this.getNews();
   }
 };
 </script>
