@@ -70,7 +70,6 @@
     <div class="img-overlay"></div>
   </div>
   
-
   <div class="main-content">
     <div v-if="$route.path === '/adminPrice'">
       <div class="list-price-container">
@@ -142,8 +141,7 @@
             id="newItem"
             class="input-group"
             method="get"
-            @submit.prevent="addItem"
-          >
+            @submit.prevent="addItem">
 
             <br>
 
@@ -154,8 +152,7 @@
               class="input-field"
               placeholder="Item"
               v-model="FormDataP.newItem"
-              required
-            />
+              required/>
 
             <br>
 
