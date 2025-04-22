@@ -76,7 +76,7 @@
       <br>
       <button type="submit" class="btn" @click.prevent="fetchPrices">Update</button>
       <br>
-      <p> <strong>Do not use too much</strong></p>
+      <p style="margin-top: 25px;"> <strong>Do not use too much</strong></p>
     </div>
   </div>
   

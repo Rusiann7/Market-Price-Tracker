@@ -625,8 +625,11 @@ nav li:first-child {
 
 .list-price-container {
   width: 100%;
-  max-width: 100%;
   overflow: hidden;
+  background-color: #232831;
+  border-radius: 15px;  /* This creates the rounded corners */
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+  margin: 15px auto; /* Center the container */
 }
 
 .price-list {
