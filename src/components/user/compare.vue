@@ -67,9 +67,13 @@
     <div class="img-overlay"></div>
   </div>
 
+  <div class="top-text">
+    <h1>Compare Prices</h1>
+  </div>
+
   <div class="main-content"> 
     <div class="prices-container">
-      <div class="latest-container"><!--Latest Content-->
+      <div class="compare-content"><!--Latest Content-->
 
         <h2>Latest Prices</h2>
         
@@ -101,27 +105,29 @@
         <div class="compare-content"> 
 
           <h2>Older Prices</h2>
-          <br>
+          <div class="button-row">
 
-          <button @click="increaseCounter" class="btn">
+            <button @click="increaseCounter" class="btn">
             <svg xmlns="http://www.w3.org/2000/svg" 
               height="24px" viewBox="0 -960 960 960" 
               width="24px" fill="#000000">
               <path d="m313-440 224 224-57 56-320-320 320-320 57 56-224 224h487v80H313Z"/>
             </svg>
-          </button>
+            </button>
 
-          <div class="counter">
-            {{counter}}
+            <div class="counter">
+              {{counter}}
+            </div>
+
+            <button @click="decreaseCounter" class="btn">
+              <svg xmlns="http://www.w3.org/2000/svg" 
+                height="24px" viewBox="0 -960 960 960" 
+                width="24px" fill="#000000">
+                <path d="M647-440H160v-80h487L423-744l57-56 320 320-320 320-57-56 224-224Z"/>
+              </svg>
+            </button>
+
           </div>
-
-          <button @click="decreaseCounter" class="btn">
-            <svg xmlns="http://www.w3.org/2000/svg" 
-              height="24px" viewBox="0 -960 960 960" 
-              width="24px" fill="#000000">
-              <path d="M647-440H160v-80h487L423-744l57-56 320 320-320 320-57-56 224-224Z"/>
-            </svg>
-          </button>
 
           <div class="price-list">
             <table class="table-content">
@@ -546,6 +552,23 @@ nav li:first-child {
   max-width: 1400px;
   margin: 40px auto;
   padding: 0 20px;
+}
+
+.button-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  margin-bottom: 20px;
+}
+
+.top-text{
+  position: relative; /* Make sure content appears above overlay */
+  z-index: 2;
+  text-align: center;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  padding-top: 75px;
+  color: #ffffff;
 }
 
 .image-container {
