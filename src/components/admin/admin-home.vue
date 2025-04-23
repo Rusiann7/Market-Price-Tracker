@@ -45,17 +45,14 @@
         <a href="#" @click.prevent="logout">Log Out</a>
       </li>
       <li class="menu-btn" @click="showSidebar">
-        <a href="#"
-          ><svg
+        <a href="#">
+          <svg
             xmlns="http://www.w3.org/2000/svg"
             height="26"
             viewBox="0 -960 960 960"
             width="26"
-            fill="#e3e3e3"
-          >
-            <path
-              d="M120-240v-80h720v80H120Zm0-200v-80h720v80H120Zm0-200v-80h720v80H120Z"
-            />
+            fill="#e3e3e3">
+            <path d="M120-240v-80h720v80H120Zm0-200v-80h720v80H120Zm0-200v-80h720v80H120Z"/>
           </svg>
         </a>
       </li>
@@ -72,9 +69,6 @@
   </div>
 
   <div class="rating-reviews" id="reviews">
-    <h1 style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif">
-      Ratings & Reviews
-    </h1>
     <div class="ratings-reviews-container">
       <!-- Overall Rating (Left Side) -->
       <div class="overall-rating">
@@ -84,7 +78,8 @@
             v-for="star in 5"
             :key="star"
             :class="{ filled: star <= roundedRating }"
-            >★</span>
+            >★
+          </span>
         </div>
         <p>{{ averageRating }}/5</p>
       </div>
@@ -105,7 +100,8 @@
                   v-for="star in 5"
                   :key="star"
                   :class="{ filled: star <= feedback.rating }"
-                  >★</span>
+                  >★
+                </span>
               </div>
             </div>
             <!-- User Feedback -->

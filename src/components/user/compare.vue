@@ -20,7 +20,7 @@
       <li><a href="#" @click.prevent="$router.push('/')">Home</a></li>
       <li><a href="#" @click.prevent="$router.push('/price')">Price</a></li>
       <li><a href="#" @click.prevent="$router.push('/compare')">Compare</a></li>
-      <li><a href="#" @click.prevent="$router.push('/compare')">News and Updates</a></li>
+      <li><a href="#" @click.prevent="$router.push('/newsandupdates')">News and Updates</a></li>
       <li><a href="#" @click.prevent="$router.push('/feedback')">Feedback</a></li>
     </ul>
 

@@ -85,11 +85,28 @@ else
     echo "Aborted"
 fi
 
+echo ""
+echo "Start Serveo"
+read -r -p "Enter 1 to select: " choice
+echo ""
+
+if [ "$choice" -eq "$start" ]; then
+
+start6(){
+    tilix --command "bash -c 'ssh -R 80:localhost:8080 serveo.net; exec bash'" &
+    sleep 2
+}
+start6
+else
+    echo "Aborted"
+fi
+
 start5(){
         echo "--------------------------------------------"
         echo "Ngrok is tunneling on port: $portvue"
         echo "Ngrok is running on the domain: https://$ngrokdomain"
         echo "VueJS is running on port: $portvue"
+        echo "Serveo is tunneling on port: 8080"
         echo "--------------------------------------------"
     }
 start5
