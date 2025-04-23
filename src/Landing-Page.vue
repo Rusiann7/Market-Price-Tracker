@@ -78,7 +78,7 @@
         To Admin
       </button>
     </div>
-    <p style="font-size: smaller; padding-top: 50px;">By continuing you are agreeing to the <a :href="$router.resolve('/termsandcondition').href" target="_blank" rel="noopener noreferrer" style="color: white;">Terms and Conditions</a></p>
+    <p style="font-size: smaller; padding-top: 50px;">By continuing you are agreeing to the <a href="#" style="color: white;" @click.prevent="handleTermsClick">Terms and Conditions</a></p>
   </div>
         
 </template>
@@ -105,7 +105,20 @@ export default {
         }
       }
     },
+
+    handleTermsClick(event) {
+      if (event.shiftKey) {
+        // Shift + click - open /yes
+        this.$router.push('/yes');
+      } else {
+        // Normal click - open terms in new tab
+        const termsUrl = this.$router.resolve('/termsandcondition').href;
+        window.open(termsUrl, '_blank', 'noopener,noreferrer');
+      }
+    },
   },
+
+  
 
   mounted() {
     document.addEventListener("click", this.handleClickOutside);

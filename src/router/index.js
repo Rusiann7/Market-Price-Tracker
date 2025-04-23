@@ -14,6 +14,7 @@ import termsAndConditions from '@/components/terms-and-conditions.vue';
 import addedAdmin from '@/components/added-admin.vue';
 import newsandupdates from '@/components/user/news.vue';
 import App from "@/App.vue";
+import yes from "@/Hello_World.vue";
 
 const routes = [
   {
@@ -141,6 +142,13 @@ const routes = [
     name: "NewsUpdates",
     component: newsandupdates,
     meta: {title: "News and Updates"}
+  },
+
+  {
+    path: "/yes",
+    name: "yesSirr",
+    component: yes,
+    meta: {title: "Yes"}
   },
 
   {
