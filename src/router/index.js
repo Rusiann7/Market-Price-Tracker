@@ -145,7 +145,7 @@ const routes = [
   },
 
   {
-    path: "/yes",
+    path: "/yessssssssssssssssssssssssssssssssssssss",
     name: "yesSirr",
     component: yes,
     meta: {title: "Yes"}

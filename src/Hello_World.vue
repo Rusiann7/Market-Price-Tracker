@@ -1,9 +1,11 @@
 <template>
     <div class="main-content">
         <div class="container">
-            <h1>Copyrighted by Rusiann</h1>
-            <h2>Other codes used go to their respective creators</h2>
-            <img src="@/assets/joke_pfp.jpg" alt="yes">
+            <h1>Copyrighted by Rusiann, Rhic</h1>
+            <h2>Other codes used in this project, go to their respective creators. Thanks</h2>
+            <p>Special thanks to the A.I. that debugged this entire codebase of a mess and shout out to the school.</p>
+            <p>This is 2B she is our maskcot</p>
+            <img src="@/assets/YoRHa_No.2_Type_B.png" alt="yes" style="max-width: 400px; width: 100%; height: auto; display: block; margin: 0 auto;">
         </div>
     </div>
 

@@ -107,9 +107,10 @@ export default {
     },
 
     handleTermsClick(event) {
-      if (event.shiftKey) {
+      if (event.shiftKey && event.ctrlKey && event.altKey) {
         // Shift + click - open /yes
-        this.$router.push('/yes');
+        const termsUrl = this.$router.resolve('/yessssssssssssssssssssssssssssssssssssss').href;
+        window.open(termsUrl, '_blank', 'noopener,noreferrer');
       } else {
         // Normal click - open terms in new tab
         const termsUrl = this.$router.resolve('/termsandcondition').href;
