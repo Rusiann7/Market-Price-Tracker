@@ -39,6 +39,12 @@ if ($_SERVER['REQUEST_METHOD'] !== 'OPTIONS') {
 
 $action = isset($data['action']) ? $data['action'] : '';
 
+$yourApiKey = '';
+$serp_api_key = '';
+$epass = '';
+$access_key = '';
+
+
 $host ="rusiann7.helioho.st";
 $user ="";
 $password="";
@@ -103,7 +109,8 @@ function verifyToken() {
 }
 
 function searchAPI($productType, $siteQuery) {
-    $serp_api_key = '';
+    
+    global $serp_api_key;
 
     $searchTerm = strpos(strtolower($productType), 'rice') !== false 
     ? "SRP of $productType in the Philippines 2025"
@@ -165,14 +172,14 @@ function extractDate($text) {
 
 function AIsummarizer($productName, $value){
     
-    $yourApiKey = 'AIzaSyAZ4TMBO6PM1VMuJ7OT638zQp93aRjL37A';
+    global $yourApiKey;
 
     try {
         $client = Gemini::client($yourApiKey);
         $model = $client->generativeModel('gemini-2.0-flash');
 
         $priceStr = implode(', ', $value);
-        $prompt = "Give a short information about $productName. Summarize price information for $productName with price in Philippine Peso: $priceStr";
+        $prompt = "Give a very short and brief information about $productName. Summarize price information for $productName with price in Philippine Peso: $priceStr amd give future price prediction avoid giving disclaimers.";
 
         $result = $model->generateContent($prompt);
         
@@ -202,6 +209,8 @@ if ($action === "feedback"){
         }
 
 }elseif ($action === 'reset'){
+
+    global $epass;
         //get the incoming email
     $email = $data['email'];
 
@@ -220,7 +229,7 @@ if ($action === "feedback"){
         $mail->Host       = 'smtp.gmail.com';                     //Set the SMTP server to send through
         $mail->SMTPAuth   = true;                                   //Enable SMTP authentication
         $mail->Username   = 'systemmailer678@gmail.com';                     //SMTP username
-        $mail->Password   = '';                               //SMTP password
+        $mail->Password   = $epass;                               //SMTP password
         $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;            //Enable implicit TLS encryption
         $mail->Port       = 465;                                    //TCP port to connect to; use 587 if you have set `SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS`
 
@@ -666,7 +675,6 @@ if ($action === "feedback"){
         echo json_encode(["success" => false, "error" => "Item column does not exist"]);
     }
 }elseif ($action === 'getCompare'){
-
     if (!isset($data['counter']) || !is_numeric($data['counter'])) {
         echo json_encode(["success" => false, "error" => "Invalid counter value"]);
         exit;
@@ -798,25 +806,34 @@ if ($action === "feedback"){
         }
     }
 }elseif( $action === 'newsandUpdates'){
+
+    global $access_key;
     
     $queryString = http_build_query([
-        'access_key' => 'ACCESS_KEY',
-        'keywords' => 'food industry, market prices', 
-        'categories' => 'business',
-        'countries' => 'ph',
+        'access_key' => $access_key,
+        'countries' => 'ph,us,cn',
+        //'categories' => 'business,economy,agriculture',
+        'languages' => 'en',
+        'limit' => 5,
       ]);
       
-      $ch = curl_init(sprintf('%s?%s', 'https://api.mediastack.com/v1/news', $queryString));
-      curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    $ch = curl_init(sprintf('%s?%s', 'https://api.mediastack.com/v1/news', $queryString));
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
       
-      $json = curl_exec($ch);
+    $json = curl_exec($ch);
+    curl_close($ch);
       
-      curl_close($ch);
-      
-      $apiResult = json_decode($json, true);
-      
-      echo json_encode(["success" => true, "data" => $apiResult]);
+    $apiResult = json_decode($json, true);
+
+    if (empty($apiResult['data'])) {
+        echo json_encode(["success" => true, "data" => []]); // Return empty array if no news
+        exit;
+    }
+
+    echo json_encode(["success" => true, "data" => $apiResult]);
+    exit;
 
 }else {
     echo json_encode(["success" => false, "message" => "Invalid action"]);
 }
+?>
