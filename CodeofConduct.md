@@ -1,7 +1,7 @@
-# Code of Conduct for Market Goods Price Tracker (GPLv3)
+# Code of Conduct for Market Price Tracker (GPLv3)
 
 ## 1. Introduction
-This Code of Conduct outlines the expectations for contributors and users of the Market Goods Price Tracker project, which is licensed under the GNU General Public License version 3 (GPLv3). All participants are expected to abide by both this Code of Conduct and the terms of the GPLv3 license.
+This Code of Conduct outlines the expectations for contributors and users of the Market Price Tracker project, which is licensed under the GNU General Public License version 3 (GPLv3). All participants are expected to abide by both this Code of Conduct and the terms of the GPLv3 license.
 
 ## 2. Modification and Usage Rights
 - You are free to:
@@ -53,7 +53,7 @@ Violations of this Code of Conduct may result in:
 - Reporting to appropriate authorities in cases of illegal activity
 
 ## 8. Reporting
-To report violations, contact the project maintainers at [maintainer contact email]. All reports will be reviewed and investigated promptly and fairly.
+To report violations, contact the project maintainers at Rusiann7@protonmail.com. All reports will be reviewed and investigated promptly and fairly.
 
 ## 9. Modifications
 This Code of Conduct may be updated periodically. Contributors will be notified of significant changes. Continued participation after changes constitutes acceptance of the new terms.
