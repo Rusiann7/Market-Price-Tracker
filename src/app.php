@@ -45,7 +45,7 @@ $epass = '';
 $access_key = '';
 
 
-$host ="rusiann7.helioho.st";
+$host ="";
 $user ="";
 $password="";
 $dbname="";
@@ -194,19 +194,19 @@ if ($action === "feedback"){
     $feedback = $conn->real_escape_string($data['feedback']);
     $rating = (int)$data['rating'];
 
-        if($rating >= 1){
-            $sql= "INSERT INTO Feedbacks (feedback, rating)
-            VALUES ('$feedback', '$rating')";
+    if($rating >= 1){
+        $sql= "INSERT INTO Feedbacks (feedback, rating)
+        VALUES ('$feedback', '$rating')";
 
-                if ($conn->query($sql) === TRUE) { //lagyan ng identifier na nag ok
-                    echo json_encode(["success" => true]);
-                }else {
-                echo json_encode(["error" => "Error: " . $sql . "<br>" . $conn->error]);
-                }
-
-        }else{
-            echo json_encode(["success" => false]);
+        if ($conn->query($sql) === TRUE) { //lagyan ng identifier na nag ok
+            echo json_encode(["success" => true]);
+        }else {
+        echo json_encode(["error" => "Error: " . $sql . "<br>" . $conn->error]);
         }
+
+    }else{
+        echo json_encode(["success" => false]);
+    }
 
 }elseif ($action === 'reset'){
 
@@ -285,7 +285,7 @@ if ($action === "feedback"){
         $feedbacks = [];
         while ($row = $result->fetch_assoc()) {
             $feedbacks[] = [
-                'username' => 'Anonymous User', // Default anonymous value
+                'username' => 'Anonymous User', // Default 
                 'rating' => (int)$row['rating'],
                 'comment' => $row['feedback'] 
             ];
@@ -346,34 +346,34 @@ if ($action === "feedback"){
     if ($result && $result->num_rows > 0) {
         $dataLogin = $result->fetch_assoc();
 
-            if(password_verify($passwordl,$dataLogin['Password'])){ //decrypt
+        if(password_verify($passwordl,$dataLogin['Password'])){ //decrypt
                 
-                $tokenPayload=[
-                    'user_id' => $dataLogin['id'],
-                    'email' => $dataLogin['Email'],
-                    'iat' => time(),
-                    'exp' => time() + JWT_EXPIRE_TIME
-                ];
+            $tokenPayload=[
+                'user_id' => $dataLogin['id'],
+                'email' => $dataLogin['Email'],
+                'iat' => time(),
+                'exp' => time() + JWT_EXPIRE_TIME
+            ];
                 
-                $token = JWT::encode($tokenPayload, JWT_SECRET_KEY, 'HS256');
+            $token = JWT::encode($tokenPayload, JWT_SECRET_KEY, 'HS256');
 
-                echo json_encode([ //ito yung meta data
-                    "success"=> true,
-                    "message" => "Logged In",
-                    "token"=> $token,
-                    "userData" => [
-                        "ID" => $dataLogin['id'],
-                        "email" => $dataLogin['Email'],
-                        "reset" => $dataLogin['reset'],
-                    ]]);
-                exit;
-            }else{ //lagyan ng error
-                echo json_encode(["success"=> false,"error" => "Password error"]);
-            }
-        } else {
-            //error yan pag ganyan wag mo pilitin
-            echo json_encode(["success"=> false,"error" => "Email not found"]);
+            echo json_encode([ //ito yung meta data
+                "success"=> true,
+                "message" => "Logged In",
+                "token"=> $token,
+                "userData" => [
+                    "ID" => $dataLogin['id'],
+                    "email" => $dataLogin['Email'],
+                     "reset" => $dataLogin['reset'],
+                ]]);
+            exit;
+        }else{ //lagyan ng error
+            echo json_encode(["success"=> false,"error" => "Password error"]);
         }
+    } else {
+        //error yan pag ganyan wag mo pilitin
+        echo json_encode(["success"=> false,"error" => "Email not found"]);
+    }
 
 }elseif($action === 'signup'){
 
@@ -464,7 +464,7 @@ if ($action === "feedback"){
             echo json_encode(["success" => false, "error" => "No valid price data found"]);
         }
     } else {
-        echo json_encode(["success" => false, "error" => $conn->error]); // Added specific error message
+        echo json_encode(["success" => false, "error" => $conn->error]);
     }
 
 }elseif ($action === 'fetchPrices'){
@@ -480,7 +480,7 @@ if ($action === "feedback"){
         exit;
     }
 
-    // Build columns map and product list
+    //columns map 
     while ($row = $result->fetch_assoc()) {
         $field = $row['Field'];
 
@@ -532,7 +532,7 @@ if ($action === "feedback"){
             $govPrice = null;
             $newsPrice = null;
     
-            // Search government sites (PSA and others)
+            //gov
             $govPrice = searchAPI($typeKey, 'site:.gov.ph OR site:psa.gov.ph');
             $govPrice = $govPrice ? extractLatestPrice($govPrice) : null;
             
@@ -561,12 +561,12 @@ if ($action === "feedback"){
                 $values[] = $latestPrice['amount'];
             
                 $columns[] = "`$sourceColumn`";
-                // Only store URL in source column
+                //source column
                 $values[] = "'" . addslashes($latestPrice['link']) . "'";
             
                 $updateCount++;
             } else {
-                // Include NULL values for products without updates
+                //NULL 
                 $columns[] = "`{$columnsMap[$normalizedKey]['price']}`";
                 $values[] = 'NULL';
                 $columns[] = "`{$columnsMap[$normalizedKey]['source']}`";
@@ -633,7 +633,7 @@ if ($action === "feedback"){
 }elseif ($action === 'changePrice') {
     $postData = json_decode(file_get_contents('php://input'), true);
     
-    // Validate and sanitize inputs
+    //inputs
     if (empty($postData['itemName']) || !isset($postData['newPrice'])) {
         echo json_encode(["success" => false, "error" => "Missing required fields"]);
         exit;
@@ -643,7 +643,7 @@ if ($action === "feedback"){
     $newPrice = floatval($postData['newPrice']);
     $sourceUrl = isset($postData['sourceUrl']) ? $conn->real_escape_string($postData['sourceUrl']) : '/addedadmin';
 
-    // Find the source column
+    //find column
     $parts = explode("-", $dynamicColumnName);
     $dynamicSuffix = end($parts); 
 
@@ -653,14 +653,13 @@ if ($action === "feedback"){
     $result = $conn->query($checkSql);
 
     if ($result && $result->num_rows > 0) {
-        // Get the first column name that starts with the base name
+        //base name
         $row = $result->fetch_assoc();
-        $dynamicColumnName = $row['Field']; // This should be something like 'Potatoes-JQY'
+        $dynamicColumnName = $row['Field']; //Potatoes-JQY
 
-        // The source column will be derived from the dynamic column
+        //source column
         $sourceColumn = "Source-" . end(explode("-", $dynamicColumnName));
 
-        // Now proceed with the update
         $updateSql = "UPDATE `Price-GOV` 
                      SET `$dynamicColumnName` = $newPrice, 
                          `$sourceColumn` = '$sourceUrl'
@@ -675,6 +674,8 @@ if ($action === "feedback"){
         echo json_encode(["success" => false, "error" => "Item column does not exist"]);
     }
 }elseif ($action === 'getCompare'){
+
+    //clean input
     if (!isset($data['counter']) || !is_numeric($data['counter'])) {
         echo json_encode(["success" => false, "error" => "Invalid counter value"]);
         exit;
@@ -730,7 +731,7 @@ if ($action === "feedback"){
             }
         }
         if (!empty($compare)) {
-            echo json_encode(["success" => true, "data" => $compare, "counter" => $id   ]); // Return counter for verification
+            echo json_encode(["success" => true, "data" => $compare, "counter" => $id   ]);
         } else {
             echo json_encode(["success" => false, "error" => "No valid price data found", "counter" => $id]);
         }
@@ -747,11 +748,11 @@ if ($action === "feedback"){
     $result = $conn->query($sql1);
 
     if ($result && $result->num_rows > 0) {
-        // Get the first column name that starts with the base name
+        //find column
         $row = $result->fetch_assoc();
-        $dynamicColumnName = $row['Field']; // This should be something like 'Potatoes-JQY'
+        $dynamicColumnName = $row['Field']; //Potatoes-JQY
 
-        // Find the source column
+        //source column
         $parts = explode("-", $dynamicColumnName);
         $dynamicSuffix = end($parts); 
         $sourceColumn = "Source-" . $dynamicSuffix;
@@ -783,8 +784,9 @@ if ($action === "feedback"){
     $result = $conn->query($sql1);
 
     if ($result && $result->num_rows > 0) {
+
         $row = $result->fetch_assoc();
-        $dynamicColumnName = $row['Field']; // This should be something like 'Potatoes-JQY'
+        $dynamicColumnName = $row['Field']; //Potatoes-JQY
 
         $sq2 = "SELECT `" . $dynamicColumnName . "` FROM `Price-GOV` ORDER BY id ASC";
         $result = $conn->query($sq2);
@@ -805,6 +807,7 @@ if ($action === "feedback"){
             echo json_encode(["success" => false, "error" => "No valid price data found"]);
         }
     }
+
 }elseif( $action === 'newsandUpdates'){
 
     global $access_key;
@@ -812,7 +815,6 @@ if ($action === "feedback"){
     $queryString = http_build_query([
         'access_key' => $access_key,
         'countries' => 'ph,us,cn',
-        //'categories' => 'business,economy,agriculture',
         'languages' => 'en',
         'limit' => 5,
       ]);
@@ -826,7 +828,7 @@ if ($action === "feedback"){
     $apiResult = json_decode($json, true);
 
     if (empty($apiResult['data'])) {
-        echo json_encode(["success" => true, "data" => []]); // Return empty array if no news
+        echo json_encode(["success" => true, "data" => []]); //empty array if no news
         exit;
     }
 
