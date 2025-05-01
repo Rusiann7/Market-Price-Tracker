@@ -383,10 +383,10 @@ nav li:first-child {
   justify-content: center;
   align-items: center;
   color: white;
-  padding: 40px;
+  padding: 80px 40px 40px; /* Add space for fixed navbar */
   border-radius: 12px;
   max-width: 100%;
-  min-height: 45vh;
+  min-height: 100vh; /* Ensure full height coverage */
   margin: 0 auto;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
 }
@@ -412,7 +412,7 @@ nav li:first-child {
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   position: sticky;
-  top: 20px;
+  top: 70px; /* Adjusted to account for navbar */
 }
 
 .chart-section h3 {
@@ -424,6 +424,8 @@ nav li:first-child {
 .chart-wrapper {
   width: 100%;
   margin: 0 auto;
+  height: auto;
+  min-height: 200px;
 }
 
 /* Price List Container (Right Side) */
@@ -436,6 +438,19 @@ nav li:first-child {
   padding: 20px;
   border-radius: 12px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.list-price-container::-webkit-scrollbar {
+  width: 8px;
+}
+
+.list-price-container::-webkit-scrollbar-track {
+  background: #232831;
+}
+
+.list-price-container::-webkit-scrollbar-thumb {
+  background-color: #3a4252;
+  border-radius: 4px;
 }
 
 .list-price-container h2 {
@@ -516,19 +531,29 @@ nav li:first-child {
     width: 200px;
     height: 120px;
   }
+
+  .table-content {
+    min-width: 100%;
+    font-size: 0.8rem;
+  }
+
+  .table-content th,
+  .table-content td {
+    padding: 8px 10px;
+  }
 }
 
 .clickable-row {
   cursor: pointer;
   transition: all 0.3s ease;
 }
-        
+
 .clickable-row:hover {
   background-color: #e9f5ff; /* Light blue */
   box-shadow: 0 2px 4px rgba(0,0,0,0.1); /* Subtle shadow */
   transform: translateY(-1px); /* Slight lift effect */
 }
-        
+
 .clickable-row:active {
   transform: translateY(0); /* Push down effect when clicked */
   background-color: #d0e7ff; /* Slightly darker blue */
@@ -540,7 +565,7 @@ nav li:first-child {
   margin: 25px 0;
   font-size: 0.9rem;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  min-width: 400px;
+  min-width: 300px;
   width: 100%;
   box-shadow: 0 2px 4px rgba(0,0,0,0.1);
   overflow: hidden;
@@ -569,6 +594,11 @@ nav li:first-child {
   cursor: pointer; /* Only if rows are clickable */
 }
 
+.selected-row {
+  background-color: #ffe082 !important; /* Highlight selected row */
+  color: #333 !important;
+}
+
 .table-content th,
 .table-content td {
   padding: 12px 15px;
@@ -578,17 +608,62 @@ nav li:first-child {
   border-bottom: #1e1e1e;
 }
 
+@media (max-width: 768px) {
+  .table-content {
+    min-width: 100%;
+    font-size: 0.85rem;
+  }
+
+  .table-content th,
+  .table-content td {
+    padding: 10px 12px;
+  }
+
+  .main-content {
+    padding: 0 10px;
+  }
+}
+
+@media (max-width: 480px) {
+  .table-content {
+    font-size: 0.8rem;
+  }
+
+  .table-content th,
+  .table-content td {
+    padding: 8px 10px;
+  }
+
+  .compare-content {
+    padding: 15px;
+  }
+}
+
 .title-section {
   display: flex;
   align-items: center;
   justify-content: center;
-  
+
 }
 
 .ai-summarizer {
+  margin-top: 20px;
+  background-color: rgba(255, 255, 255, 0.05);
+  border-radius: 8px;
   padding: 15px;
   justify-content: center;
   text-align: justify;
+}
+
+.ai-summarizer h3 {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.ai-summarizer p {
+  line-height: 1.5;
 }
 
 .image-container {

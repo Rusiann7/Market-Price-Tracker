@@ -429,31 +429,17 @@ nav li:first-child {
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
 
-.price-container {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  color: white;
-  padding: 40px;
-  border-radius: 12px;
-  max-width: 100%;
-  min-height: 45vh;
-  margin: 0 auto;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
-}
-
-/* Main container for the two columns */
 .prices-container {
   position: relative; /* Make sure content appears above overlay */
   z-index: 2;
   display: flex;
+  flex-direction: row; /* Set to row for side-by-side on desktop */
   justify-content: space-between;
   align-items: flex-start;
   width: 90%;
   max-width: 1200px;
   margin: 20px auto;
-  gap: 40px;
+  gap: 30px;
 }
 
 .table-content {
@@ -461,7 +447,7 @@ nav li:first-child {
   margin: 25px 0;
   font-size: 0.9rem;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  min-width: 400px;
+  min-width: 300px;
   width: 100%;
   box-shadow: 0 2px 4px rgba(0,0,0,0.1);
   overflow: hidden;
@@ -500,8 +486,12 @@ nav li:first-child {
 }
 
 .btn {
-  margin-top: 10px;
-  padding: 10px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  padding: 0;
   background: #ffe082;
   color: #001821;
   border: none;
@@ -524,11 +514,16 @@ nav li:first-child {
 }
 
 .counter {
+  min-width: 30px;
+  text-align: center;
+  font-size: 1.1rem;
+  font-weight: bold;
   color: white;
 }
 
 .compare-content {
-  width: 65%;
+  width: 80%; /* Slightly less than 50% to account for gap */
+  max-width: none; /* Remove max-width constraint */
   background-color: #232831;
   color: white;
   max-height: 70vh;
@@ -536,6 +531,21 @@ nav li:first-child {
   padding: 20px;
   border-radius: 12px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  margin: 0;
+}
+
+
+.compare-content::-webkit-scrollbar {
+  width: 8px;
+}
+
+.compare-content::-webkit-scrollbar-track {
+  background: #232831;
+}
+
+.compare-content::-webkit-scrollbar-thumb {
+  background-color: #3a4252;
+  border-radius: 4px;
 }
 
 .compare-content h2 {
@@ -546,7 +556,6 @@ nav li:first-child {
   text-align: center;
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
-
 
 .main-content {
   max-width: 1400px;
@@ -560,6 +569,11 @@ nav li:first-child {
   justify-content: center;
   gap: 1rem;
   margin-bottom: 20px;
+  background-color: rgba(255, 255, 255, 0.05);
+  padding: 12px;
+  border-radius: 8px;
+  margin: 10px auto 20px;
+  width: fit-content;
 }
 
 .top-text{
@@ -567,8 +581,20 @@ nav li:first-child {
   z-index: 2;
   text-align: center;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  padding-top: 75px;
+  padding-top: 90px;
   color: #ffffff;
+}
+
+@media (max-width: 768px) {
+  .prices-container {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .compare-content {
+    width: 95%;
+    margin: 0 auto;
+  }
 }
 
 .image-container {
@@ -599,4 +625,34 @@ nav li:first-child {
   background-color: rgba(45, 51, 63, 0.452);
 }
 
+@media (max-width: 768px) {
+  .table-content {
+    min-width: 100%;
+    font-size: 0.85rem;
+  }
+
+  .table-content th,
+  .table-content td {
+    padding: 10px 12px;
+  }
+
+  .main-content {
+    padding: 0 10px;
+  }
+}
+
+@media (max-width: 480px) {
+  .table-content {
+    font-size: 0.8rem;
+  }
+
+  .table-content th,
+  .table-content td {
+    padding: 8px 10px;
+  }
+
+  .compare-content {
+    padding: 15px;
+  }
+}
 </style>
