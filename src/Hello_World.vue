@@ -5,7 +5,7 @@
             <h2>Other codes used in this project, go to their respective creators. Thanks</h2>
             <p>Special thanks to the A.I. that debugged this entire codebase of a mess and shout out to the school.</p>
             <div class="image-row">
-  <img src="@/assets/overlay1.png" alt="yes" style="max-width: 400px; width: 100%; height: auto;">
+  <img src="@/assets/overlay1.png" alt="yes" style="max-width: 350px; width: 100%; height: auto;">
 </div>
         </div>
     </div>
