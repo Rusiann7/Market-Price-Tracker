@@ -228,15 +228,19 @@ export default {
     }
   },
 
-
   mounted(){
     this.getPrices();
+    this.priceInterval = setInterval(() => {
+      this.getPrices();
+    }, 5000);
     document.addEventListener("click", this.handleClickOutside);
   },
 
   beforeUnmount() {
     document.removeEventListener("click", this.handleClickOutside);
+    clearInterval(this.priceInterval);
   },
+
 };
 </script>
 
@@ -311,7 +315,7 @@ nav a:hover {
 }
 
 nav a:active {
-  background-color: #4a5568;  /* Even lighter for pressed state */
+  background-color: #4a5568; 
 }
 
 nav li:first-child {
@@ -376,22 +380,22 @@ nav li:first-child {
 }
 
 .price-container {
-  position: relative; /* Make sure content appears above overlay */
+  position: relative; /* above overlay */
   z-index: 2;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   color: white;
-  padding: 80px 40px 40px; /* Add space for fixed navbar */
+  padding: 80px 40px 40px; /* space */
   border-radius: 12px;
   max-width: 100%;
-  min-height: 100vh; /* Ensure full height coverage */
+  min-height: 100vh; 
   margin: 0 auto;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
 }
 
-/* Main container for the two columns */
+/* two columns */
 .prices-container {
   display: flex;
   justify-content: space-between;
@@ -402,7 +406,7 @@ nav li:first-child {
   gap: 40px;
 }
 
-/* Chart Section (Left Side) */
+/* chart left */
 .chart-section {
   width: 30%;
   background-color: #232831;
@@ -412,7 +416,7 @@ nav li:first-child {
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   position: sticky;
-  top: 70px; /* Adjusted to account for navbar */
+  top: 70px; 
 }
 
 .chart-section h3 {
@@ -428,7 +432,7 @@ nav li:first-child {
   min-height: 200px;
 }
 
-/* Price List Container (Right Side) */
+/* price right */
 .list-price-container {
   width: 65%;
   background-color: #232831;
@@ -461,8 +465,6 @@ nav li:first-child {
   text-align: center;
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
-
-/* Hover effect for both containers */
 
 .price-list {
   padding: 10px;
@@ -549,14 +551,14 @@ nav li:first-child {
 }
 
 .clickable-row:hover {
-  background-color: #e9f5ff; /* Light blue */
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1); /* Subtle shadow */
-  transform: translateY(-1px); /* Slight lift effect */
+  background-color: #e9f5ff; 
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1); 
+  transform: translateY(-1px); /* lift effect */
 }
 
 .clickable-row:active {
-  transform: translateY(0); /* Push down effect when clicked */
-  background-color: #d0e7ff; /* Slightly darker blue */
+  transform: translateY(0); /* effect when clicked */
+  background-color: #d0e7ff; 
 }
 
 
@@ -586,16 +588,16 @@ nav li:first-child {
 }
 
 .table-content tbody tr:nth-of-type(even) {
-  background-color: #f3f3f3; /* Changed to be different from odd rows */
+  background-color: #f3f3f3; 
 }
 
 .table-content tbody tr:hover {
-  background-color: #e9e9e9; /* Hover effect */
-  cursor: pointer; /* Only if rows are clickable */
+  background-color: #e9e9e9; /* hover effect */
+  cursor: pointer; 
 }
 
 .selected-row {
-  background-color: #ffe082 !important; /* Highlight selected row */
+  background-color: #ffe082 !important; /* selected row */
   color: #333 !important;
 }
 
@@ -667,7 +669,7 @@ nav li:first-child {
 }
 
 .image-container {
-  position: fixed; /* Changed from relative to fixed */
+  position: fixed; 
   width: 100%;
   height: 100vh;
   top: 0;

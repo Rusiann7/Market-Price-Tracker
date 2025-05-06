@@ -214,11 +214,15 @@ export default {
 
   mounted() {
     this.fetchFeedbacks();
+    this.priceInterval = setInterval(() => {
+      this.fetchFeedbacks();
+    }, 5000);
     document.addEventListener("click", this.handleClickOutside);
   },
 
   beforeUnmount() {
     document.removeEventListener("click", this.handleClickOutside);
+    clearInterval(this.priceInterval);
   },
 };
 </script>
