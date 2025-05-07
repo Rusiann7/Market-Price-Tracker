@@ -350,6 +350,7 @@ nav li:first-child {
   justify-content: center;
   display: flex;
   min-height: calc(100vh - 50px);
+  padding: 50px;
 }
 
 .feedback-content {
@@ -359,7 +360,7 @@ nav li:first-child {
   margin-top: 250px;
   color: #ffffff;
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-  padding: 30px;
+  padding: 20px;
   text-align: center;
   background-color: #232831;
   border-radius: 15px;  /* rounded corners */

@@ -311,6 +311,7 @@ nav li:first-child {
 .home-content h1 {
   font-size: 2.5rem;
   margin-bottom: 1rem;
+  margin-top: 1.5rem;
 }
 
 .home-content p {
