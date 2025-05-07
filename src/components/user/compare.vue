@@ -256,12 +256,16 @@
 
     mounted(){
       this.getPrices();
+      this.priceInterval = setInterval(() => {
+      this.getPrices();
+    }, 5000);
       this.getCompare();
       document.addEventListener("click", this.handleClickOutside);
     },
 
     beforeUnmount() {
       document.removeEventListener("click", this.handleClickOutside);
+      clearInterval(this.priceInterval);
     },
   }
 </script>
