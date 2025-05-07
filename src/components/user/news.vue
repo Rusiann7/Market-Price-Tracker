@@ -340,7 +340,7 @@ h2 {
 
 .btn:hover {
   background: #ffd448; 
-  color: #001821; /
+  color: #001821; 
   transform: translateY(-2px);
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
