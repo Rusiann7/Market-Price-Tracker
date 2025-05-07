@@ -237,7 +237,7 @@ nav a:hover {
 }
 
 nav a:active {
-  background-color: #4a5568;  /* Even lighter for pressed state */
+  background-color: #4a5568;  /* pressed state */
 }
 
 nav li:first-child {
@@ -320,8 +320,7 @@ nav li:first-child {
   padding: 30px;
   text-align: center;
   background-color: #232831;
-  /* background: linear-gradient(135deg, #2c2c2c, #333333); */
-  border-radius: 15px;  /* This creates the rounded corners */
+  border-radius: 15px;  /* rounded corners */
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
 }
 
@@ -339,14 +338,14 @@ nav li:first-child {
 }
 
 .btn:hover {
-  background: #ffd448; /* Lighter yellow (#ffc107 → #ffe082) */
-  color: #001821; /* Dark text on hover for contrast */
+  background: #ffd448; 
+  color: #001821;
   transform: translateY(-2px);
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .image-container {
-  position: fixed; /* Changed from relative to fixed */
+  position: fixed;
   width: 100%;
   height: 100vh;
   top: 0;

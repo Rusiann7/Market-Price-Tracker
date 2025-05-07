@@ -337,7 +337,7 @@ nav a:hover {
 }
 
 nav a:active {
-  background-color: #4a5568;  /* Even lighter for pressed state */
+  background-color: #4a5568;  /* pressed state */
 }
 
 nav li:first-child {
@@ -409,7 +409,7 @@ nav li:first-child {
   max-width: 1200px;
   margin: 20px auto;
   gap: 40px;
-  position: relative; /* Make sure content appears above overlay */
+  position: relative; /* above overlay */
   z-index: 2;
   background-color: #232831;
   color: white;
@@ -430,10 +430,10 @@ nav li:first-child {
 }
 
 .prices-container {
-  position: relative; /* Make sure content appears above overlay */
+  position: relative; 
   z-index: 2;
   display: flex;
-  flex-direction: row; /* Set to row for side-by-side on desktop */
+  flex-direction: row; 
   justify-content: space-between;
   align-items: flex-start;
   width: 90%;
@@ -472,8 +472,8 @@ nav li:first-child {
 }
 
 .table-content tbody tr:hover {
-  background-color: #e9e9e9; /* Hover effect */
-  cursor: pointer; /* Only if rows are clickable */
+  background-color: #e9e9e9; /* hover effect */
+  cursor: pointer; /* show if rows are clickable */
 }
 
 .table-content th,
@@ -503,8 +503,8 @@ nav li:first-child {
 }
 
 .btn:hover {
-  background: #ffd448; /* Lighter yellow (#ffc107 → #ffe082) */
-  color: #001821; /* Dark text on hover for contrast */
+  background: #ffd448; 
+  color: #001821; 
   transform: translateY(-2px);
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
@@ -522,8 +522,8 @@ nav li:first-child {
 }
 
 .compare-content {
-  width: 80%; /* Slightly less than 50% to account for gap */
-  max-width: none; /* Remove max-width constraint */
+  width: 80%; 
+  max-width: none; 
   background-color: #232831;
   color: white;
   max-height: 70vh;
@@ -577,7 +577,7 @@ nav li:first-child {
 }
 
 .top-text{
-  position: relative; /* Make sure content appears above overlay */
+  position: relative; /* above overlay */
   z-index: 2;
   text-align: center;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -598,7 +598,7 @@ nav li:first-child {
 }
 
 .image-container {
-  position: fixed; /* Changed from relative to fixed */
+  position: fixed; 
   width: 100%;
   height: 100vh;
   top: 0;

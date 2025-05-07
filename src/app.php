@@ -112,21 +112,33 @@ function searchAPI($productType, $siteQuery) {
     
     global $serp_api_key;
 
+    $normalizedProductType = trim(str_replace('-', ' ', $productType));
     $searchTerm = strpos(strtolower($productType), 'rice') !== false 
-    ? "SRP of $productType in the Philippines 2025"
-    : "Current price of $productType in the Philippines 2025";
+    ? "SRP of $normalizedProductType in the Philippines 2025"
+    : "Current price of $normalizedProductType in the Philippines 2025";
 
     $query = [
         "q" => "$searchTerm $siteQuery",
         "hl" => "en",
         "gl" => "ph",
         "google_domain" => "google.com",
-        "num" => 3,
+        "num" => 5,
         "api_key" => $serp_api_key
     ];
 
     $url = "https://serpapi.com/search.json?" . http_build_query($query);
-    $response = file_get_contents($url);
+    $ch = curl_init();
+    curl_setopt_array($ch, [
+        CURLOPT_URL => $url,
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_TIMEOUT => 30,
+        CURLOPT_SSL_VERIFYPEER => true,
+        CURLOPT_USERAGENT => 'Mozilla/5.0'
+    ]);
+    
+    $response = curl_exec($ch);
+    curl_close($ch);
+    
     return json_decode($response, true);
 }
 
@@ -134,9 +146,13 @@ function extractLatestPrice($results) {
     if (!isset($results['organic_results'])) return null;
 
     $latest = null;
+    $pricePattern = '/(?:PHP|₱|P)\s*([\d,]+\.?\d*)/i';
 
     foreach ($results['organic_results'] as $result) {
-        if (preg_match('/(?:PHP|₱|P)\s*([\d,]+\.?\d*)/i', $result['snippet'] ?? '', $match)) {
+
+        $content = $result['title'] . ' ' . ($result['snippet'] ?? '');
+
+        if (preg_match($pricePattern, $content, $match)) {
                 
             $price = [
                 'amount' => (float) str_replace(',', '', $match[1]),
@@ -264,7 +280,7 @@ if ($action === "feedback"){
         $mail->AltBody = 'Enter this code to reset your password: ' .$reset;
 
         if($mail->send()){
-            //echo 'Message has been sent';
+            //echo msg has been sent
             echo json_encode(["success" => true,]);
         }
         else{

@@ -66,7 +66,7 @@
     <br>
 
     <div class="prices-container">
-      <!-- Chart Container (Left Side) -->
+      <!-- left side) -->
       <div class="chart-section">
         <h3>Price Trends</h3>
         <div class="chart-wrapper">
@@ -86,7 +86,7 @@
         </div>
       </div>
 
-      <!-- Price List Container (Right Side) -->
+      <!-- right side) -->
       <div class="list-price-container">
         <div class="title-section">
           <h2>Market Prices</h2>

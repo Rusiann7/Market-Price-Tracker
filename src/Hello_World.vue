@@ -22,7 +22,7 @@ export default {
         };
     },
     methods: {
-        // Add any methods here if needed
+       
     },
 };
 

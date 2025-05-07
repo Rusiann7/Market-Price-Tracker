@@ -73,7 +73,6 @@
       <div class="news-list">
         <div v-for="(newsItem, index) in newsList" :key="index" class="news-item">
           <!-- news items -->
-          <!--<img src="{{ newsItem.image }}" alt="Image not found" class="news-image">-->
           <strong class="title">{{ newsItem.title }}</strong>
           <br>
           <br>
@@ -217,7 +216,7 @@ nav a:hover {
 }
 
 nav a:active {
-    background-color: #4a5568;  /* Even lighter for pressed state */
+    background-color: #4a5568;  /* pressed state */
 }
 
 nav li:first-child {
@@ -282,8 +281,8 @@ nav li:first-child {
 }
 
 .main-content {
-  position: relative; /* Make sure content appears above overlay */
-  z-index: 2; /* Ensure content is above the image */
+  position: relative; /* above overlay */
+  z-index: 2; /* content is above the image */
   padding: 20px;
   color: white;
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
@@ -340,14 +339,14 @@ h2 {
 }
 
 .btn:hover {
-  background: #ffd448; /* Lighter yellow (#ffc107 → #ffe082) */
-  color: #001821; /* Dark text on hover for contrast */
+  background: #ffd448; 
+  color: #001821; /
   transform: translateY(-2px);
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .image-container {
-  position: fixed; /* Changed from relative to fixed */
+  position: fixed; 
   width: 100%;
   height: 100vh;
   top: 0;

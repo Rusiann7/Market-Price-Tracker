@@ -113,7 +113,7 @@ export default {
 
 <style scoped>
 .login{
-  position: relative; /* Make sure content appears above overlay */
+  position: relative; /* above overlay */
   z-index: 2;
   display: flex;
   flex-direction: column;
@@ -126,7 +126,6 @@ export default {
   width: 90%;
   color: white;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  /*background: linear-gradient(135deg, #2c2c2c, #333333);*/
   background-color: #232831;
   border-radius: 15px;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
@@ -153,8 +152,8 @@ export default {
 }
 
 .btn:hover {
-  background: #ffd448; /* Lighter yellow (#ffc107 → #ffe082) */
-  color: #001821; /* Dark text on hover for contrast */
+  background: #ffd448; 
+  color: #001821; 
   transform: translateY(-2px);
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
@@ -166,7 +165,7 @@ export default {
 }
 
 .top-text{
-  position: relative; /* Make sure content appears above overlay */
+  position: relative; /* above overlay */
   z-index: 2;
   text-align: center;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -178,19 +177,19 @@ export default {
 .forgot-password {
   display: block;
   text-align: center;
-  color: white; /* Gray color */
-  text-decoration: none; /* Remove underline */
+  color: white; 
+  text-decoration: none; 
   font-size: 14px;
   margin-top: 30px;
   transition: color 0.3s ease;
 }
 
 .forgot-password:hover {
-  color: #808080; /* Change to black on hover */
+  color: #808080; 
 }
 
 .input-field {
-  margin-bottom: 15px; /* Add space below each input field */
+  margin-bottom: 15px; /* space below input field */
   margin-top: 15px;
   padding: 12px 15px;
   width: 100%;
@@ -201,7 +200,7 @@ export default {
 }
 
 .image-container {
-  position: fixed; /* Changed from relative to fixed */
+  position: fixed; 
   width: 100%;
   height: 100vh;
   top: 0;

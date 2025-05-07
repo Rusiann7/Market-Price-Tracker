@@ -218,7 +218,6 @@
     width: 90%;
     color: white;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    /*background: linear-gradient(135deg, #2c2c2c, #333333);*/
     background-color: #232831;
     border-radius: 15px;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
@@ -233,7 +232,7 @@
 
 
 .input-field {
-  margin-bottom: 15px; /* Add space below each input field */
+  margin-bottom: 15px; /* space below each input field */
   margin-top: 15px;
   padding: 12px 15px;
   width: 100%;
@@ -258,8 +257,8 @@
 }
 
 .btn:hover {
-  background: #ffd448; /* Lighter yellow (#ffc107 → #ffe082) */
-  color: #001821; /* Dark text on hover for contrast */
+  background: #ffd448; 
+  color: #001821; 
   transform: translateY(-2px);
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
@@ -271,7 +270,7 @@
 }
 
 .top-text{
-position: relative; /* Make sure content appears above overlay */
+position: relative; /* above overlay */
 z-index: 2;
   text-align: center;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -280,7 +279,7 @@ z-index: 2;
 }
 
 .image-container {
-  position: fixed; /* Changed from relative to fixed */
+  position: fixed; 
   width: 100%;
   height: 100vh;
   top: 0;

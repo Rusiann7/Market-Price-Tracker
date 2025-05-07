@@ -203,7 +203,7 @@ nav a:hover {
 }
 
 nav a:active {
-  background-color: #4a5568;  /* Even lighter for pressed state */
+  background-color: #4a5568;  /* pressed state */
 }
 
 nav li:first-child {
@@ -268,7 +268,7 @@ nav li:first-child {
 }
 
 .home-content {
-  position: relative; /* Make sure content appears above overlay */
+  position: relative; /* above overlay */
   z-index: 2;
   display: flex;
   flex-direction: column;
@@ -281,7 +281,6 @@ nav li:first-child {
   width: 90%;
   color: #ffffff;
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-  /*background: linear-gradient(135deg, #2c2c2c, #333333);*/
   background-color: #232831;
   border-radius: 15px;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
@@ -341,8 +340,8 @@ nav li:first-child {
 }
 
 .btn:hover {
-  background: #ffd448; /* Lighter yellow (#ffc107 → #ffe082) */
-  color: #001821; /* Dark text on hover for contrast */
+  background: #ffd448; 
+  color: #001821; 
   transform: translateY(-2px);
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
@@ -354,7 +353,7 @@ nav li:first-child {
 }
 
 .image-container {
-  position: fixed; /* Changed from relative to fixed */
+  position: fixed; 
   width: 100%;
   height: 100vh;
   top: 0;

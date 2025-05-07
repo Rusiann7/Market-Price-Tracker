@@ -70,7 +70,7 @@
 
   <div class="rating-reviews" id="reviews">
     <div class="ratings-reviews-container">
-      <!-- Overall Rating (Left Side) -->
+      <!-- left side) -->
       <div class="overall-rating">
         <h3>Overall Rating</h3>
         <div class="stars">
@@ -84,7 +84,7 @@
         <p>{{ averageRating }}/5</p>
       </div>
 
-      <!-- Feedback Container (Right Side) -->
+      <!-- right side) -->
       <div class="feedback-container">
         <h2 class="section-title">Ratings & Reviews</h2>
         <div class="feedback-list">
@@ -93,7 +93,7 @@
             :key="index"
             class="feedback-item"
             >
-            <!-- User Info and Rating -->
+            <!--user rating -->
             <div class="user-info">
               <div class="stars user-stars">
                 <span
@@ -122,10 +122,10 @@ export default {
   data() {
     return {
       urlappphp: process.env.VUE_APP_URLAPPPHP,
-      feedbackList: [], // Will hold the list of feedback items
-      feedbackRatings: [], // Will hold ratings extracted from feedbackList
+      feedbackList: [], // feedback items
+      feedbackRatings: [], // ratings feedbackList
       averageRating: 0,
-      roundedRating: 0, // Rounded value of the average rating
+      roundedRating: 0, 
       localUserData: {},
     };
   },
@@ -308,7 +308,7 @@ nav a:hover {
 }
 
 nav a:active {
-  background-color: #4a5568;  /* Even lighter for pressed state */
+  background-color: #4a5568;  /* pressed  */
 }
 
 nav li:first-child {
@@ -372,7 +372,7 @@ nav li:first-child {
   }
 }
 
-/* FEEDBACK */
+/* feeback */
 .ratings-reviews {
   display: flex;
   flex-direction: column;
@@ -390,7 +390,7 @@ nav li:first-child {
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5); 
 }
 
-/* Overall Rating and Feedback Containers */
+/* containers */
 .ratings-reviews-container {
   position: relative; 
   z-index: 2;
@@ -403,7 +403,7 @@ nav li:first-child {
   gap: 40px;
 }
 
-/* Overall Rating and Feedback Styling */
+/* overall styling */
 .overall-rating,
 .feedback-container {
   background-color: #232831;
@@ -414,7 +414,7 @@ nav li:first-child {
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-/* Overall Rating (Left Side) */
+/* Left */
 .overall-rating {
   width: 30%; 
   height: auto;
@@ -422,7 +422,7 @@ nav li:first-child {
   top: 215px;
 }
 
-/* Overall Rating value style */
+/* p */
 .overall-rating p {
   font-size: 2.5rem;
   font-weight: bold;
@@ -431,7 +431,7 @@ nav li:first-child {
   color: white; 
 }
 
-/* Feedback Container (Right Side) */
+/* right side */
 .feedback-container {
   width: 65%; 
   background-color: #232831;
@@ -446,7 +446,6 @@ nav li:first-child {
   scrollbar-color: #4a5568 #2d3748;
 }
 
-/* Hover effect for both containers */
 .overall-rating:hover {
   transform: translateY(-10px);
   box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4); 
@@ -458,7 +457,7 @@ nav li:first-child {
   margin-top: 20px;
 }
 
-/* Individual Feedback Item */
+/* febback item */
 .feedback-item {
   border-top: 2px solid #ddd;
   padding: 15px;
@@ -480,9 +479,8 @@ nav li:first-child {
   padding-bottom: 10px;
 }
 
-/* Stars */
 .stars {
-  font-size: 3rem; /* Larger stars for emphasis */
+  font-size: 3rem; 
   text-align: center;
   transition: transform 0.3s ease;
 }
@@ -495,22 +493,21 @@ nav li:first-child {
 
 .stars span.filled {
   color: #ffd700;
-  filter: drop-shadow(0 0 15px rgba(255, 223, 0, 0.8)); /* Glow effect */
+  filter: drop-shadow(0 0 15px rgba(255, 223, 0, 0.8)); /* glow effect */
 }
 
-/* Hover effect on stars */
 .stars span:hover {
   color: #ffcc00;
-  transform: scale(1.2); /* Slight zoom effect on hover */
+  transform: scale(1.2); /* zoom effect */
 }
 
-/* User stars (smaller) */
+/* small stars) */
 .user-stars {
-  font-size: 1.5rem; /* Smaller stars for user ratings */
+  font-size: 1.5rem; 
   margin-bottom: 5px;
 }
 
-/* Scrollbar customization for feedback container */
+/* scrollbar */
 .feedback-container::-webkit-scrollbar {
   width: 8px;
 }
@@ -524,22 +521,21 @@ nav li:first-child {
   background-color: #2c2c2c;
 }
 
-/* Responsive Adjustments */
 @media (max-width: 1024px) {
   .ratings-reviews-container {
-    flex-direction: column; /* Stack vertically on smaller screens */
+    flex-direction: column; /* vertically */
     align-items: center;
     gap: 20px;
   }
 
   .overall-rating,
   .feedback-container {
-    width: 90%; /* Almost full width on smaller screens */
+    width: 90%; 
     max-width: 600px;
   }
 
   .overall-rating {
-    position: relative; /* Remove sticky positioning on smaller screens */
+    position: relative; 
     top: 0;
   }
 }
@@ -551,7 +547,7 @@ nav li:first-child {
 
   .overall-rating,
   .feedback-container {
-    width: 100%; /* Full width on smaller devices */
+    width: 100%; 
   }
 
   .overall-rating h3 {
@@ -559,7 +555,7 @@ nav li:first-child {
   }
 
   .feedback-container {
-    max-height: 350px; /* Further reduce max-height for mobile */
+    max-height: 350px;
   }
 
   .feedback-item .user-info {
@@ -571,7 +567,7 @@ nav li:first-child {
   }
 
   .stars {
-    font-size: 2rem; /* Adjust star size for smaller screens */
+    font-size: 2rem
   }
 
   .user-stars {
@@ -602,7 +598,7 @@ nav li:first-child {
 }
 
 .top-text{
-  position: relative; /* Make sure content appears above overlay */
+  position: relative; /* above overlay */
   z-index: 2;
   text-align: center;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -611,7 +607,7 @@ nav li:first-child {
 }
 
 .image-container {
-  position: fixed; /* Changed from relative to fixed */
+  position: fixed; 
   width: 100%;
   height: 100vh;
   top: 0;
