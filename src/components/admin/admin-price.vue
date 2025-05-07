@@ -135,6 +135,13 @@
   </div>
 
   <div v-if="$route.path === '/addItem'">
+    <button class="btn" @click.prevent="$router.push('/adminPrice')"> 
+        <svg xmlns="http://www.w3.org/2000/svg" 
+          height="24px" viewBox="0 -960 960 960" 
+          width="24px" fill="#e3e3e3">
+          <path d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z"/>
+        </svg> 
+      </button>
     <div class="addItem">
       <div class="form-box">
         <form
@@ -163,6 +170,13 @@
   </div>
 
   <div v-if="$route.path === '/editItem'">
+    <button class="btn" @click.prevent="$router.push('/adminPrice')"> 
+        <svg xmlns="http://www.w3.org/2000/svg" 
+          height="24px" viewBox="0 -960 960 960" 
+          width="24px" fill="#e3e3e3">
+          <path d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z"/>
+        </svg> 
+      </button>
     <div class="addItem">
       <div class="form-box">
 
@@ -196,6 +210,13 @@
   </div>
 
   <div v-if="$route.path === '/deleteItem'">
+    <button class="btn" @click.prevent="$router.push('/adminPrice')"> 
+        <svg xmlns="http://www.w3.org/2000/svg" 
+          height="24px" viewBox="0 -960 960 960" 
+          width="24px" fill="#e3e3e3">
+          <path d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z"/>
+        </svg> 
+      </button>
     <div class="addItem">
       <div class="form-box">
 
@@ -205,7 +226,7 @@
           <br>
 
           <select v-model="selectedItem" class="btn" required>
-            <option value="">-- Select an item --</option>
+            <option value="" disabled>-- Select an item --</option>
             <option v-for="price in prices" :key="price.RiceType" :value="price.RiceType">
               {{ price.RiceType }}
             </option>
@@ -288,7 +309,7 @@ methods: {
       const newItemName = this.FormDataP.newItem.trim();
       if (!newItemName) {
         console.error("Item name cannot be empty.");
-        alert("Please enter an item name."); // Simple feedback
+        alert("Please enter an item name."); // error feedback
         return;
       }
 
@@ -311,8 +332,9 @@ methods: {
       const result = await response.json();
 
       if (result.success) {
-        this.FormDataP.newPrice = ''; // Clear the form
-        this.$router.push('/adminPrice'); // Navigate back to the price list
+        this.FormDataP.newPrice = ''; // clear the form
+        alert("Successfully added item.");
+        this.$router.push('/adminPrice'); // go back to the price list
       } else {
         console.error("Failed to add item:", result.error);
       }
@@ -351,9 +373,10 @@ methods: {
       const result = await response.json();
 
       if (result.success) {
-        this.FormDataP.newPrice = ''; // Clear the form
+        this.FormDataP.newPrice = ''; // clear the form
         this.selectedItem = null;
-        this.$router.push('/adminPrice'); // Navigate back to the price list
+        alert("Successfully edited item.");
+        this.$router.push('/adminPrice'); // go back to the price list
       } else {
         console.error("Failed to edit item:", result.error);
       }
@@ -391,7 +414,8 @@ methods: {
 
       if (result.success) {
         this.selectedItem = null;
-        this.$router.push('/adminPrice'); // Navigate back to the price list
+        alert("Successfully deleted item.");
+        this.$router.push('/adminPrice'); // go back to the price list
       } else {
         console.error("Failed to delete item:", result.error);
       }
@@ -410,10 +434,6 @@ methods: {
 
   handleEditClick(price) {
     console.log('Editing price:', price);
-    // Implement your edit logic here, for example:
-    // this.$router.push(`/edit-price/${price.id}`);
-    // Or show a modal:
-    // this.showEditModal(price);
   },
 
   handleClickOutside(event) {
@@ -430,11 +450,15 @@ methods: {
 
 mounted(){
   this.getPrices();
+  this.priceInterval = setInterval(() => {
+      this.getPrices();
+    }, 5000);
   document.addEventListener("click", this.handleClickOutside);
 },
 
 beforeUnmount() {
   document.removeEventListener("click", this.handleClickOutside);
+  clearInterval(this.priceInterval);
 },
 }
 
@@ -511,7 +535,7 @@ nav a:hover {
 }
 
 nav a:active {
-  background-color: #4a5568;  /* Even lighter for pressed state */
+  background-color: #4a5568;  /* pressed state */
 }
 
 nav li:first-child {
@@ -577,15 +601,15 @@ nav li:first-child {
 
 .clickable-cell {
   cursor: pointer;
-  padding: 12px 15px; /* Match your table cell padding */
+  padding: 12px 15px; /* table cell padding */
 }
 
 .header-section {
   display: flex;
-  align-items: center;      /* Vertical alignment */
-  justify-content: space-between; /* Pushes title left, button right */
-  margin-bottom: 24px;     /* Spacing below header */
-  gap: 16px; /* Ensures consistent spacing */
+  align-items: center;      /* vertical alignment */
+  justify-content: space-between; /* put title left, button right */
+  margin-bottom: 24px;     
+  gap: 16px; 
   padding: 8px 0;
   color: #ffffff;
 }
@@ -594,7 +618,7 @@ nav li:first-child {
   margin: 0;
   font-size: 1.25rem;
   font-weight: 600;
-  color: #ffffff; /* Use direct color instead of variable */
+  color: #ffffff; 
 }
 
 .btn {
@@ -611,8 +635,8 @@ nav li:first-child {
 }
 
 .btn:hover {
-  background: #ffd448; /* Lighter yellow (#ffc107 → #ffe082) */
-  color: #001821; /* Dark text on hover for contrast */
+  background: #ffd448; 
+  color: #001821; 
   transform: translateY(-2px);
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
@@ -633,9 +657,9 @@ nav li:first-child {
   width: 100%;
   overflow: hidden;
   background-color: #232831;
-  border-radius: 15px;  /* This creates the rounded corners */
+  border-radius: 15px;  /* rounded corners */
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
-  margin: 15px auto; /* Center the container */
+  margin: 15px auto; /* center   */
   padding: 15px;
 }
 
@@ -645,14 +669,14 @@ nav li:first-child {
 }
 
 .scroll {
-  max-height: 500px; /* Adjust this value as needed */
+  max-height: 500px; 
   overflow-y: auto;
   position: relative;
-  border-radius: 4px; /* Optional rounded corners */
+  border-radius: 4px; /* rounded corners */
 }
 
 .main-content {
-  position: relative; /* Make sure content appears above overlay */
+  position: relative; /* above overlay */
   z-index: 2;
   padding-top: 0;
   margin-top: -180px;
@@ -673,7 +697,7 @@ nav li:first-child {
   margin: 25px 0;
   font-size: 0.9rem;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  min-width: 750px;
+  min-width: 900px;
   width: 100%;
   box-shadow: 0 2px 4px rgba(0,0,0,0.1);
   overflow: hidden;
@@ -694,7 +718,17 @@ nav li:first-child {
 }
 
 .table-content tbody tr:nth-of-type(even) {
-  background-color: #f3f3f3; /* Changed to be different from odd rows */
+  background-color: #f3f3f3; 
+}
+
+.table-content tbody tr:hover {
+  background-color: #e9e9e9; /* hover effect */
+  cursor: pointer; 
+}
+
+.selected-row {
+  background-color: #ffe082 !important; /* selected row */
+  color: #333 !important;
 }
 
 .table-content th,
@@ -703,7 +737,38 @@ nav li:first-child {
 }
 
 .table-content tbody tr:last-of-type {
-  border-bottom: 2px solid #1e1e1e;
+  border-bottom: #1e1e1e;
+}
+
+@media (max-width: 768px) {
+  .table-content {
+    min-width: 100%;
+    font-size: 0.85rem;
+  }
+
+  .table-content th,
+  .table-content td {
+    padding: 10px 12px;
+  }
+
+  .main-content {
+    padding: 0 10px;
+  }
+}
+
+@media (max-width: 480px) {
+  .table-content {
+    font-size: 0.8rem;
+  }
+
+  .table-content th,
+  .table-content td {
+    padding: 8px 10px;
+  }
+
+  .compare-content {
+    padding: 15px;
+  }
 }
 
 .addItem {
@@ -718,7 +783,7 @@ nav li:first-child {
   width: 90%;
   color: white;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background: linear-gradient(135deg, #2c2c2c, #333333);
+  background-color: #232831;
   border-radius: 15px;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
   box-sizing: border-box;
@@ -735,7 +800,7 @@ nav li:first-child {
 }
 
 .input-field {
-  margin-bottom: 15px; /* Add space below each input field */
+  margin-bottom: 15px; /* space below each input field */
   margin-top: 15px;
   padding: 12px 15px;
   width: 100%;
@@ -746,7 +811,7 @@ nav li:first-child {
 }
 
 .top-text {
-  position: relative; /* Make sure content appears above overlay */
+  position: relative; /* above overlay */
   z-index: 2;
   color: #ffffff;
   text-align: center;
@@ -757,7 +822,7 @@ nav li:first-child {
 }
 
 .image-container {
-  position: fixed; /* Changed from relative to fixed */
+  position: fixed; 
   width: 100%;
   height: 100vh;
   top: 0;

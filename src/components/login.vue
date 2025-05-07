@@ -97,10 +97,12 @@ export default {
           localStorage.setItem("userData", JSON.stringify(this.FormData));
 
           this.FormData = { email: "", initpassword: "", conpassword: "" };
+          alert("Successfully logged in.");
 
           await this.$router.replace("/adminHome");
         } else {
-          this.responseMessage = result.error || "Login failed";
+          this.responseMessage = result.error || alert("Logged in failed.");
+          alert("Incorrect email or password.");
         }
       } catch (error) {
         console.error("Error:", error);
