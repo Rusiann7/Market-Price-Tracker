@@ -42,14 +42,14 @@ const routes = [
     path: "/adminHome",
     name: "adminDashboard",
     component: AdminHome,
-    meta: { requiresAuth: true, title: "Admin-Home" },
+    meta: { requiresAuth: true, title: "Admin Home" },
   },
 
   {
     path: "/adminPrice",
     name: "adminPrice",
     component: adminPrice,
-    meta: { requiresAuth: true, title: "Admin-Price" }
+    meta: { requiresAuth: true, title: "Admin Price" }
   },
 
   {
@@ -77,14 +77,14 @@ const routes = [
     path: "/adminUser",
     name: "adminUser",
     component: adminUser,
-    meta: { requiresAuth: true, title: "Admin-User" }
+    meta: { requiresAuth: true, title: "Admin User" }
   },
 
   {
     path: "/adminControl",
     name: "adminControl",
     component: adminCtrl,
-    meta: { requiresAuth: true, title: "Admin-Control" }
+    meta: { requiresAuth: true, title: "Admin Control" }
   },
 
   {
