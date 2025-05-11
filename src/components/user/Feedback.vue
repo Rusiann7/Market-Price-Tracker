@@ -360,7 +360,7 @@ nav li:first-child {
   margin-top: 250px;
   color: #ffffff;
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-  padding: 20px;
+  padding: 15px;
   text-align: center;
   background-color: #232831;
   border-radius: 15px;  /* rounded corners */
