@@ -1,0 +1,443 @@
+commit a24fc634ab2f9cfbcfb8a443006144718a4156d1
+Author: Rusiann <Rusiann7@protonmail.com>
+Date:   Mon May 12 00:08:00 2025 +0800
+
+    fixed padding
+
+commit 062c3869a6ec1a3a860b7527e3e948b9bbd681ce
+Author: Rusiann <Rusiann7@protonmail.com>
+Date:   Wed May 7 20:12:02 2025 +0800
+
+    cleaned the title
+
+commit 8c1050d855ef3e0605124c616b9a2a228220b719
+Author: Rusiann <Rusiann7@protonmail.com>
+Date:   Wed May 7 19:43:09 2025 +0800
+
+    added the polling
+
+commit f67201b2df60bc750835f46b938ae36c0f2d2c3b
+Author: Rusiann <Rusiann7@protonmail.com>
+Date:   Wed May 7 19:28:10 2025 +0800
+
+    fixed some stuff
+
+commit 374c4df5c1b0bdd3886df08feb319e85c845a466
+Author: Rusiann <Rusiann7@protonmail.com>
+Date:   Wed May 7 12:37:26 2025 +0800
+
+    added alert if log in failed and did some styles at admin prices
+
+commit 46f1fad8fd3409a0039a6e538400e6a74711ddf5
+Author: Rusiann <Rusiann7@protonmail.com>
+Date:   Wed May 7 10:51:48 2025 +0800
+
+    fixed an error
+
+commit 165d31673714e4c8225547790335aea4975a9bcb
+Author: Rusiann <Rusiann7@protonmail.com>
+Date:   Wed May 7 08:28:19 2025 +0800
+
+    cleaned the code removed unused comments
+
+commit 68a335fe2004d8cb6be29b33ef0da53fc2a9495a
+Author: Rusiann <Rusiann7@protonmail.com>
+Date:   Tue May 6 13:51:50 2025 +0800
+
+    enabled polling every 5 seconds
+
+commit 7403f4a3f5a135d34ef4aa1aa7e0ab3b7c982cd7
+Author: Rusiann <Rusiann7@protonmail.com>
+Date:   Mon May 5 13:42:02 2025 +0800
+
+    updates
+
+commit fa603520a0520456337d01ac71f7d089da1fd319
+Author: Rusiann <Rusiann7@protonmail.com>
+Date:   Thu May 1 10:10:01 2025 +0800
+
+    update the styles
+
+commit e1f09c10bc283a4b9a35e0c8f43964ecde889a6f
+Author: Rusiann <Rusiann7@protonmail.com>
+Date:   Wed Apr 30 10:41:16 2025 +0800
+
+    did some stuff
+
+commit ceb09e46ec1773812c55c806c851f098e0851f7a
+Author: Rusiann <Rusiann7@protonmail.com>
+Date:   Tue Apr 29 10:28:00 2025 +0800
+
+    updated app.php backup
+
+commit 76437fdd4376a4079a382836fd8ff848876de41f
+Author: Rusiann <Rusiann7@protonmail.com>
+Date:   Sun Apr 27 18:41:31 2025 +0800
+
+    update again
+
+commit 26f3eb5de3753365ef6ef8cacb02d7f194b258c3
+Author: Rusiann <Rusiann7@protonmail.com>
+Date:   Sun Apr 27 18:37:36 2025 +0800
+
+    update
+
+commit 6b887d02a2c85416a378ba1e4501ed63c9d83a5f
+Author: Rusiann <Rusiann7@protonmail.com>
+Date:   Sun Apr 27 18:34:24 2025 +0800
+
+    coc update
+
+commit 339ee2c83247c7027c0192a032e3be4e757304c3
+Author: Rusiann <Rusiann7@protonmail.com>
+Date:   Sun Apr 27 18:33:11 2025 +0800
+
+    coc
+
+commit 04d696e4fc9f77dffcb8b7bd1aa98021400256f1
+Author: Rusiann <Rusiann7@protonmail.com>
+Date:   Sun Apr 27 18:22:54 2025 +0800
+
+    fixed some stuff
+
+commit 7b156cd91b7aec236ac176203c46b9a28b9a1b85
+Author: Rusiann <Rusiann7@protonmail.com>
+Date:   Wed Apr 23 16:24:42 2025 +0800
+
+    did some stuff
+
+commit d621e3ded4571a7716635c819dc65834f4c46282
+Author: Rusiann <Rusiann7@protonmail.com>
+Date:   Wed Apr 23 15:58:40 2025 +0800
+
+    added somestuff
+
+commit 99201d20f19dcca9bd9d780d18729b84f44c4560
+Author: Rusiann <Rusiann7@protonmail.com>
+Date:   Wed Apr 23 15:05:23 2025 +0800
+
+    updated backup php
+
+commit 5c0c129ee9b9ed613c01bd1dd1b39f7c21518e70
+Author: Rusiann <Rusiann7@protonmail.com>
+Date:   Wed Apr 23 15:00:36 2025 +0800
+
+    added copyright
+
+commit f10157c186b38571a0f2daa57cc9fb32c2dc9931
+Author: Rusiann <Rusiann7@protonmail.com>
+Date:   Wed Apr 23 13:59:50 2025 +0800
+
+    did some fixes bitchessssss
+
+commit defe7267f8503473e2086b080249ef69556388f3
+Author: Rusiann <Rusiann7@protonmail.com>
+Date:   Tue Apr 22 10:29:43 2025 +0800
+
+    did some style stuff
+
+commit bfbef6927f7f743502de8d1bd15b96b3cef166bd
+Author: Rusiann <Rusiann7@protonmail.com>
+Date:   Tue Apr 22 08:32:06 2025 +0800
+
+    fixed some styles
+
+commit 106094c552625156a42eb50c743cc5b803934627
+Author: Rusiann <Rusiann7@protonmail.com>
+Date:   Tue Apr 22 08:13:15 2025 +0800
+
+    finixhed compare
+
+commit 035c560ffd27ba25d86e7834e0a4cce92a0bd1c6
+Author: Rusiann <Rusiann7@protonmail.com>
+Date:   Mon Apr 21 19:22:37 2025 +0800
+
+    fixed some stuff
+
+commit cdd2c749e4342f4d3874b99839093d1b2cac6267
+Author: Rusiann <Rusiann7@protonmail.com>
+Date:   Mon Apr 21 15:45:22 2025 +0800
+
+    added the ai summarizer and configed news
+
+commit 1fa000589ff6b92b59b3489309e0dda6ad3c6590
+Author: Rusiann <Rusiann7@protonmail.com>
+Date:   Mon Apr 21 14:51:22 2025 +0800
+
+    added news
+
+commit d50abdf4cdf882801b85d3a2a8b81fb43e5b8c71
+Author: Rusiann <Rusiann7@protonmail.com>
+Date:   Tue Apr 15 13:42:27 2025 +0800
+
+    updated backup
+
+commit 9020af3c17293c5732c13f962721fcd82f18039e
+Author: Rusiann <Rusiann7@protonmail.com>
+Date:   Tue Apr 15 13:40:36 2025 +0800
+
+    fiex some stuff and got chartjs and ai to work
+
+commit b630d292fa9311f4d44bc343a07398ffdb1477dd
+Author: Rusiann <Rusiann7@protonmail.com>
+Date:   Mon Apr 14 13:44:44 2025 +0800
+
+    fixed some styles
+
+commit a756f494515f881970f6425c0936cf98214cca43
+Author: Rusiann <Rusiann7@protonmail.com>
+Date:   Mon Apr 14 09:58:34 2025 +0800
+
+    cleaned the code
+
+commit 71a4dcfbc0e195cb8ca83ee1c25eb0d35bd0a3a6
+Author: Rusiann <Rusiann7@protonmail.com>
+Date:   Mon Apr 14 08:45:07 2025 +0800
+
+    added gemini ai
+
+commit 65a0f8dfdcb84f04c284e8aa7aac04b63708b905
+Author: Rusiann <Rusiann7@protonmail.com>
+Date:   Mon Apr 14 08:34:12 2025 +0800
+
+    updated styles
+
+commit d3c001a743444bfc7920d73242ce08493843d18b
+Author: Rusiann <Rusiann7@protonmail.com>
+Date:   Mon Apr 14 08:23:08 2025 +0800
+
+    updated styles
+
+commit 15213d4f430be22fb0258693e0446e7e09a3af9e
+Author: Rusiann <Rusiann7@protonmail.com>
+Date:   Mon Apr 14 08:20:42 2025 +0800
+
+    added styles
+
+commit 42270e1934358a544d1de347c1b9c8ea1c22b1aa
+Author: Rusiann <Rusiann7@protonmail.com>
+Date:   Mon Apr 14 08:15:33 2025 +0800
+
+    updated styles
+
+commit fd45e7a17e0db3bdfa17b055ce99d46e9cf3e8bc
+Author: Rusiann <Rusiann7@protonmail.com>
+Date:   Mon Apr 14 08:12:15 2025 +0800
+
+    updted styles
+
+commit a5d1d9c34c77e536ad4637e83589d2e0213c097b
+Author: Rusiann <Rusiann7@protonmail.com>
+Date:   Mon Apr 14 08:03:17 2025 +0800
+
+    fixed styles
+
+commit e8c62bb16b04e737f94877a8bb5f252cf42377ba
+Author: Rusiann <Rusiann7@protonmail.com>
+Date:   Sun Apr 13 20:57:15 2025 +0800
+
+    clean up
+
+commit a56536a6046400bef9a4e89b60a15773f4977113
+Author: Rusiann <Rusiann7@protonmail.com>
+Date:   Sun Apr 13 20:44:22 2025 +0800
+
+    delete function is working
+
+commit 63086bc5da91cc34c5f4d2d7d1dfb52efd3650c0
+Author: Rusiann <Rusiann7@protonmail.com>
+Date:   Sun Apr 13 20:12:20 2025 +0800
+
+    updated readme
+
+commit 644ce414bcb43632aa1e99875a1f535ae3461dbc
+Author: Rusiann <Rusiann7@protonmail.com>
+Date:   Sat Apr 12 15:21:02 2025 +0800
+
+    rearrange items
+
+commit b47f341b1b8aee6628618328b87a148e79d451e8
+Author: Rusiann <Rusiann7@protonmail.com>
+Date:   Sat Apr 12 15:13:09 2025 +0800
+
+    added the news on the nav bar
+
+commit c556195ec3c9c5d26bfd1af0538c56b5de7abe2b
+Author: Rusiann <Rusiann7@protonmail.com>
+Date:   Sat Apr 12 14:58:38 2025 +0800
+
+    added the delete column
+
+commit e19b2f21cd6151ca7cf532bfa62f074b59f95133
+Author: Rusiann <Rusiann7@protonmail.com>
+Date:   Fri Apr 11 17:20:54 2025 +0800
+
+    added styles
+
+commit 96a56bf8879d064c30539d3b603dc546af452146
+Author: Rusiann <Rusiann7@protonmail.com>
+Date:   Fri Apr 11 09:50:07 2025 +0800
+
+    added styles
+
+commit de78a8061d2a043b80e8739a38cc38baae5e04a2
+Author: Rusiann <Rusiann7@protonmail.com>
+Date:   Fri Apr 11 09:41:44 2025 +0800
+
+    added styles
+
+commit ebf03ac67c38548ae7a9891c85ef00d9018db06f
+Author: Rusiann <Rusiann7@protonmail.com>
+Date:   Fri Apr 11 09:16:50 2025 +0800
+
+    feedback styles
+
+commit 090a2c08969a3aa2ff4877d0133f4a4608e04a8d
+Author: Rusiann <Rusiann7@protonmail.com>
+Date:   Fri Apr 11 09:09:40 2025 +0800
+
+    added styles
+
+commit a3595db2befaa6de9b2eb8b21f4feaf0a19d158a
+Author: Rusiann <Rusiann7@protonmail.com>
+Date:   Wed Apr 9 17:37:46 2025 +0800
+
+    updated backup remove unused tags at ctrl
+
+commit 743f6efc0d958c325e47e99be9fa32b85cd02bba
+Author: Rusiann <Rusiann7@protonmail.com>
+Date:   Tue Apr 8 18:59:34 2025 +0800
+
+    fixed xampp
+
+commit 1dfff61e01e18fedcf1c2baa0abd7849548fb193
+Author: Rusiann <Rusiann7@protonmail.com>
+Date:   Tue Apr 8 18:49:39 2025 +0800
+
+    updated the backup
+
+commit 6ffff142994dba94d7f9e69da474ca89b318061d
+Author: Rusiann <Rusiann7@protonmail.com>
+Date:   Tue Apr 8 18:47:58 2025 +0800
+
+    added the news file
+
+commit c750d9c27fb281cbc0c714827329d5d616fd85d3
+Author: Rusiann <Rusiann7@protonmail.com>
+Date:   Tue Apr 8 18:33:48 2025 +0800
+
+    added a disclaimer about admin chnages
+
+commit c152b84ae0d72ede4047a5bffbfc5cc97a4d75fd
+Author: Rusiann <Rusiann7@protonmail.com>
+Date:   Tue Apr 8 18:09:49 2025 +0800
+
+    added the edit function
+
+commit f757f651b362bc3864ce62212e226d10d79534c2
+Author: Rusiann <Rusiann7@protonmail.com>
+Date:   Tue Apr 8 11:53:52 2025 +0800
+
+    its that fucking easy
+
+commit cdef29a83975eacdc5553ab93dc2ebf6cbd9ba67
+Author: Rusiann <Rusiann7@protonmail.com>
+Date:   Tue Apr 8 11:31:24 2025 +0800
+
+    updated backup
+
+commit 7214d10065ba849ab22d3de529c27163225e5887
+Author: Rusiann <Rusiann7@protonmail.com>
+Date:   Tue Apr 8 11:30:11 2025 +0800
+
+    finixhed compare and removed unused code
+
+commit 5e15acca4eaf294117767ca085a9e6c14f7eec90
+Author: Rusiann <Rusiann7@protonmail.com>
+Date:   Tue Apr 8 08:19:57 2025 +0800
+
+    close sidebar when click outside
+
+commit 6dee2df80fbe6d9e2875aa0a2167f6b95e7cc2d6
+Author: Rusiann <Rusiann7@protonmail.com>
+Date:   Mon Apr 7 23:29:34 2025 +0800
+
+    backup of main php file
+
+commit 67226b6e9f35262e4d1d9a0e7b652bcb9fda583b
+Author: Rusiann <Rusiann7@protonmail.com>
+Date:   Mon Apr 7 23:27:52 2025 +0800
+
+    for compare i added the click anywhere to close the sidebar on mobile. for admin prices i added the create new columns. general sql fixes and other stuff.
+
+commit d64d48acfd91e14f924a8c621e56eecc67deda05
+Author: Rusiann <Rusiann7@protonmail.com>
+Date:   Mon Apr 7 16:06:37 2025 +0800
+
+    added styles to tables
+
+commit 667e2bb273b3a723933e3c860f9ebb3eec560237
+Author: Rusiann <Rusiann7@protonmail.com>
+Date:   Mon Apr 7 14:19:53 2025 +0800
+
+    created a backup app.php and make the prices conenct to the sql
+
+commit 0559e6bccbc6376b3bda63b622d5d14bdd1f610b
+Author: Rusiann <Rusiann7@protonmail.com>
+Date:   Mon Apr 7 07:42:52 2025 +0800
+
+    added date
+
+commit dc1bb01c61609b5914623e5422673ad3911feeb0
+Author: Rusiann <Rusiann7@protonmail.com>
+Date:   Sun Apr 6 22:12:47 2025 +0800
+
+    fixed the runner
+
+commit 45b3820a55342d9f68080f99230dd1c0c2ff7da8
+Author: Rusiann <Rusiann7@protonmail.com>
+Date:   Sun Apr 6 21:58:49 2025 +0800
+
+    finalized the eula
+
+commit 1e23eb1abba79784b21d20f9b94472f327eb76ef
+Author: Rusiann <Rusiann7@protonmail.com>
+Date:   Sun Apr 6 21:18:06 2025 +0800
+
+    add the admin control and created the toc
+
+commit df3c3b8637de3fd91757de0b905175c6dc00fa61
+Author: Rusiann <Rusiann7@protonmail.com>
+Date:   Sun Apr 6 20:01:57 2025 +0800
+
+    moved files into folder remove unused app.php
+
+commit 22cf776258ffc70cba2b896515f2e92bfb93595f
+Author: Rusiann <Rusiann7@protonmail.com>
+Date:   Sun Apr 6 19:53:18 2025 +0800
+
+    added jwt token
+
+commit 501f60703a64656cb65e7785315abb30b61d2f05
+Author: Rusiann <Rusiann7@protonmail.com>
+Date:   Fri Apr 4 22:05:39 2025 +0800
+
+    fixed some things
+
+commit 721422c7ed29728070448b31762f095e15b430d9
+Author: Rusiann <Rusiann7@protonmail.com>
+Date:   Wed Mar 26 16:08:48 2025 +0800
+
+    Main
+
+commit 24ffefdd58d5307a9019b8766a210edf1e3071a3
+Author: Rusiann <Rusiann7@protonmail.com>
+Date:   Wed Mar 26 16:07:18 2025 +0800
+
+    Initial commit
+
+commit ecc63cad11bbbc843c2810bc7ab70896c5ebd96b
+Author: Rusiann <Rusiann7@protonmail.com>
+Date:   Tue Feb 25 10:21:11 2025 +0800
+
+    init
