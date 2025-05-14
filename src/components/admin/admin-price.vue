@@ -107,6 +107,7 @@
         </button>
       </div>
       <div class="price-list">
+        <input class="input-field" type="text" v-model="searchQuery" placeholder="Search ..." @input="filterPrices"/>
         <div class="scroll">
           <table class="table-content">
             <thead>
@@ -118,7 +119,7 @@
             </thead>
 
             <tbody>
-              <tr v-for="price in prices" :key="price.RiceType + price.Source">
+              <tr v-for="price in filteredPrices" :key="price.RiceType + price.Source">
                 <td>{{ price.RiceType }}</td>
                 <td>₱{{ price.Price }}</td>
                 <td><a :href="price.Source" target="_blank" rel="noopener noreferrer" @click.stop style="color: black;">Source</a></td>
@@ -251,8 +252,14 @@ data(){
     FormDataP: {
       newPrice: "",
     },
+    searchQuery: '',
+    filteredPrices: []
   }
 },
+
+created() {
+    this.filteredPrices = [...this.prices];
+  },
 
 methods: {
 
@@ -281,7 +288,7 @@ methods: {
         ...item,
         Price: typeof item.Price === 'number' ? item.Price.toFixed(2) : item.Price
         }));
-
+        this.filteredPrices = [...this.prices]; 
       } else {
         console.error("Failed to fetch Prices:", result.error);
       }
@@ -442,6 +449,25 @@ methods: {
       }
     }
   },
+
+  filterPrices() {
+    if (!this.searchQuery) {
+      this.filteredPrices = [...this.prices];
+      return;
+    }
+    
+    const query = this.searchQuery.toLowerCase();
+    this.filteredPrices = this.prices.filter(price => 
+      price.RiceType.toLowerCase().includes(query)
+    );
+  }
+},
+
+watch: {
+  prices(newPrices) {
+    this.filteredPrices = [...newPrices];
+    this.filterPrices();
+  }
 },
 
 mounted(){

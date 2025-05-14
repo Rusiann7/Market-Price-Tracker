@@ -92,6 +92,8 @@
           <h2>Market Prices</h2>
         </div>
         <div class="price-list">
+          <input class="input-field" type="text" v-model="searchQuery" placeholder="Search ..." @input="filterPrices"/>
+
           <table class="table-content">
             <thead>
               <tr>
@@ -103,7 +105,7 @@
 
             <tbody>
               <tr 
-                v-for="price in prices"
+                v-for="price in filteredPrices"
                 :key="price.RiceType + price.Source" 
                 @click="handleRowClick(price)"
                 :class="{ 'selected-row': selectedItem && selectedItem.RiceType === price.RiceType }"
@@ -148,8 +150,15 @@ export default {
           y: { beginAtZero: true },
         },
       },
+      searchQuery: '',
+      filteredPrices: []
     };
   },
+
+  created() {
+    this.filteredPrices = [...this.prices];
+  },
+  
   methods: {
     showSidebar() {
       this.$refs.sidebar.style.display = "flex";
@@ -176,7 +185,7 @@ export default {
           ...item,
           Price: typeof item.Price === 'number' ? item.Price.toFixed(2) : item.Price
           }));
-
+          this.filteredPrices = [...this.prices]; 
         } else {
           console.error("Failed to fetch Prices:", result.error);
         }
@@ -225,9 +234,28 @@ export default {
       } catch (error) {
         console.error("Error fetching Prices:", error);
       }
+    },
+    
+    filterPrices() {
+      if (!this.searchQuery) {
+        this.filteredPrices = [...this.prices];
+        return;
+      }
+    
+      const query = this.searchQuery.toLowerCase();
+      this.filteredPrices = this.prices.filter(price => 
+        price.RiceType.toLowerCase().includes(query)
+      );
     }
   },
 
+  watch: {
+    prices(newPrices) {
+      this.filteredPrices = [...newPrices];
+      this.filterPrices();
+    }
+  },
+  
   mounted(){
     this.getPrices();
     this.priceInterval = setInterval(() => {
@@ -666,6 +694,17 @@ nav li:first-child {
 
 .ai-summarizer p {
   line-height: 1.5;
+}
+
+.input-field {
+  margin-bottom: 15px; /* space below each input field */
+  margin-top: 15px;
+  padding: 12px 15px;
+  width: 100%;
+  font-size: 16px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
 }
 
 .image-container {
