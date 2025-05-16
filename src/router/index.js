@@ -81,6 +81,13 @@ const routes = [
   },
 
   {
+    path: "/createUser",
+    name: "createUser",
+    component: adminUser,
+    meta: { requiresAuth: true, title: "Admin User" }
+  },
+
+  {
     path: "/adminControl",
     name: "adminControl",
     component: adminCtrl,

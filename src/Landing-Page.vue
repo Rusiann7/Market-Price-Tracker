@@ -108,18 +108,14 @@ export default {
 
     handleTermsClick(event) {
       if (event.shiftKey && event.ctrlKey && event.altKey) {
-        // Shift + click - open /yes
         const termsUrl = this.$router.resolve('/yessssssssssssssssssssssssssssssssssssss').href;
         window.open(termsUrl, '_blank', 'noopener,noreferrer');
       } else {
-        // Normal click - open terms in new tab
         const termsUrl = this.$router.resolve('/termsandcondition').href;
         window.open(termsUrl, '_blank', 'noopener,noreferrer');
       }
     },
   },
-
-  
 
   mounted() {
     document.addEventListener("click", this.handleClickOutside);

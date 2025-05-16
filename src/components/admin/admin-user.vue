@@ -68,6 +68,8 @@
     <div class="img-overlay"></div>
   </div>
 
+  <div v-if="$route.path === '/createUser'">
+
   <div class="top-text">
     <h1>Sign Up</h1>
   </div>
@@ -128,6 +130,40 @@
       </form>
     </div>
   </div>
+  </div>
+
+  <div v-if="$route.path === '/adminUser'">
+    
+    <div class="overall-rating">
+        <p>Choose what will you do</p>
+
+        <div class="button-container">
+            
+          <button class="btn" @click.prevent="$router.push('/createUser')">
+            Add Users
+          </button>
+
+          <button class="btn" @click.prevent="$router.push('/login')">
+            Remove Users
+          </button>
+
+        </div>
+      </div>
+
+    <div class="main">
+      <div
+      v-for="(user, index) in userList"
+      :key="index"
+      class="feedback-item"
+      >
+
+      <!-- User -->
+      <strong class="username">{{ user.email }}</strong>
+      <p class="comment">{{ user.created }}</p>
+    </div>
+    </div>
+
+  </div>
 </template>
 
 <script>
@@ -137,6 +173,7 @@ export default {
   name: "adminUser",
   data() {
     return {
+      userList: [],
       localUserData: {},
       FormData: JSON.parse(localStorage.getItem("userData")) || {
         email: "",
@@ -183,6 +220,37 @@ export default {
       }
     },
 
+    async fetchUsers() {
+      try {
+        const token = getToken();
+
+        if (!token) {
+          console.error("No token found, redirecting to login.");
+          this.$router.replace("/login");
+          return;
+        }
+        const response = await fetch(this.urlappphp, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({ action: "getUsers" }),
+        });
+
+        const result = await response.json();
+        console.log("Feedback response:", result);
+
+        if (result.success) {
+          this.userList = result.users;
+        }else {
+          console.error("Failed to fetch users:", result.error);
+        }
+      }catch (error) {
+        console.error("Error fetching users:", error);
+      }
+    },
+
     async logout() {
       try {
         removeToken();
@@ -214,6 +282,7 @@ export default {
   },
 
   mounted() {
+    this.fetchUsers();
     // clear form data when mounted
     this.FormData = {
       email: "",
@@ -449,6 +518,51 @@ nav li:first-child {
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   padding-top: 50px;
   margin: 15px;
+}
+
+.main {
+  position: relative; /* above overlay */
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 25px;
+  margin: 0 auto;
+  max-width: 450px;
+  width: 90%;
+  color: white;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #232831;
+  border-radius: 15px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+  box-sizing: border-box;
+  min-height: auto;
+  max-height: 450px;
+  align-self: center;
+  margin-top: 100px;
+  margin-bottom: 0;
+  font-size: 17px;
+}
+
+.overall-rating {
+  position: relative; /* above overlay */
+  z-index: 2;
+  background-color: #232831;
+  color: white;
+  padding: 25px;
+  border-radius: 15px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Left */
+.overall-rating {
+  width: 30%; 
+  height: auto;
+  position: sticky; 
+  top: 215px;
 }
 
 .image-container {
