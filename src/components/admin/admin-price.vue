@@ -320,6 +320,7 @@ methods: {
   },
 
   async addItem(){
+    this.isLoading = true;
     try {
       const newItemName = this.FormDataP.newItem.trim();
       if (!newItemName) {
@@ -355,10 +356,13 @@ methods: {
       }
     } catch (error) {
       console.error("Error adding items:", error);
+    } finally {
+      this.isLoading = false;
     }
   },
 
   async editItem(){
+    this.isLoading = true;
     try {
 
       if (!this.selectedItem || !this.FormDataP.newPrice) {
@@ -397,10 +401,13 @@ methods: {
       }
     } catch (error) {
       console.error("Error editing items:", error);
+    } finally {
+      this.isLoading = false;
     }
   },
 
   async delItem(){
+    this.isLoading = true;
     try {
 
       if (!this.selectedItem) {
@@ -436,6 +443,8 @@ methods: {
       }
     } catch (error) {
       console.error("Error deleting items:", error);
+    } finally {
+      this.isLoading = false;
     }
   },
 

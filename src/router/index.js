@@ -88,6 +88,13 @@ const routes = [
   },
 
   {
+    path: "/deleteUser",
+    name: "deleteUser",
+    component: adminUser,
+    meta: { requiresAuth: true, title: "Admin User" }
+  },
+
+  {
     path: "/adminControl",
     name: "adminControl",
     component: adminCtrl,

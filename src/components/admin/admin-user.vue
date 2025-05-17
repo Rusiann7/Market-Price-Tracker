@@ -62,6 +62,13 @@
       </li>
     </ul>
   </nav>
+
+  <div v-if="isLoading" class="loading-screen">
+    <div class="loading-spinner"></div>
+    <p>Loading...</p>
+  </div>
+
+  <div v-show="!isLoading"> 
   
   <div class="image-container">
     <img src="@/assets/main.jpeg" class="main-image" alt="Blurred Background">
@@ -133,9 +140,16 @@
   </div>
 
   <div v-if="$route.path === '/adminUser'">
-    
-    <div class="overall-rating">
-        <p>Choose what will you do</p>
+
+  <div class="top-text">
+    <h1>Users</h1>
+  </div>
+
+  <div class="rating-reviews" id="reviews">
+    <div class="ratings-reviews-container">
+      <!-- left side) -->
+       <div class="overall-rating">
+          <p>Choose what will you do</p>
 
         <div class="button-container">
             
@@ -143,26 +157,61 @@
             Add Users
           </button>
 
-          <button class="btn" @click.prevent="$router.push('/login')">
+          <button class="btn" @click.prevent="$router.push('/deleteUser')">
             Remove Users
           </button>
 
         </div>
+       </div>
+      
+      <!-- right side) -->
+      <div class="feedback-container">
+        <h2 class="section-title">Users & Date</h2>
+        <div class="feedback-list">
+          <div
+            v-for="(user, index) in userList"
+            :key="index"
+            class="feedback-item"
+            >
+            <!--user rating -->
+            <strong class="username">{{ user.email }}</strong>
+            <p class="comment">{{ user.created }}</p>
+          </div>
+        </div>
       </div>
-
-    <div class="main">
-      <div
-      v-for="(user, index) in userList"
-      :key="index"
-      class="feedback-item"
-      >
-
-      <!-- User -->
-      <strong class="username">{{ user.email }}</strong>
-      <p class="comment">{{ user.created }}</p>
     </div>
-    </div>
+  </div>
+  </div>
 
+  <div v-if="$route.path === '/deleteUser'">
+    <button class="btn" @click.prevent="$router.push('/adminPrice')"> 
+        <svg xmlns="http://www.w3.org/2000/svg" 
+          height="24px" viewBox="0 -960 960 960" 
+          width="24px" fill="#e3e3e3">
+          <path d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z"/>
+        </svg> 
+      </button>
+    <div class="addItem">
+      <div class="form-box">
+
+        <form @submit.prevent="delUsers">
+          <br>
+          <p>Delete User:</p>
+          <br>
+
+          <select v-model="selectedItem" class="btn" required>
+            <option value="" disabled>-- Select a user --</option>
+            <option v-for="user in userList" :key="user.email" :value="user.email">
+              {{ user.email }}
+            </option>
+          </select>
+          <br>
+
+          <button type="submit" class="btn">Delete</button>
+        </form>
+      </div>
+    </div>
+  </div>
   </div>
 </template>
 
@@ -173,6 +222,7 @@ export default {
   name: "adminUser",
   data() {
     return {
+      selectedItem: '',
       userList: [],
       localUserData: {},
       FormData: JSON.parse(localStorage.getItem("userData")) || {
@@ -182,6 +232,7 @@ export default {
       },
       responseMessage: null,
       urlappphp: process.env.VUE_APP_URLAPPPHP,
+      isLoading: true
     };
   },
 
@@ -217,6 +268,8 @@ export default {
       } catch (error) {
         console.error("Error:", error);
         this.responseMessage = "Failed to communicate with the server.";
+      } finally {
+        this.isLoading = false;
       }
     },
 
@@ -248,6 +301,8 @@ export default {
         }
       }catch (error) {
         console.error("Error fetching users:", error);
+      } finally {
+        this.isLoading = false;
       }
     },
 
@@ -258,6 +313,48 @@ export default {
         this.$router.replace("/");
       } catch (error) {
         console.error("Logout error:", error);
+      }
+    },
+
+    async delUsers(){
+      this.isLoading = true;
+
+      if (!this.selectedItem) {
+          alert("Please select an item.");
+          return;
+        }
+
+      try {
+        const token = getToken();
+        if (!token) {
+          console.error("No token found, redirecting to login.");
+          this.$router.replace("/login");
+          return;
+        }
+
+        const response = await fetch(this.urlappphp, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({ action: "deleteUsers", 
+          User: this.selectedItem, }),    
+        });
+
+        const result = await response.json();
+
+        if (result.success) {
+          this.selectedItem = null;
+          alert("Successfully deleted user.");
+          this.$router.push('/adminUser'); // go back to the price list
+        } else {
+          console.error("Failed to delete user:", result.error);
+        }
+      } catch (error) {
+        console.error("Error deleting users:", error);
+      } finally {
+        this.isLoading = false;
       }
     },
 
@@ -283,6 +380,9 @@ export default {
 
   mounted() {
     this.fetchUsers();
+    this.priceInterval = setInterval(() => {
+      this.fetchUsers();
+    }, 10000);
     // clear form data when mounted
     this.FormData = {
       email: "",
@@ -294,6 +394,7 @@ export default {
 
   beforeUnmount() {
     document.removeEventListener("click", this.handleClickOutside);
+    clearInterval(this.priceInterval);
   },
 };
 </script>
@@ -546,9 +647,39 @@ nav li:first-child {
   font-size: 17px;
 }
 
-.overall-rating {
-  position: relative; /* above overlay */
+.ratings-reviews {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(135deg, #2c2c2c, #333333);
+  color: white;
+  padding: 40px;
+  padding-top: 80px;
+  border-radius: 12px;
+  max-width: 100%;
+  min-height: 100vh;
+  margin: 0 auto;
+  margin-top: 120px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5); 
+}
+
+/* containers */
+.ratings-reviews-container {
+  position: relative; 
   z-index: 2;
+  display: flex;
+  justify-content: space-between; 
+  align-items: flex-start; 
+  width: 90%; 
+  max-width: 1200px; 
+  margin: 20px auto; 
+  gap: 40px;
+}
+
+/* overall styling */
+.overall-rating,
+.feedback-container {
   background-color: #232831;
   color: white;
   padding: 25px;
@@ -563,6 +694,202 @@ nav li:first-child {
   height: auto;
   position: sticky; 
   top: 215px;
+}
+
+/* p */
+.overall-rating p {
+  font-size: 2.5rem;
+  font-weight: bold;
+  margin-top: 20px;
+  text-align: center; 
+  color: white; 
+}
+
+/* right side */
+.feedback-container {
+  width: 65%; 
+  background-color: #232831;
+  color: #ffffff;
+  max-height: 70vh; 
+  overflow-y: auto;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  margin-top: 45px;
+  scrollbar-width: thin;
+  scrollbar-color: #4a5568 #2d3748;
+}
+
+
+.feedback-list {
+  max-height: 80%;
+  overflow-y: auto;
+  margin-top: 20px;
+}
+
+/* febback item */
+.feedback-item {
+  border-top: 2px solid #ddd;
+  padding: 15px;
+  transition: background-color 0.3s ease;
+}
+
+.feedback-item:hover {
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+  background-color: #4a5568;
+}
+
+.feedback-container h2 {
+  margin-bottom: 25px;
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #ffffff;
+  text-align: center;
+  position: relative;
+  padding-bottom: 10px;
+}
+
+/* scrollbar */
+.feedback-container::-webkit-scrollbar {
+  width: 8px;
+}
+
+.feedback-container::-webkit-scrollbar-thumb {
+  background-color: #444;
+  border-radius: 4px;
+}
+
+.feedback-container::-webkit-scrollbar-track {
+  background-color: #2c2c2c;
+}
+
+@media (max-width: 1024px) {
+  .ratings-reviews-container {
+    flex-direction: column; /* vertically */
+    align-items: center;
+    gap: 20px;
+  }
+
+  .overall-rating,
+  .feedback-container {
+    width: 90%; 
+    max-width: 600px;
+  }
+
+  .overall-rating {
+    position: relative; 
+    top: 0;
+  }
+}
+
+@media (max-width: 768px) {
+  .ratings-reviews-container {
+    gap: 15px;
+  }
+
+  .overall-rating,
+  .feedback-container {
+    width: 100%; 
+  }
+
+  .overall-rating h3 {
+    font-size: 18px;
+  }
+
+  .feedback-container {
+    max-height: 350px;
+  }
+
+  .feedback-item .user-info {
+    font-size: 14px;
+  }
+
+  .feedback-item .comment {
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 480px) {
+  .overall-rating h3 {
+    font-size: 16px;
+  }
+
+  .feedback-item .user-info {
+    font-size: 12px;
+  }
+
+  .feedback-item .comment {
+    font-size: 12px;
+  }
+}
+
+.loading-screen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  color: white;
+}
+
+.loading-spinner {
+  border: 4px solid rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  border-top: 4px solid #ffffff;
+  width: 40px;
+  height: 40px;
+  animation: spin 1s linear infinite;
+  margin-bottom: 10px;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.addItem {
+  position: relative; /* above overlay */
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 20px;
+  margin: 10px ;
+  max-width: 400px;
+  width: 90%;
+  color: white;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #232831;
+  border-radius: 15px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+  box-sizing: border-box;
+  min-height: auto;
+  max-height: 475px;
+  align-self: center;
+  margin-top: 125px;
+  margin-bottom: 0;
+  font-size: 17px;
+}
+
+.form-box {
+  width: 100%;
+}
+
+.button-container {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  flex-wrap: wrap;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  padding: 20px;
 }
 
 .image-container {

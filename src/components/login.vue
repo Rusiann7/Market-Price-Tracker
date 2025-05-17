@@ -1,5 +1,12 @@
 <template>
 
+  <div v-if="isLoading" class="loading-screen">
+    <div class="loading-spinner"></div>
+    <p>Loading...</p>
+  </div>
+
+  <div v-show="!isLoading"> 
+
 <div class="image-container">
     <img src="@/assets/main.jpeg" class="main-image" alt="Blurred Background">
     <div class="img-overlay"></div>
@@ -50,6 +57,7 @@
       </form>
     </div>
   </div>
+  </div>
 </template>
 
 <script>
@@ -70,11 +78,13 @@ export default {
       },
       responseMessage: null,
       urlappphp: process.env.VUE_APP_URLAPPPHP,
+      isLoading: false
     };
   },
 
   methods: {
     async loginusr() {
+      this.isLoading = true;
       try {
         const response = await fetch(this.urlappphp, {
           method: "POST",
@@ -97,9 +107,7 @@ export default {
           localStorage.setItem("userData", JSON.stringify(this.FormData));
 
           this.FormData = { email: "", initpassword: "", conpassword: "" };
-          alert("Successfully logged in.");
-
-          await this.$router.replace("/adminHome");
+          this.$router.replace("/adminHome");
         } else {
           this.responseMessage = result.error || alert("Logged in failed.");
           alert("Incorrect email or password.");
@@ -107,7 +115,9 @@ export default {
       } catch (error) {
         console.error("Error:", error);
         this.responseMessage = "Failed to communicate with the server.";
-      }
+      } finally {
+      this.isLoading = false;
+    }
     },
   },
 };
@@ -199,6 +209,36 @@ export default {
   border-radius: 6px;
   border: 1px solid #ccc;
   box-sizing: border-box;
+}
+
+.loading-screen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  color: white;
+}
+
+.loading-spinner {
+  border: 4px solid rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  border-top: 4px solid #ffffff;
+  width: 40px;
+  height: 40px;
+  animation: spin 1s linear infinite;
+  margin-bottom: 10px;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
 }
 
 .image-container {
