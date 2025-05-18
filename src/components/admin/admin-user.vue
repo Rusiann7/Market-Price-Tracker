@@ -183,11 +183,11 @@
   </div>
   </div>
 
-  <div v-if="$route.path === '/deleteUser'">
-    <button class="btn" @click.prevent="$router.push('/adminPrice')"> 
+  <div v-if="$route.path === '/deleteUser'" class="main-content">
+    <button class="btn" @click.prevent="$router.push('/adminUser')"> 
         <svg xmlns="http://www.w3.org/2000/svg" 
           height="24px" viewBox="0 -960 960 960" 
-          width="24px" fill="#e3e3e3">
+          width="24px" fill="#000000">
           <path d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z"/>
         </svg> 
       </button>
@@ -262,6 +262,7 @@ export default {
           this.responseMessage = result.message || "Success!";
           alert("Account created successfully!");
           this.FormData = { email: "", initpassword: "", conpassword: "" };
+          this.$router.push('/adminUser');
         } else {
           alert("Password is not the same");
         }
@@ -891,6 +892,24 @@ nav li:first-child {
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   padding: 20px;
 }
+
+.main-content {
+  position: relative; /* above overlay */
+  z-index: 2;
+  padding-top: 0;
+  margin-top: -180px;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  min-height: calc(100vh - 50px);
+  width: 100%;
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 15px;
+  padding-right: 15px;
+}
+
 
 .image-container {
   position: fixed; 

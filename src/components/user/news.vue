@@ -62,6 +62,13 @@
     </ul>
   </nav>
 
+  <div v-if="isLoading" class="loading-screen">
+    <div class="loading-spinner"></div>
+    <p>Loading...</p>
+  </div>
+
+  <div v-show="!isLoading"> 
+
   <div class="image-container">
     <img src="@/assets/main.jpeg" class="main-image" alt="Blurred Background">
     <div class="img-overlay"></div>
@@ -87,7 +94,7 @@
       </div>
     </div>
   </div>
-  
+  </div>
     
 </template>
 
@@ -98,6 +105,7 @@ export default {
     return {
       urlappphp: process.env.VUE_APP_URLAPPPHP,
       newsList: [],
+      isLoading: true,
     }
   },
 
@@ -123,6 +131,8 @@ export default {
         }
       }catch (error) {
         console.error("Error fetching news:", error);
+      } finally {
+      this.isLoading = false;
       }
     },
 
@@ -343,6 +353,36 @@ h2 {
   color: #001821; 
   transform: translateY(-2px);
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.loading-screen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  color: white;
+}
+
+.loading-spinner {
+  border: 4px solid rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  border-top: 4px solid #ffffff;
+  width: 40px;
+  height: 40px;
+  animation: spin 1s linear infinite;
+  margin-bottom: 10px;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
 }
 
 .image-container {
