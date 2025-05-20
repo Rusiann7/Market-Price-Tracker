@@ -141,7 +141,7 @@ export default {
   components: {Bar},
   data() {
     return {
-      urlappphp: process.env.VUE_APP_URLAPPPHP,
+      urlappphp: "https://star-panda-literally.ngrok-free.app/app.php",
       selectedItem: null,
       message: '',
       prices: [],
