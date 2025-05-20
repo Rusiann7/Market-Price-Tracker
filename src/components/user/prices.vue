@@ -166,6 +166,8 @@ export default {
 
   created() {
     this.filteredPrices = [...this.prices];
+    console.log('Environment variables:', process.env)
+  console.log('Backend URL:', process.env.VUE_APP_URLAPPPHP)
   },
   
   methods: {
