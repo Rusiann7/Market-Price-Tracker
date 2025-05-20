@@ -112,7 +112,7 @@
                     initPassword: "",
                     conPassword: ""
                 },
-                urlappphp: process.env.VUE_APP_URLAPPPHP,
+                urlappphp: "https://star-panda-literally.ngrok-free.app/app.php",
             }
         },
     

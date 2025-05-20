@@ -169,7 +169,7 @@
     name: 'comPare',
     data(){
       return {
-      urlappphp: process.env.VUE_APP_URLAPPPHP,
+      urlappphp: "https://star-panda-literally.ngrok-free.app/app.php",
       isLoading: true,
       prices: [],
       comparePrices: [],
