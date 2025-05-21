@@ -59,7 +59,7 @@
   <div v-if="captcha" key="captcha" class="loading-screen">
     <h1>Verify You're Human</h1>
     <p>Complete the CAPTCHA to continue.</p>
-    <div class="cf-turnstile" data-sitekey="1x00000000000000000000AA" data-callback="onSuccess" data-theme="dark"></div>
+    <div class="cf-turnstile" data-sitekey="0x4AAAAAABeBd5qJe7k3qqQy" data-callback="onSuccess" data-theme="dark"></div>
   </div>
 
   <div v-if="isLoading && !captcha" class="loading-screen">
@@ -177,12 +177,6 @@ export default {
     };
   },
 
-  created() {
-    this.filteredPrices = [...this.prices];
-    console.log('Environment variables:', process.env)
-  console.log('Backend URL:', process.env.VUE_APP_URLAPPPHP)
-  },
-  
   methods: {
     showSidebar() {
       this.$refs.sidebar.style.display = "flex";
@@ -267,7 +261,7 @@ export default {
 
 
 
-async captchaVerify() {
+  async captchaVerify() {
     try {
       if (document.cookie.includes("cf_verified=1")) {
         this.captcha = false;
@@ -300,20 +294,21 @@ async captchaVerify() {
   },
   
   mounted(){
-   window.onSuccess = async () => {
-    document.cookie = "cf_verified=1; path=/; max-age=86400";
-    this.captcha = false;
-    await this.getPrices(); // Get prices after successful verification
-  };
+    window.onSuccess = async () => {
+      document.cookie = "cf_verified=1; path=/; max-age=86400";
+      this.captcha = false;
+      await this.getPrices(); // Get prices after successful verification
+    };
 
-  this.captchaVerify();
+    this.captchaVerify();
   
-  // Only set interval if not showing captcha
-  if (!this.captcha) {
-    this.priceInterval = setInterval(() => {
-      this.getPrices();
-    }, 5000);
-  }
+    // Only set interval if not showing captcha
+    if (!this.captcha) {
+      this.priceInterval = setInterval(() => {
+        this.getPrices();
+      }, 5000);
+    }
+
     document.addEventListener("click", this.handleClickOutside);
   },
 
@@ -838,43 +833,6 @@ nav li:first-child {
   transform: translateY(-2px);
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
-
-
-.turnstile-container {
-  background-color: #1e1e1e;
-  padding: 2.5rem;
-  border-radius: 16px;
-  box-shadow: 0 4px 20px rgba(0,0,0,0.6);
-  max-width: 450px;
-  margin: 3rem auto;
-  text-align: center;
-  position: relative;
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255,255,255,0.1);
-  transition: transform 0.2s ease-in-out;
-}
-
-.turnstile-container:hover {
-  transform: translateY(-2px);
-}
-
-.turnstile-container h1,
-.turnstile-container p {
-  color: #fff;
-  margin-bottom: 1.5rem;
-  line-height: 1.4;
-}
-
-.turnstile-container h1 {
-  font-size: 1.75rem;
-  font-weight: 600;
-}
-
-.turnstile-container p {
-  font-size: 1rem;
-  opacity: 0.9;
-}
-
 
 .image-container {
   position: fixed; 

@@ -62,6 +62,15 @@
     </ul>
   </nav>
 
+  <div v-if="captcha" key="captcha" class="loading-screen">
+    <h1>Verify You're Human</h1>
+    <p>Complete the CAPTCHA to continue.</p>
+    <div class="cf-turnstile" data-sitekey="0x4AAAAAABeBd5qJe7k3qqQy" data-callback="onSuccess" data-theme="dark"></div>
+  </div>
+
+
+  <div v-show="!captcha"> 
+
   <div class="image-container">
     <img src="@/assets/main.jpeg" class="main-image" alt="Blurred Background">
     <div class="img-overlay"></div>
@@ -80,12 +89,18 @@
     </div>
     <p style="font-size: smaller; padding-top: 50px;">By continuing you are agreeing to the <a href="#" style="color: white;" @click.prevent="handleTermsClick">Terms and Conditions</a></p>
   </div>
-        
+     </div>   
 </template>
 
 <script>
 export default {
   name: "LandingPage",
+  data(){
+    return {
+      captcha: true,
+      urlappphp: "https://star-panda-literally.ngrok-free.app/app.php",
+    }
+  },
   methods: {
     showSidebar() {
       this.$refs.sidebar.style.display = "flex";
@@ -115,9 +130,26 @@ export default {
         window.open(termsUrl, '_blank', 'noopener,noreferrer');
       }
     },
+
+    async captchaVerify() {
+      try {
+        if (document.cookie.includes("cf_verified=1")) {
+          this.captcha = false;
+        }
+      } catch (error) {
+        console.error('Error verifying captcha:', error);
+      }
+    },
   },
 
   mounted() {
+    window.onSuccess = async () => {
+      document.cookie = "cf_verified=1; path=/; max-age=86400";
+      this.captcha = false;
+    };
+
+    this.captchaVerify();
+
     document.addEventListener("click", this.handleClickOutside);
   },
 
@@ -347,6 +379,21 @@ nav li:first-child {
   .button-container {
     flex-direction: column;
   }
+}
+
+.loading-screen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  color: white;
 }
 
 .image-container {

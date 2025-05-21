@@ -62,12 +62,18 @@
     </ul>
   </nav>
 
-  <div v-if="isLoading" class="loading-screen">
+ <div v-if="captcha" key="captcha" class="loading-screen">
+    <h1>Verify You're Human</h1>
+    <p>Complete the CAPTCHA to continue.</p>
+    <div class="cf-turnstile" data-sitekey="0x4AAAAAABeBd5qJe7k3qqQy" data-callback="onSuccess" data-theme="dark"></div>
+  </div>
+
+  <div v-if="isLoading && !captcha" class="loading-screen">
     <div class="loading-spinner"></div>
     <p>Loading...</p>
   </div>
 
-  <div v-show="!isLoading"> 
+  <div v-show="!isLoading && !captcha"> 
 
   <div class="image-container">
     <img src="@/assets/main.jpeg" class="main-image" alt="Blurred Background">
@@ -171,6 +177,7 @@
       return {
       urlappphp: "https://star-panda-literally.ngrok-free.app/app.php",
       isLoading: true,
+      captcha: true,
       prices: [],
       comparePrices: [],
         counter: 1,
@@ -255,6 +262,17 @@
       }
     },
 
+    async captchaVerify() {
+      try {
+        if (document.cookie.includes("cf_verified=1")) {
+          this.captcha = false;
+          await this.getPrices(); // Get prices after verification
+        }
+      } catch (error) {
+        console.error('Error verifying captcha:', error);
+      }
+    },
+
     increaseCounter(){
       this.counter++;
       this.getCompare();
@@ -269,11 +287,21 @@
   },
 
     mounted(){
-      this.getPrices();
-      this.priceInterval = setInterval(() => {
-      this.getPrices();
-    }, 5000);
+      window.onSuccess = async () => {
+      document.cookie = "cf_verified=1; path=/; max-age=86400";
+      this.captcha = false;
+      await this.getPrices(); // Get prices after successful verification
+    };
+
+    this.captchaVerify();
+  
+    // Only set interval if not showing captcha
+    if (!this.captcha) {
       this.getCompare();
+      this.priceInterval = setInterval(() => {
+        this.getPrices();
+      }, 5000);
+    }
       document.addEventListener("click", this.handleClickOutside);
     },
 

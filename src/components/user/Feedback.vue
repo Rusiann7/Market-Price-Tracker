@@ -63,12 +63,18 @@
     </ul>
   </nav>
 
-  <div v-if="isLoading" class="loading-screen">
+  <div v-if="captcha" key="captcha" class="loading-screen">
+    <h1>Verify You're Human</h1>
+    <p>Complete the CAPTCHA to continue.</p>
+    <div class="cf-turnstile" data-sitekey="0x4AAAAAABeBd5qJe7k3qqQy" data-callback="onSuccess" data-theme="dark"></div>
+  </div>
+
+  <div v-if="isLoading && !captcha" class="loading-screen">
     <div class="loading-spinner"></div>
     <p>Loading...</p>
   </div>
 
-  <div v-show="!isLoading"> 
+  <div v-show="!isLoading && !captcha"> 
 
   <div class="image-container">
     <img src="@/assets/main.jpeg" class="main-image" alt="Blurred Background">
@@ -143,6 +149,7 @@ export default {
       rating: 0,
       urlappphp: "https://star-panda-literally.ngrok-free.app/app.php",
       isLoading: false,
+      captcha: true
     };
   },
 
@@ -209,9 +216,31 @@ export default {
         }
       }
     },
+
+    async captchaVerify() {
+      try {
+        if (document.cookie.includes("cf_verified=1")) {
+          this.captcha = false;
+        }
+      } catch (error) {
+        console.error('Error verifying captcha:', error);
+      }
+    },
   },
 
   mounted() {
+    window.onSuccess = async () => {
+      document.cookie = "cf_verified=1; path=/; max-age=86400";
+      this.captcha = false;
+    };
+
+    this.captchaVerify();
+  
+    // Only set interval if not showing captcha
+    if (!this.captcha) {
+      this.submitFeedback();
+    }
+
     document.addEventListener("click", this.handleClickOutside);
   },
 

@@ -43,6 +43,7 @@
         />
 
         <br>
+          <div class="cf-turnstile" data-sitekey="0x4AAAAAABeBd5qJe7k3qqQy" data-callback="onSuccess" data-theme="dark"></div>
 
         <a
           href="#"
@@ -78,12 +79,18 @@ export default {
       },
       responseMessage: null,
       urlappphp: "https://star-panda-literally.ngrok-free.app/app.php",
-      isLoading: false
+      isLoading: false,
+      captcha: false,
     };
   },
 
   methods: {
     async loginusr() {
+
+      if (!this.captcha) {
+        return;
+      }
+
       this.isLoading = true;
       try {
         const response = await fetch(this.urlappphp, {
@@ -111,15 +118,34 @@ export default {
         } else {
           this.responseMessage = result.error || alert("Logged in failed.");
           alert("Incorrect email or password.");
+          this.captcha = false;
         }
       } catch (error) {
         console.error("Error:", error);
         this.responseMessage = "Failed to communicate with the server.";
+        this.captcha = false;
       } finally {
       this.isLoading = false;
     }
     },
+
+      async captchaVerify() {
+    try {
+      if (document.cookie.includes("cf_verified=1")) {
+        this.captcha = false;
+      }
+    } catch (error) {
+      console.error('Error verifying captcha:', error);
+    }
   },
+  },
+
+  mounted() {
+    window.onSuccess = async () => {
+      document.cookie = "cf_verified=1; path=/; max-age=86400";
+      this.captcha = true;
+    };
+  }
 };
 </script>
 
