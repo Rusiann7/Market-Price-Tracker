@@ -230,7 +230,7 @@ export default {
 
   mounted() {
     window.onSuccess = async () => {
-      document.cookie = "cf_verified=1; path=/; max-age=86400";
+      document.cookie = "cf_verified=1; path=/; max-age=10800";
       this.captcha = false;
     };
 
@@ -238,7 +238,7 @@ export default {
   
     // Only set interval if not showing captcha
     if (!this.captcha) {
-      this.submitFeedback();
+      //this.submitFeedback();
     }
 
     document.addEventListener("click", this.handleClickOutside);

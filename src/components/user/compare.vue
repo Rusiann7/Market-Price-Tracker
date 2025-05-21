@@ -288,7 +288,7 @@
 
     mounted(){
       window.onSuccess = async () => {
-      document.cookie = "cf_verified=1; path=/; max-age=86400";
+      document.cookie = "cf_verified=1; path=/; max-age=10800";
       this.captcha = false;
       await this.getPrices(); // Get prices after successful verification
     };
