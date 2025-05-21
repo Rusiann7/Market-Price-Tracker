@@ -471,6 +471,27 @@ nav li:first-child {
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
 }
 
+@media (max-width: 1050px) {
+
+  .price-container {
+  position: relative; /* above overlay */
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  padding: 20px 40px 40px; /* space */
+  border-radius: 12px;
+  max-width: 100%;
+  min-height: 100vh; 
+  margin: 0 auto;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+  padding-top: 80px;
+}
+
+}
+
 /* two columns */
 .prices-container {
   display: flex;
