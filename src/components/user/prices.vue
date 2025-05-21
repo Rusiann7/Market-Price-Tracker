@@ -56,77 +56,89 @@
     </ul>
   </nav>
 
-  <div v-if="isLoading" class="loading-screen">
+  <div v-if="captcha" key="captcha" class="loading-screen">
+    <h1>Verify You're Human</h1>
+    <p>Complete the CAPTCHA to continue.</p>
+    <div class="cf-turnstile" data-sitekey="1x00000000000000000000AA" data-callback="onSuccess" data-theme="dark"></div>
+  </div>
+
+  <div v-if="isLoading && !captcha" class="loading-screen">
     <div class="loading-spinner"></div>
     <p>Loading...</p>
   </div>
 
-  <div v-show="!isLoading"> 
+  <div v-show="!isLoading && !captcha"> 
 
-  <div class="image-container">
-    <img src="@/assets/main.jpeg" class="main-image" alt="Blurred Background">
-    <div class="img-overlay"></div>
-  </div>
+    <div class="image-container">
+      <img src="@/assets/main.jpeg" class="main-image" alt="Blurred Background">
+      <div class="img-overlay"></div>
+    </div>
 
-  <div class="price-container">
-    <h1 style="color: white">Prices & Analytics</h1>
-    <br>
+    <div class="price-container">
+      <h1 style="color: white">Prices & Analytics</h1>
+      <br>
 
-    <div class="prices-container">
-      <!-- left side) -->
-      <div class="chart-section">
-        <h3>Price Trends</h3>
-        <div class="chart-wrapper">
-          <Bar v-if="chartData" :data="chartData" :options="chartOptions" />
-          <div v-else>No data available</div>
+      <div class="prices-container">
+        <!-- left side) -->
+        <div class="chart-section">
+          <h3>Price Trends</h3>
+          <div class="chart-wrapper">
+            <Bar v-if="chartData" :data="chartData" :options="chartOptions" />
+            <div v-else>No data available</div>
+          </div>
+
+          <div class="ai-summarizer">
+            <h3>
+              <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e3e3e3">
+                <path d="M440-280h80v-240h-80v240Zm40-320q17 0 28.5-11.5T520-640q0-17-11.5-28.5T480-680q-17 0-28.5 11.5T440-640q0 17 11.5 28.5T480-600Zm0 520q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z"/>
+              </svg>
+              AI Summarizer
+            </h3>
+            <p>{{ message }}</p>
+          </div>
         </div>
-        <div class="ai-summarizer">
-          <h3>
-            <svg xmlns="http://www.w3.org/2000/svg" 
-            height="24px" viewBox="0 -960 960 960" 
-            width="24px" fill="#e3e3e3">
-            <path d="M440-280h80v-240h-80v240Zm40-320q17 0 28.5-11.5T520-640q0-17-11.5-28.5T480-680q-17 0-28.5 11.5T440-640q0 17 11.5 28.5T480-600Zm0 520q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z"/>
-          </svg>
-          AI Summarizer
-        </h3>
-          <p>{{ message }}</p>
-        </div>
-      </div>
 
-      <!-- right side) -->
-      <div class="list-price-container">
-        <div class="title-section">
-          <h2>Market Prices</h2>
-        </div>
-        <div class="price-list">
-          <input class="input-field" type="text" v-model="searchQuery" placeholder="Search ..." @input="filterPrices"/>
+        <!-- right side) -->
+        <div class="list-price-container">
+          <div class="title-section">
+            <h2>Market Prices</h2>
+          </div>
+          <div class="price-list">
+            <div class="form-box">
+              <form @submit.prevent="delUsers">
+                <select v-model="selectedItem" class="btn" required>
+                  <option value="" disabled>-- Select a Market --</option>
+                  <option value="Bagong Palengke">Bagong Palengke</option>
+                  <option value="Lumang Palengke">Lumang Palengke</option>
+                  <option value="Pag-Asa Market">Pag-Asa Market</option>
+                </select>
+              </form>
+            </div>
 
-          <table class="table-content">
-            <thead>
-              <tr>
-                <th>Products</th>
-                <th>Price</th>
-                <th>Source</th>
-              </tr>
-            </thead>
+            <input class="input-field" type="text" v-model="searchQuery" placeholder="Search ..." @input="filterPrices"/>
 
-            <tbody>
-              <tr 
-                v-for="price in filteredPrices"
-                :key="price.RiceType + price.Source" 
-                @click="handleRowClick(price)"
-                :class="{ 'selected-row': selectedItem && selectedItem.RiceType === price.RiceType }"
-              >
-                <td>{{ price.RiceType }}</td>
-                <td>₱{{ price.Price }}</td>
-                <td><a :href="price.Source" target="_blank" rel="noopener noreferrer" @click.stop style="color: black;">Source</a></td>
-              </tr>
-            </tbody>
-          </table>
+            <table class="table-content">
+              <thead>
+                <tr>
+                  <th>Products</th>
+                  <th>Price</th>
+                  <th>Source</th>
+                </tr>
+              </thead>
+
+              <tbody>
+                <tr v-for="price in filteredPrices" :key="price.RiceType + price.Source" @click="handleRowClick(price)"
+                  :class="{ 'selected-row': selectedItem && selectedItem.RiceType === price.RiceType }">
+                  <td>{{ price.RiceType }}</td>
+                  <td>₱{{ price.Price }}</td>
+                  <td><a :href="price.Source" target="_blank" rel="noopener noreferrer" @click.stop style="color: black;">Source</a></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
     </div>
-  </div>
   </div>
 </template>
 
@@ -160,7 +172,8 @@ export default {
       },
       searchQuery: '',
       filteredPrices: [],
-      isLoading: true
+      isLoading: true,
+      captcha: true
     };
   },
 
@@ -248,9 +261,23 @@ export default {
       } catch (error) {
         console.error("Error fetching Prices:", error);
       } finally {
-        this.isLoading = false;  // Hide loader when done
+        this.isLoading = false; 
       }
     },
+
+
+
+async captchaVerify() {
+    try {
+      if (document.cookie.includes("cf_verified=1")) {
+        this.captcha = false;
+        await this.getPrices(); // Get prices after verification
+      }
+    } catch (error) {
+      console.error('Error verifying captcha:', error);
+    }
+  },
+
     
     filterPrices() {
       if (!this.searchQuery) {
@@ -273,10 +300,20 @@ export default {
   },
   
   mounted(){
-    this.getPrices();
+   window.onSuccess = async () => {
+    document.cookie = "cf_verified=1; path=/; max-age=86400";
+    this.captcha = false;
+    await this.getPrices(); // Get prices after successful verification
+  };
+
+  this.captchaVerify();
+  
+  // Only set interval if not showing captcha
+  if (!this.captcha) {
     this.priceInterval = setInterval(() => {
       this.getPrices();
     }, 5000);
+  }
     document.addEventListener("click", this.handleClickOutside);
   },
 
@@ -431,7 +468,7 @@ nav li:first-child {
   justify-content: center;
   align-items: center;
   color: white;
-  padding: 80px 40px 40px; /* space */
+  padding: 20px 40px 40px; /* space */
   border-radius: 12px;
   max-width: 100%;
   min-height: 100vh; 
@@ -752,6 +789,92 @@ nav li:first-child {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
 }
+
+.addItem {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 20px;
+  margin: 10px ;
+  max-width: 400px;
+  width: 90%;
+  color: white;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #232831;
+  border-radius: 15px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+  box-sizing: border-box;
+  min-height: auto;
+  max-height: 475px;
+  align-self: center;
+  margin-top: 125px;
+  margin-bottom: 0;
+  font-size: 17px;
+}
+
+.form-box {
+  width: 100%;
+}
+
+.btn {
+  margin-top: 10px;
+  padding: 10px 20px;
+  background: #ffe082;
+  color: #001821;
+  border: none;
+  border-radius: 5px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  width: 100%;
+}
+
+.btn:hover {
+  background: #ffd448; 
+  color: #001821; 
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+
+.turnstile-container {
+  background-color: #1e1e1e;
+  padding: 2.5rem;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.6);
+  max-width: 450px;
+  margin: 3rem auto;
+  text-align: center;
+  position: relative;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255,255,255,0.1);
+  transition: transform 0.2s ease-in-out;
+}
+
+.turnstile-container:hover {
+  transform: translateY(-2px);
+}
+
+.turnstile-container h1,
+.turnstile-container p {
+  color: #fff;
+  margin-bottom: 1.5rem;
+  line-height: 1.4;
+}
+
+.turnstile-container h1 {
+  font-size: 1.75rem;
+  font-weight: 600;
+}
+
+.turnstile-container p {
+  font-size: 1rem;
+  opacity: 0.9;
+}
+
 
 .image-container {
   position: fixed; 
